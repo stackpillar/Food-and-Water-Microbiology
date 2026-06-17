@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Your Knowledge — Food & Water Microbiology</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #21262d;
+    --accent: #2ea8a0;
+    --accent2: #1f7a74;
+    --accent-glow: rgba(46,168,160,0.15);
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #6e7681;
+    --heading: #cae8ff;
+    --tag-bg: #1f3a52;
+    --tag-text: #79c0ff;
+    --warning: #d29922;
+    --warning-bg: #272115;
+    --green: #3fb950;
+    --green-bg: #122117;
+    --red: #f85149;
+    --red-bg: #2c1313;
+    --sidebar-w: 280px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+  }
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .sidebar-header {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .sidebar-title { font-size: 13px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+  .sidebar-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  .score-panel {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .score-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .score-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em; }
+  .score-val { font-size: 20px; font-weight: 800; color: var(--accent); }
+  .mini-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 6px; overflow: hidden; }
+  .mini-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s; width: 0%; }
+  .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+  .score-cell { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; text-align: center; }
+  .score-cell .n { font-size: 16px; font-weight: 800; }
+  .score-cell .l { font-size: 10px; color: var(--text-dim); }
+  .correct-n { color: var(--green); }
+  .wrong-n { color: var(--red); }
+
+  nav { padding: 8px 0; flex: 1; }
+  .nav-section { padding: 8px 18px 4px; font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+  .nav-item { display: flex; align-items: center; gap: 8px; padding: 7px 18px; font-size: 13px; color: var(--text-muted); cursor: pointer; border-left: 2px solid transparent; transition: all 0.15s; text-decoration: none; }
+  .nav-item:hover { color: var(--text); background: var(--surface2); }
+  .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-glow); }
+  .nav-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.2s; }
+  .nav-item.active .dot { background: var(--accent); }
+  .nav-item .cnt { margin-left: auto; font-size: 10px; background: var(--tag-bg); color: var(--tag-text); padding: 1px 6px; border-radius: 10px; font-weight: 700; }
+
+  .sidebar-footer { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+  .btn-primary { display: block; width: 100%; padding: 9px; background: var(--accent); color: var(--bg); border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-secondary { display: block; width: 100%; padding: 9px; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.2s; }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── MAIN ── */
+  #main { margin-left: var(--sidebar-w); flex: 1; min-width: 0; }
+
+  .topbar { position: sticky; top: 0; background: rgba(13,17,23,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; z-index: 50; }
+  .breadcrumb { font-size: 12px; color: var(--text-dim); }
+  .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .breadcrumb span { color: var(--text-muted); }
+  #hamburger { display: none; background: none; border: none; color: var(--text); font-size: 20px; cursor: pointer; }
+
+  .content-wrapper { max-width: 820px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* ── HERO ── */
+  .hero { padding: 48px 40px 32px; max-width: 820px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 10px; }
+  .hero h1 { font-size: 32px; font-weight: 800; color: var(--heading); line-height: 1.2; margin-bottom: 12px; }
+  .hero p { font-size: 15px; color: var(--text-muted); max-width: 560px; }
+  .hero-stats { display: flex; gap: 28px; margin-top: 24px; flex-wrap: wrap; }
+  .hero-stat .num { font-size: 26px; font-weight: 800; color: var(--accent); display: block; }
+  .hero-stat .lbl { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── SECTION HEADER ── */
+  .section { margin-bottom: 48px; scroll-margin-top: 60px; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-icon { width: 36px; height: 36px; background: var(--accent-glow); border: 1px solid var(--accent2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .section-header h2 { font-size: 20px; font-weight: 700; color: var(--heading); }
+  .badge { margin-left: auto; font-size: 10px; padding: 3px 8px; background: var(--tag-bg); color: var(--tag-text); border-radius: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+
+  /* ── MCQ ── */
+  .q-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; transition: border-color 0.2s; }
+  .q-card.answered-correct { border-color: var(--green); }
+  .q-card.answered-wrong { border-color: var(--red); }
+  .q-head { padding: 14px 18px 10px; display: flex; gap: 12px; align-items: flex-start; }
+  .q-num { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; font-size: 11px; font-weight: 700; color: var(--text-dim); flex-shrink: 0; }
+  .q-text { font-size: 14.5px; color: var(--text); font-weight: 500; line-height: 1.6; }
+
+  .options { padding: 0 18px 14px; display: flex; flex-direction: column; gap: 7px; }
+  .option { display: flex; align-items: flex-start; gap: 10px; padding: 9px 13px; background: var(--surface2); border: 1px solid var(--border); border-radius: 7px; cursor: pointer; transition: all 0.15s; user-select: none; }
+  .option:hover { border-color: var(--accent2); background: var(--accent-glow); }
+  .option.selected { border-color: var(--accent); background: var(--accent-glow); }
+  .option.correct { border-color: var(--green) !important; background: var(--green-bg) !important; }
+  .option.wrong { border-color: var(--red) !important; background: var(--red-bg) !important; }
+  .option-letter { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text-dim); transition: all 0.15s; }
+  .option.selected .option-letter { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+  .option.correct .option-letter { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+  .option.wrong .option-letter { border-color: var(--red); color: var(--red); background: var(--red-bg); }
+  .option-text { font-size: 13.5px; color: var(--text); line-height: 1.5; padding-top: 1px; }
+
+  .q-footer { padding: 0 18px 14px; display: flex; align-items: center; gap: 10px; }
+  .check-btn { padding: 6px 14px; background: var(--accent); color: var(--bg); border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+  .check-btn:hover { background: var(--accent2); }
+  .check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .result-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .result-badge.correct { background: var(--green-bg); color: var(--green); }
+  .result-badge.wrong { background: var(--red-bg); color: var(--red); }
+
+  .explanation { margin: 0 18px 14px; padding: 11px 14px; background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 0 7px 7px 0; font-size: 13px; color: var(--text-muted); display: none; }
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--accent); }
+
+  /* ── SHORT ANSWER ── */
+  .sa-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .sa-head { padding: 14px 18px 10px; display: flex; gap: 12px; align-items: flex-start; }
+  .sa-body { padding: 0 18px 14px; }
+  textarea.sa-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-size: 13.5px; font-family: inherit; padding: 10px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color 0.2s; line-height: 1.6; }
+  textarea.sa-input:focus { border-color: var(--accent); }
+  .sa-actions { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+  .reveal-btn { padding: 6px 14px; background: transparent; color: var(--accent); border: 1px solid var(--accent2); border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .reveal-btn:hover { background: var(--accent-glow); }
+  .model-answer { margin-top: 10px; padding: 12px 14px; background: var(--green-bg); border-left: 3px solid var(--green); border-radius: 0 7px 7px 0; font-size: 13px; color: var(--text); display: none; line-height: 1.6; }
+  .model-answer.show { display: block; }
+  .model-answer .ans-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); margin-bottom: 6px; }
+  .marks-tag { font-size: 10px; background: var(--tag-bg); color: var(--tag-text); padding: 2px 7px; border-radius: 10px; font-weight: 600; margin-left: auto; white-space: nowrap; }
+
+  /* ── LONG ANSWER ── */
+  .la-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+  .la-head { padding: 16px 18px 12px; display: flex; gap: 12px; align-items: flex-start; background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .la-num { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-glow); border: 1px solid var(--accent2); padding: 3px 9px; border-radius: 6px; flex-shrink: 0; }
+  .la-body { padding: 16px 18px; }
+  textarea.la-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 7px; color: var(--text); font-size: 13.5px; font-family: inherit; padding: 12px 14px; resize: vertical; min-height: 140px; outline: none; transition: border-color 0.2s; line-height: 1.7; }
+  textarea.la-input:focus { border-color: var(--accent); }
+  .marking-scheme { margin-top: 12px; padding: 14px 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; display: none; }
+  .marking-scheme.show { display: block; }
+  .ms-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 10px; }
+  .ms-point { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--text); margin-bottom: 7px; padding-bottom: 7px; border-bottom: 1px solid var(--border); line-height: 1.5; }
+  .ms-point:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .ms-pts { flex-shrink: 0; font-size: 10px; font-weight: 800; background: var(--accent-glow); color: var(--accent); border: 1px solid var(--accent2); padding: 1px 6px; border-radius: 4px; margin-top: 2px; }
+
+  /* ── OVERLAY ── */
+  #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 90; }
+  #overlay.show { display: block; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    #sidebar { transform: translateX(-100%); }
+    #sidebar.open { transform: translateX(0); }
+    #main { margin-left: 0; }
+    .topbar { padding: 12px 16px; }
+    .content-wrapper { padding: 0 14px 60px; }
+    .hero { padding: 28px 14px 20px; }
+    .hero h1 { font-size: 24px; }
+    #hamburger { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">🧪 Knowledge Test</div>
+    <div class="sidebar-sub">Food & Water Microbiology</div>
+  </div>
+
+  <div class="score-panel">
+    <div class="score-row">
+      <span class="score-label">MCQ Score</span>
+      <span class="score-val" id="mcq-score">0 / 50</span>
+    </div>
+    <div class="mini-bar"><div class="mini-fill" id="mcq-bar"></div></div>
+    <div class="score-grid">
+      <div class="score-cell"><div class="n correct-n" id="correct-count">0</div><div class="l">Correct</div></div>
+      <div class="score-cell"><div class="n wrong-n" id="wrong-count">0</div><div class="l">Wrong</div></div>
+    </div>
+  </div>
+
+  <nav>
+    <div class="nav-section">Sections</div>
+    <a class="nav-item" href="#mcq" onclick="closeSidebarMobile()"><span class="dot"></span>Multiple Choice <span class="cnt">50</span></a>
+    <a class="nav-item" href="#short" onclick="closeSidebarMobile()"><span class="dot"></span>Short Answer <span class="cnt">25</span></a>
+    <a class="nav-item" href="#long" onclick="closeSidebarMobile()"><span class="dot"></span>Long Answer <span class="cnt">10</span></a>
+
+    <div class="nav-section" style="margin-top:8px">Topics Covered</div>
+    <a class="nav-item" href="#mcq" onclick="closeSidebarMobile()"><span class="dot"></span>Waterborne Pathogens</a>
+    <a class="nav-item" href="#mcq" onclick="closeSidebarMobile()"><span class="dot"></span>Indicator Organisms</a>
+    <a class="nav-item" href="#mcq" onclick="closeSidebarMobile()"><span class="dot"></span>Standard Water Tests</a>
+    <a class="nav-item" href="#mcq" onclick="closeSidebarMobile()"><span class="dot"></span>Lab Methods</a>
+    <a class="nav-item" href="#mcq" onclick="closeSidebarMobile()"><span class="dot"></span>Culture Media</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="food_water_microbiology.html" class="btn-secondary">← Back to Notes</a>
+    <button class="btn-secondary" onclick="resetAll()">↺ Reset All Answers</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="topbar">
+    <button id="hamburger" onclick="toggleSidebar()">☰</button>
+    <div class="breadcrumb">
+      <a href="food_water_microbiology.html">Study Guide</a> &nbsp;/&nbsp; <span>Test Your Knowledge</span>
+    </div>
+    <div style="font-size:12px; color:var(--text-dim);">85 Questions</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">🧪 Assessment · Unit 1</div>
+    <h1>Test Your Knowledge</h1>
+    <p>Answer all questions. MCQs give instant feedback. Reveal model answers for short and long questions after writing your own response.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num">50</span><span class="lbl">MCQs</span></div>
+      <div class="hero-stat"><span class="num">25</span><span class="lbl">Short Answer</span></div>
+      <div class="hero-stat"><span class="num">10</span><span class="lbl">Long Answer</span></div>
+      <div class="hero-stat"><span class="num">85</span><span class="lbl">Total Questions</span></div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION A: MCQ -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="mcq">
+      <div class="section-header">
+        <div class="section-icon">🔘</div>
+        <h2>Section A — Multiple Choice Questions</h2>
+        <span class="badge">50 Questions · 1 Mark Each</span>
+      </div>
+
+      <!-- Q1 -->
+      <div class="q-card" id="q1">
+        <div class="q-head"><span class="q-num">Q1</span><span class="q-text">What is the primary purpose of bacteriological water analysis?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q1','A')"><span class="option-letter">A</span><span class="option-text">To detect chemical pollutants in water</span></div>
+          <div class="option" onclick="selectOption(this,'q1','B')"><span class="option-letter">B</span><span class="option-text">To estimate the number and type of bacteria present in water</span></div>
+          <div class="option" onclick="selectOption(this,'q1','C')"><span class="option-letter">C</span><span class="option-text">To measure the pH and temperature of water</span></div>
+          <div class="option" onclick="selectOption(this,'q1','D')"><span class="option-letter">D</span><span class="option-text">To identify heavy metals in water samples</span></div>
+        </div>
+        <div class="q-footer">
+          <button class="check-btn" onclick="checkMCQ('q1','B')">Check Answer</button>
+        </div>
+        <div class="explanation" id="exp-q1"><strong>Correct: B.</strong> Bacteriological water analysis estimates the numbers (concentration) and type of bacteria present — one aspect of overall water quality assessment.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-card" id="q2">
+        <div class="q-head"><span class="q-num">Q2</span><span class="q-text">Which organism is considered the gold standard indicator of faecal contamination in water?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q2','A')"><span class="option-letter">A</span><span class="option-text">Enterobacter aerogenes</span></div>
+          <div class="option" onclick="selectOption(this,'q2','B')"><span class="option-letter">B</span><span class="option-text">Clostridium perfringens</span></div>
+          <div class="option" onclick="selectOption(this,'q2','C')"><span class="option-letter">C</span><span class="option-text">Escherichia coli</span></div>
+          <div class="option" onclick="selectOption(this,'q2','D')"><span class="option-letter">D</span><span class="option-text">Pseudomonas aeruginosa</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q2','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q2"><strong>Correct: C.</strong> E. coli is the only true faecal coliform, found exclusively in the intestinal tract of warm-blooded animals. Its presence in water is definitive proof of recent faecal contamination.</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-card" id="q3">
+        <div class="q-head"><span class="q-num">Q3</span><span class="q-text">The coliform group is characterised by which of the following features?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q3','A')"><span class="option-letter">A</span><span class="option-text">Gram-positive, spore-forming, ferment glucose to acid only</span></div>
+          <div class="option" onclick="selectOption(this,'q3','B')"><span class="option-letter">B</span><span class="option-text">Gram-negative, non-spore-forming, ferment lactose to acid and gas</span></div>
+          <div class="option" onclick="selectOption(this,'q3','C')"><span class="option-letter">C</span><span class="option-text">Gram-negative, spore-forming, aerobic only</span></div>
+          <div class="option" onclick="selectOption(this,'q3','D')"><span class="option-letter">D</span><span class="option-text">Gram-positive, non-spore-forming, ferment lactose to gas only</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q3','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q3"><strong>Correct: B.</strong> Coliforms are defined as Gram-negative, non-spore-forming, aerobic to facultatively anaerobic rods that ferment lactose to produce both acid AND gas.</div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-card" id="q4">
+        <div class="q-head"><span class="q-num">Q4</span><span class="q-text">At what temperature do thermotolerant (faecal) coliforms grow and ferment lactose?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q4','A')"><span class="option-letter">A</span><span class="option-text">35–37°C</span></div>
+          <div class="option" onclick="selectOption(this,'q4','B')"><span class="option-letter">B</span><span class="option-text">37–40°C</span></div>
+          <div class="option" onclick="selectOption(this,'q4','C')"><span class="option-letter">C</span><span class="option-text">44–44.5°C</span></div>
+          <div class="option" onclick="selectOption(this,'q4','D')"><span class="option-letter">D</span><span class="option-text">50–55°C</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q4','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q4"><strong>Correct: C.</strong> Thermotolerant (faecal) coliforms are defined by their ability to grow and ferment lactose at 44–44.5°C, which distinguishes them from environmental coliforms that cannot tolerate this elevated temperature.</div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="q-card" id="q5">
+        <div class="q-head"><span class="q-num">Q5</span><span class="q-text">What percentage of thermotolerant coliforms isolated from water are typically E. coli?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q5','A')"><span class="option-letter">A</span><span class="option-text">More than 50%</span></div>
+          <div class="option" onclick="selectOption(this,'q5','B')"><span class="option-letter">B</span><span class="option-text">More than 75%</span></div>
+          <div class="option" onclick="selectOption(this,'q5','C')"><span class="option-letter">C</span><span class="option-text">More than 95%</span></div>
+          <div class="option" onclick="selectOption(this,'q5','D')"><span class="option-letter">D</span><span class="option-text">Exactly 100%</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q5','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q5"><strong>Correct: C.</strong> Usually more than 95% of thermotolerant coliforms isolated from water are E. coli, making their presence near-definitive proof of faecal contamination.</div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="q-card" id="q6">
+        <div class="q-head"><span class="q-num">Q6</span><span class="q-text">Which test uses EMB (Eosin Methylene Blue) agar in standard water analysis?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q6','A')"><span class="option-letter">A</span><span class="option-text">Presumptive Test</span></div>
+          <div class="option" onclick="selectOption(this,'q6','B')"><span class="option-letter">B</span><span class="option-text">Confirmed Test</span></div>
+          <div class="option" onclick="selectOption(this,'q6','C')"><span class="option-letter">C</span><span class="option-text">Completed Test</span></div>
+          <div class="option" onclick="selectOption(this,'q6','D')"><span class="option-letter">D</span><span class="option-text">MPN Test</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q6','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q6"><strong>Correct: B.</strong> EMB agar is used in the Confirmed Test. It is inoculated from a positive presumptive tube to confirm that gas production was due to coliforms, not other organisms.</div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="q-card" id="q7">
+        <div class="q-head"><span class="q-num">Q7</span><span class="q-text">On EMB agar, E. coli colonies are characterised by:</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q7','A')"><span class="option-letter">A</span><span class="option-text">Large pinkish colonies</span></div>
+          <div class="option" onclick="selectOption(this,'q7','B')"><span class="option-letter">B</span><span class="option-text">Colourless colonies on a red background</span></div>
+          <div class="option" onclick="selectOption(this,'q7','C')"><span class="option-letter">C</span><span class="option-text">Small colonies with a green metallic sheen</span></div>
+          <div class="option" onclick="selectOption(this,'q7','D')"><span class="option-letter">D</span><span class="option-text">Yellow colonies with black centres</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q7','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q7"><strong>Correct: C.</strong> E. coli produces small colonies with a distinctive green metallic sheen on EMB agar. E. aerogenes, by contrast, forms large pinkish colonies.</div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="q-card" id="q8">
+        <div class="q-head"><span class="q-num">Q8</span><span class="q-text">If only Enterobacter aerogenes appears on an EMB plate during the Confirmed Test, the result is interpreted as:</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q8','A')"><span class="option-letter">A</span><span class="option-text">Positive — faecal contamination confirmed</span></div>
+          <div class="option" onclick="selectOption(this,'q8','B')"><span class="option-letter">B</span><span class="option-text">Negative — no faecal contamination indicated</span></div>
+          <div class="option" onclick="selectOption(this,'q8','C')"><span class="option-letter">C</span><span class="option-text">Inconclusive — repeat the test</span></div>
+          <div class="option" onclick="selectOption(this,'q8','D')"><span class="option-letter">D</span><span class="option-text">Positive — E. aerogenes is always faecal</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q8','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q8"><strong>Correct: B.</strong> E. aerogenes is widely distributed in nature outside the intestinal tract (soil, plants), so its presence alone does NOT indicate faecal contamination. The test is negative.</div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="q-card" id="q9">
+        <div class="q-head"><span class="q-num">Q9</span><span class="q-text">The Completed Test confirms coliforms when the organism produces gas in lactose broth AND is:</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q9','A')"><span class="option-letter">A</span><span class="option-text">Gram-positive, spore-forming rod</span></div>
+          <div class="option" onclick="selectOption(this,'q9','B')"><span class="option-letter">B</span><span class="option-text">Gram-negative, non-spore-forming rod</span></div>
+          <div class="option" onclick="selectOption(this,'q9','C')"><span class="option-letter">C</span><span class="option-text">Gram-negative coccus in chains</span></div>
+          <div class="option" onclick="selectOption(this,'q9','D')"><span class="option-letter">D</span><span class="option-text">Gram-positive, non-spore-forming coccus</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q9','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q9"><strong>Correct: B.</strong> The completed test is positive when the organism is a Gram-negative, non-spore-forming rod AND produces gas in the lactose tube — definitively confirming coliforms.</div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="q-card" id="q10">
+        <div class="q-head"><span class="q-num">Q10</span><span class="q-text">What does MPN stand for in water microbiology?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q10','A')"><span class="option-letter">A</span><span class="option-text">Minimum Pathogen Number</span></div>
+          <div class="option" onclick="selectOption(this,'q10','B')"><span class="option-letter">B</span><span class="option-text">Most Probable Number</span></div>
+          <div class="option" onclick="selectOption(this,'q10','C')"><span class="option-letter">C</span><span class="option-text">Maximum Permitted Number</span></div>
+          <div class="option" onclick="selectOption(this,'q10','D')"><span class="option-letter">D</span><span class="option-text">Microbial Population Number</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q10','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q10"><strong>Correct: B.</strong> MPN — Most Probable Number — is a statistical estimate of the number of viable coliforms per 100 ml of water, derived from the pattern of positive tubes in a multiple tube test.</div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="q-card" id="q11">
+        <div class="q-head"><span class="q-num">Q11</span><span class="q-text">Which indicator organism is most useful for detecting contamination from distant or old sources due to its environmental persistence?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q11','A')"><span class="option-letter">A</span><span class="option-text">Total coliforms</span></div>
+          <div class="option" onclick="selectOption(this,'q11','B')"><span class="option-letter">B</span><span class="option-text">Thermotolerant coliforms</span></div>
+          <div class="option" onclick="selectOption(this,'q11','C')"><span class="option-letter">C</span><span class="option-text">Faecal streptococci</span></div>
+          <div class="option" onclick="selectOption(this,'q11','D')"><span class="option-letter">D</span><span class="option-text">Pseudomonas aeruginosa</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q11','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q11"><strong>Correct: C.</strong> Faecal streptococci persist much longer in the environment than coliforms and are highly resistant to drying. They may be detected when contamination is old or the source is far from the sampling point.</div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="q-card" id="q12">
+        <div class="q-head"><span class="q-num">Q12</span><span class="q-text">Sulphite-reducing Clostridia are particularly useful for examining marine sediments to detect sewage outfall zones. What is the approximate detection range?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q12','A')"><span class="option-letter">A</span><span class="option-text">Up to 1 km from the outfall</span></div>
+          <div class="option" onclick="selectOption(this,'q12','B')"><span class="option-letter">B</span><span class="option-text">Up to 5 km from the outfall</span></div>
+          <div class="option" onclick="selectOption(this,'q12','C')"><span class="option-letter">C</span><span class="option-text">More than 10 km from the outfall</span></div>
+          <div class="option" onclick="selectOption(this,'q12','D')"><span class="option-letter">D</span><span class="option-text">Only at the outfall point itself</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q12','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q12"><strong>Correct: C.</strong> Sulphite-reducing Clostridia spores are extremely resistant and can be used to detect the zone affected by sewage outfall over a range greater than 10 km.</div>
+      </div>
+
+      <!-- Q13 -->
+      <div class="q-card" id="q13">
+        <div class="q-head"><span class="q-num">Q13</span><span class="q-text">In the membrane filtration method, what pore size is the cellulose acetate membrane?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q13','A')"><span class="option-letter">A</span><span class="option-text">0.22 µm</span></div>
+          <div class="option" onclick="selectOption(this,'q13','B')"><span class="option-letter">B</span><span class="option-text">0.45 µm</span></div>
+          <div class="option" onclick="selectOption(this,'q13','C')"><span class="option-letter">C</span><span class="option-text">1.0 µm</span></div>
+          <div class="option" onclick="selectOption(this,'q13','D')"><span class="option-letter">D</span><span class="option-text">2.0 µm</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q13','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q13"><strong>Correct: B.</strong> In membrane filtration, water is vacuum-filtered through a cellulose acetate membrane with uniform pore diameter of 0.45 µm — small enough to retain bacteria on the surface.</div>
+      </div>
+
+      <!-- Q14 -->
+      <div class="q-card" id="q14">
+        <div class="q-head"><span class="q-num">Q14</span><span class="q-text">What is the optimum number of colonies per membrane for reliable counting in membrane filtration?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q14','A')"><span class="option-letter">A</span><span class="option-text">5–15 colonies</span></div>
+          <div class="option" onclick="selectOption(this,'q14','B')"><span class="option-letter">B</span><span class="option-text">20–80 colonies</span></div>
+          <div class="option" onclick="selectOption(this,'q14','C')"><span class="option-letter">C</span><span class="option-text">100–200 colonies</span></div>
+          <div class="option" onclick="selectOption(this,'q14','D')"><span class="option-letter">D</span><span class="option-text">300–500 colonies</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q14','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q14"><strong>Correct: B.</strong> The optimum counting range for membrane filtration is 20–80 colonies per membrane — enough for statistical reliability but not so many that colonies overlap.</div>
+      </div>
+
+      <!-- Q15 -->
+      <div class="q-card" id="q15">
+        <div class="q-head"><span class="q-num">Q15</span><span class="q-text">Which method is NOT suitable for turbid water containing high levels of suspended material?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q15','A')"><span class="option-letter">A</span><span class="option-text">Multiple tube fermentation technique</span></div>
+          <div class="option" onclick="selectOption(this,'q15','B')"><span class="option-letter">B</span><span class="option-text">Membrane filtration method</span></div>
+          <div class="option" onclick="selectOption(this,'q15','C')"><span class="option-letter">C</span><span class="option-text">Pour plate method</span></div>
+          <div class="option" onclick="selectOption(this,'q15','D')"><span class="option-letter">D</span><span class="option-text">ATP testing</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q15','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q15"><strong>Correct: B.</strong> Membrane filtration is unsuitable for turbid water because sediment, sludge, and suspended material clog the membrane before an adequate volume of water can pass through.</div>
+      </div>
+
+      <!-- Q16 -->
+      <div class="q-card" id="q16">
+        <div class="q-head"><span class="q-num">Q16</span><span class="q-text">In ATP testing, what enzyme is used to detect ATP by producing bioluminescence?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q16','A')"><span class="option-letter">A</span><span class="option-text">Amylase</span></div>
+          <div class="option" onclick="selectOption(this,'q16','B')"><span class="option-letter">B</span><span class="option-text">Luciferase</span></div>
+          <div class="option" onclick="selectOption(this,'q16','C')"><span class="option-letter">C</span><span class="option-text">Protease</span></div>
+          <div class="option" onclick="selectOption(this,'q16','D')"><span class="option-letter">D</span><span class="option-text">Oxidase</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q16','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q16"><strong>Correct: B.</strong> Firefly luciferase catalyses the reaction between ATP and luciferin to produce light. The amount of light is directly proportional to the amount of ATP (and therefore living microorganisms) in the sample.</div>
+      </div>
+
+      <!-- Q17 -->
+      <div class="q-card" id="q17">
+        <div class="q-head"><span class="q-num">Q17</span><span class="q-text">What is the target colony range for a valid plate count?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q17','A')"><span class="option-letter">A</span><span class="option-text">10–50 colonies</span></div>
+          <div class="option" onclick="selectOption(this,'q17','B')"><span class="option-letter">B</span><span class="option-text">30–300 colonies</span></div>
+          <div class="option" onclick="selectOption(this,'q17','C')"><span class="option-letter">C</span><span class="option-text">100–500 colonies</span></div>
+          <div class="option" onclick="selectOption(this,'q17','D')"><span class="option-letter">D</span><span class="option-text">500–1000 colonies</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q17','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q17"><strong>Correct: B.</strong> The plate count method requires 30–300 colonies. Fewer than 30 is statistically unreliable; more than 300 leads to overlapping colonies and inaccurate counts.</div>
+      </div>
+
+      <!-- Q18 -->
+      <div class="q-card" id="q18">
+        <div class="q-head"><span class="q-num">Q18</span><span class="q-text">MacConkey agar inhibits Gram-positive bacteria primarily through which component?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q18','A')"><span class="option-letter">A</span><span class="option-text">Neutral red dye and lactose</span></div>
+          <div class="option" onclick="selectOption(this,'q18','B')"><span class="option-letter">B</span><span class="option-text">Bile salts and crystal violet dye</span></div>
+          <div class="option" onclick="selectOption(this,'q18','C')"><span class="option-letter">C</span><span class="option-text">Eosin and methylene blue</span></div>
+          <div class="option" onclick="selectOption(this,'q18','D')"><span class="option-letter">D</span><span class="option-text">Sodium azide and rosolic acid</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q18','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q18"><strong>Correct: B.</strong> MacConkey agar contains bile salts (primary inhibitor of Gram-positives) and crystal violet dye (additional inhibitor of certain Gram-positive bacteria). Neutral red stains lactose fermenters but does not inhibit growth.</div>
+      </div>
+
+      <!-- Q19 -->
+      <div class="q-card" id="q19">
+        <div class="q-head"><span class="q-num">Q19</span><span class="q-text">TYEA medium is classified as:</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q19','A')"><span class="option-letter">A</span><span class="option-text">Highly selective for faecal coliforms</span></div>
+          <div class="option" onclick="selectOption(this,'q19','B')"><span class="option-letter">B</span><span class="option-text">Selective for Gram-positive organisms</span></div>
+          <div class="option" onclick="selectOption(this,'q19','C')"><span class="option-letter">C</span><span class="option-text">Non-selective, used for general colony count</span></div>
+          <div class="option" onclick="selectOption(this,'q19','D')"><span class="option-letter">D</span><span class="option-text">Selective for anaerobic organisms only</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q19','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q19"><strong>Correct: C.</strong> TYEA is a non-selective medium used to determine the general level of contamination (colony count). It contains tryptone, yeast extract, common salt, and L-arabinose, and is incubated at both 22°C and 36°C.</div>
+      </div>
+
+      <!-- Q20 -->
+      <div class="q-card" id="q20">
+        <div class="q-head"><span class="q-num">Q20</span><span class="q-text">Which of the following is a waterborne protozoan pathogen highly resistant to chlorination?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q20','A')"><span class="option-letter">A</span><span class="option-text">Salmonella typhi</span></div>
+          <div class="option" onclick="selectOption(this,'q20','B')"><span class="option-letter">B</span><span class="option-text">Rotavirus</span></div>
+          <div class="option" onclick="selectOption(this,'q20','C')"><span class="option-letter">C</span><span class="option-text">Cryptosporidia</span></div>
+          <div class="option" onclick="selectOption(this,'q20','D')"><span class="option-letter">D</span><span class="option-text">Shigella</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q20','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q20"><strong>Correct: C.</strong> Cryptosporidia (a protozoan) is highly resistant to chlorination at standard water treatment doses. This makes it a particularly dangerous waterborne pathogen in treated municipal water supplies.</div>
+      </div>
+
+      <!-- Q21 -->
+      <div class="q-card" id="q21">
+        <div class="q-head"><span class="q-num">Q21</span><span class="q-text">Which waterborne virus causes paralysis?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q21','A')"><span class="option-letter">A</span><span class="option-text">Rotavirus</span></div>
+          <div class="option" onclick="selectOption(this,'q21','B')"><span class="option-letter">B</span><span class="option-text">Hepatitis A</span></div>
+          <div class="option" onclick="selectOption(this,'q21','C')"><span class="option-letter">C</span><span class="option-text">Poliovirus</span></div>
+          <div class="option" onclick="selectOption(this,'q21','D')"><span class="option-letter">D</span><span class="option-text">Norwalk virus</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q21','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q21"><strong>Correct: C.</strong> Poliovirus is the waterborne enteric virus responsible for poliomyelitis, which can cause permanent paralysis. It is transmitted through the faecal-oral route via contaminated water.</div>
+      </div>
+
+      <!-- Q22 -->
+      <div class="q-card" id="q22">
+        <div class="q-head"><span class="q-num">Q22</span><span class="q-text">Faecal streptococci are detected in the laboratory by:</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q22','A')"><span class="option-letter">A</span><span class="option-text">Production of a green metallic sheen on EMB agar</span></div>
+          <div class="option" onclick="selectOption(this,'q22','B')"><span class="option-letter">B</span><span class="option-text">Gas production at 37°C in lactose broth</span></div>
+          <div class="option" onclick="selectOption(this,'q22','C')"><span class="option-letter">C</span><span class="option-text">Reduction of a tetrazolium dye or hydrolysis of aesculin</span></div>
+          <div class="option" onclick="selectOption(this,'q22','D')"><span class="option-letter">D</span><span class="option-text">Bioluminescence using luciferase</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q22','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q22"><strong>Correct: C.</strong> Faecal streptococci are grown on sodium azide-containing media at 37–44°C and are detected by reduction of a tetrazolium-containing dye or by hydrolysis of aesculin.</div>
+      </div>
+
+      <!-- Q23 -->
+      <div class="q-card" id="q23">
+        <div class="q-head"><span class="q-num">Q23</span><span class="q-text">In the multiple tube method, what is the purpose of the inverted Durham tube?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q23','A')"><span class="option-letter">A</span><span class="option-text">To measure the volume of water sample added</span></div>
+          <div class="option" onclick="selectOption(this,'q23','B')"><span class="option-letter">B</span><span class="option-text">To trap gas produced during fermentation</span></div>
+          <div class="option" onclick="selectOption(this,'q23','C')"><span class="option-letter">C</span><span class="option-text">To add additional growth medium</span></div>
+          <div class="option" onclick="selectOption(this,'q23','D')"><span class="option-letter">D</span><span class="option-text">To prevent contamination of the broth</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q23','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q23"><strong>Correct: B.</strong> The Durham tube is a small inverted test tube placed inside the broth tube. It traps any gas produced during lactose fermentation, providing a visible indicator of positive coliform activity.</div>
+      </div>
+
+      <!-- Q24 -->
+      <div class="q-card" id="q24">
+        <div class="q-head"><span class="q-num">Q24</span><span class="q-text">Which agar was originally developed for isolation of Salmonella typhi but is now commonly used in water analysis?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q24','A')"><span class="option-letter">A</span><span class="option-text">MacConkey agar</span></div>
+          <div class="option" onclick="selectOption(this,'q24','B')"><span class="option-letter">B</span><span class="option-text">mFC medium</span></div>
+          <div class="option" onclick="selectOption(this,'q24','C')"><span class="option-letter">C</span><span class="option-text">Endo agar</span></div>
+          <div class="option" onclick="selectOption(this,'q24','D')"><span class="option-letter">D</span><span class="option-text">TYEA medium</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q24','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q24"><strong>Correct: C.</strong> Endo agar (mEndo agar) was originally developed for isolating Salmonella typhi but is now widely used in membrane filtration for total coliform detection in water.</div>
+      </div>
+
+      <!-- Q25 -->
+      <div class="q-card" id="q25">
+        <div class="q-head"><span class="q-num">Q25</span><span class="q-text">What does VRBA stand for?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q25','A')"><span class="option-letter">A</span><span class="option-text">Violet Red Bile Agar</span></div>
+          <div class="option" onclick="selectOption(this,'q25','B')"><span class="option-letter">B</span><span class="option-text">Variable Red Bacterial Assay</span></div>
+          <div class="option" onclick="selectOption(this,'q25','C')"><span class="option-letter">C</span><span class="option-text">Viable Red Blood Agar</span></div>
+          <div class="option" onclick="selectOption(this,'q25','D')"><span class="option-letter">D</span><span class="option-text">Violet Rose Bile Agar</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q25','A')">Check Answer</button></div>
+        <div class="explanation" id="exp-q25"><strong>Correct: A.</strong> VRBA stands for Violet Red Bile Agar. It contains bile salts that promote the growth of Gram-negative bacteria (including coliforms) and inhibit Gram-positive organisms. Used in the direct plate count method.</div>
+      </div>
+
+      <!-- Q26 -->
+      <div class="q-card" id="q26">
+        <div class="q-head"><span class="q-num">Q26</span><span class="q-text">The pour plate method is primarily used for bacteria that:</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q26','A')"><span class="option-letter">A</span><span class="option-text">Grow vigorously on the agar surface in air</span></div>
+          <div class="option" onclick="selectOption(this,'q26','B')"><span class="option-letter">B</span><span class="option-text">Grow poorly in air (anaerobic/microaerophilic organisms)</span></div>
+          <div class="option" onclick="selectOption(this,'q26','C')"><span class="option-letter">C</span><span class="option-text">Require high salt concentrations to grow</span></div>
+          <div class="option" onclick="selectOption(this,'q26','D')"><span class="option-letter">D</span><span class="option-text">Only grow at temperatures above 50°C</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q26','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q26"><strong>Correct: B.</strong> The pour plate method mixes samples in molten agar which is sealed in bottles. This creates a semi-anaerobic environment within the agar body, ideal for organisms that grow poorly when exposed to air.</div>
+      </div>
+
+      <!-- Q27 -->
+      <div class="q-card" id="q27">
+        <div class="q-head"><span class="q-num">Q27</span><span class="q-text">Total Viable Count (TVC) is expressed in which units?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q27','A')"><span class="option-letter">A</span><span class="option-text">MPN per 100 ml</span></div>
+          <div class="option" onclick="selectOption(this,'q27','B')"><span class="option-letter">B</span><span class="option-text">cfu per ml</span></div>
+          <div class="option" onclick="selectOption(this,'q27','C')"><span class="option-letter">C</span><span class="option-text">mg per litre</span></div>
+          <div class="option" onclick="selectOption(this,'q27','D')"><span class="option-letter">D</span><span class="option-text">cells per µm²</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q27','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q27"><strong>Correct: B.</strong> TVC (Total Viable Count) is expressed as colony forming units per millilitre (cfu/ml). It is calculated by multiplying the counted colonies by the dilution factor used.</div>
+      </div>
+
+      <!-- Q28 -->
+      <div class="q-card" id="q28">
+        <div class="q-head"><span class="q-num">Q28</span><span class="q-text">Which component of mFC medium inhibits non-enteric bacteria?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q28','A')"><span class="option-letter">A</span><span class="option-text">Aniline blue</span></div>
+          <div class="option" onclick="selectOption(this,'q28','B')"><span class="option-letter">B</span><span class="option-text">Rosolic acid</span></div>
+          <div class="option" onclick="selectOption(this,'q28','C')"><span class="option-letter">C</span><span class="option-text">Bile salts</span></div>
+          <div class="option" onclick="selectOption(this,'q28','D')"><span class="option-letter">D</span><span class="option-text">Crystal violet</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q28','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q28"><strong>Correct: C.</strong> In mFC medium, bile salts inhibit non-enteric bacteria. Rosolic acid inhibits bacterial growth generally (except faecal coliforms), and aniline blue is the pH indicator showing lactose fermentation.</div>
+      </div>
+
+      <!-- Q29 -->
+      <div class="q-card" id="q29">
+        <div class="q-head"><span class="q-num">Q29</span><span class="q-text">In the Presumptive Test, nine tubes of double-strength lactose broth are inoculated with water in what volumes?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q29','A')"><span class="option-letter">A</span><span class="option-text">100 ml, 10 ml, and 1 ml</span></div>
+          <div class="option" onclick="selectOption(this,'q29','B')"><span class="option-letter">B</span><span class="option-text">10 ml, 1.0 ml, and 0.1 ml</span></div>
+          <div class="option" onclick="selectOption(this,'q29','C')"><span class="option-letter">C</span><span class="option-text">50 ml, 5 ml, and 0.5 ml</span></div>
+          <div class="option" onclick="selectOption(this,'q29','D')"><span class="option-letter">D</span><span class="option-text">1 ml, 0.1 ml, and 0.01 ml</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q29','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q29"><strong>Correct: B.</strong> In the Presumptive Test, three tubes receive 10 ml, three receive 1.0 ml, and three receive 0.1 ml of the water sample, all into double-strength lactose broth, then incubated at 37°C for 24 hours.</div>
+      </div>
+
+      <!-- Q30 -->
+      <div class="q-card" id="q30">
+        <div class="q-head"><span class="q-num">Q30</span><span class="q-text">Which helminth is transmitted when its larvae penetrate the skin during water contact?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q30','A')"><span class="option-letter">A</span><span class="option-text">Round worm (Ascaris)</span></div>
+          <div class="option" onclick="selectOption(this,'q30','B')"><span class="option-letter">B</span><span class="option-text">Tape worm</span></div>
+          <div class="option" onclick="selectOption(this,'q30','C')"><span class="option-letter">C</span><span class="option-text">Hook worm</span></div>
+          <div class="option" onclick="selectOption(this,'q30','D')"><span class="option-letter">D</span><span class="option-text">Whip worm</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q30','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q30"><strong>Correct: C.</strong> Hook worm larvae actively penetrate human skin during contact with contaminated water or soil. Round worm, tape worm, and whip worm are transmitted primarily through ingestion of contaminated food or water.</div>
+      </div>
+
+      <!-- Q31 -->
+      <div class="q-card" id="q31">
+        <div class="q-head"><span class="q-num">Q31</span><span class="q-text">The multiple fermentation tube technique gives results with which level of precision?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q31','A')"><span class="option-letter">A</span><span class="option-text">High precision direct colony count</span></div>
+          <div class="option" onclick="selectOption(this,'q31','B')"><span class="option-letter">B</span><span class="option-text">Low precision indirect statistical approximation</span></div>
+          <div class="option" onclick="selectOption(this,'q31','C')"><span class="option-letter">C</span><span class="option-text">Exact count to the nearest bacterium</span></div>
+          <div class="option" onclick="selectOption(this,'q31','D')"><span class="option-letter">D</span><span class="option-text">Medium precision by automated counting</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q31','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q31"><strong>Correct: B.</strong> The multiple tube technique gives low precision results obtained indirectly by statistical approximation (MPN tables). In contrast, membrane filtration gives high precision results from direct colony counts.</div>
+      </div>
+
+      <!-- Q32 -->
+      <div class="q-card" id="q32">
+        <div class="q-head"><span class="q-num">Q32</span><span class="q-text">Faecal streptococci belong to which Lancefield antigen group?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q32','A')"><span class="option-letter">A</span><span class="option-text">Group A</span></div>
+          <div class="option" onclick="selectOption(this,'q32','B')"><span class="option-letter">B</span><span class="option-text">Group B</span></div>
+          <div class="option" onclick="selectOption(this,'q32','C')"><span class="option-letter">C</span><span class="option-text">Group D</span></div>
+          <div class="option" onclick="selectOption(this,'q32','D')"><span class="option-letter">D</span><span class="option-text">Group G</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q32','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q32"><strong>Correct: C.</strong> Faecal streptococci (S. faecalis, S. faecium, S. bovis) possess Lancefield Group D antigens. They also grow in the presence of bile salts, sodium azide, and at 45°C.</div>
+      </div>
+
+      <!-- Q33 -->
+      <div class="q-card" id="q33">
+        <div class="q-head"><span class="q-num">Q33</span><span class="q-text">Which waterborne disease is transmitted by the Anopheles mosquito that breeds in water?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q33','A')"><span class="option-letter">A</span><span class="option-text">Schistosomiasis</span></div>
+          <div class="option" onclick="selectOption(this,'q33','B')"><span class="option-letter">B</span><span class="option-text">Cholera</span></div>
+          <div class="option" onclick="selectOption(this,'q33','C')"><span class="option-letter">C</span><span class="option-text">Malaria</span></div>
+          <div class="option" onclick="selectOption(this,'q33','D')"><span class="option-letter">D</span><span class="option-text">Typhoid</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q33','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q33"><strong>Correct: C.</strong> Malaria is transmitted by Anopheles mosquitoes that breed in stagnant water. It is classified as a water-related disease. Cholera and typhoid are direct waterborne bacterial diseases.</div>
+      </div>
+
+      <!-- Q34 -->
+      <div class="q-card" id="q34">
+        <div class="q-head"><span class="q-num">Q34</span><span class="q-text">Which statement about indicator organisms is CORRECT?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q34','A')"><span class="option-letter">A</span><span class="option-text">Indicator organisms are always pathogenic</span></div>
+          <div class="option" onclick="selectOption(this,'q34','B')"><span class="option-letter">B</span><span class="option-text">Infected individuals excrete far more indicator organisms than actual pathogens</span></div>
+          <div class="option" onclick="selectOption(this,'q34','C')"><span class="option-letter">C</span><span class="option-text">Indicator organisms are difficult to detect in small samples</span></div>
+          <div class="option" onclick="selectOption(this,'q34','D')"><span class="option-letter">D</span><span class="option-text">The presence of one pathogen confirms absence of all others</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q34','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q34"><strong>Correct: B.</strong> Even when a person is infected with a pathogen, they excrete many millions of times more indicator organisms than pathogens. This abundance makes indicators easy to detect even when pathogen numbers are too low to find.</div>
+      </div>
+
+      <!-- Q35 -->
+      <div class="q-card" id="q35">
+        <div class="q-head"><span class="q-num">Q35</span><span class="q-text">In the Presumptive Test, incubation is carried out at what temperature?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q35','A')"><span class="option-letter">A</span><span class="option-text">25°C</span></div>
+          <div class="option" onclick="selectOption(this,'q35','B')"><span class="option-letter">B</span><span class="option-text">37°C</span></div>
+          <div class="option" onclick="selectOption(this,'q35','C')"><span class="option-letter">C</span><span class="option-text">44.5°C</span></div>
+          <div class="option" onclick="selectOption(this,'q35','D')"><span class="option-letter">D</span><span class="option-text">55°C</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q35','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q35"><strong>Correct: B.</strong> The Presumptive Test uses incubation at 37°C — the standard temperature for coliforms. Thermotolerant coliforms require the higher temperature of 44–44.5°C to distinguish them from environmental coliforms.</div>
+      </div>
+
+      <!-- Q36 -->
+      <div class="q-card" id="q36">
+        <div class="q-head"><span class="q-num">Q36</span><span class="q-text">Which cyanobacterium is classified as an algal waterborne pathogen?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q36','A')"><span class="option-letter">A</span><span class="option-text">Cryptosporidia</span></div>
+          <div class="option" onclick="selectOption(this,'q36','B')"><span class="option-letter">B</span><span class="option-text">Microcystis</span></div>
+          <div class="option" onclick="selectOption(this,'q36','C')"><span class="option-letter">C</span><span class="option-text">Giardia</span></div>
+          <div class="option" onclick="selectOption(this,'q36','D')"><span class="option-letter">D</span><span class="option-text">Amoeba</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q36','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q36"><strong>Correct: B.</strong> Microcystis is a cyanobacterium (blue-green alga) that produces potent toxins in water. Dinoflagellates are another algal waterborne pathogen. Cryptosporidia and Giardia are protozoa; amoeba is also protozoan.</div>
+      </div>
+
+      <!-- Q37 -->
+      <div class="q-card" id="q37">
+        <div class="q-head"><span class="q-num">Q37</span><span class="q-text">Membrane filtration results are reported as:</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q37','A')"><span class="option-letter">A</span><span class="option-text">MPN per 100 ml</span></div>
+          <div class="option" onclick="selectOption(this,'q37','B')"><span class="option-letter">B</span><span class="option-text">Thermotolerant coliforms [Number] cfu per 100 ml</span></div>
+          <div class="option" onclick="selectOption(this,'q37','C')"><span class="option-letter">C</span><span class="option-text">Total viable count in cfu/g</span></div>
+          <div class="option" onclick="selectOption(this,'q37','D')"><span class="option-letter">D</span><span class="option-text">Optical density units per litre</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q37','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q37"><strong>Correct: B.</strong> Membrane filtration results for thermotolerant coliforms are expressed as "thermotolerant coliforms [Number] cfu per 100 ml." Each colony represents one colony-forming unit from bacteria retained on the membrane.</div>
+      </div>
+
+      <!-- Q38 -->
+      <div class="q-card" id="q38">
+        <div class="q-head"><span class="q-num">Q38</span><span class="q-text">What does a high total coliform count combined with a zero thermotolerant coliform count most likely indicate?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q38','A')"><span class="option-letter">A</span><span class="option-text">Definitive faecal contamination</span></div>
+          <div class="option" onclick="selectOption(this,'q38','B')"><span class="option-letter">B</span><span class="option-text">Entry of soil or organic matter — not necessarily faecal</span></div>
+          <div class="option" onclick="selectOption(this,'q38','C')"><span class="option-letter">C</span><span class="option-text">Viral contamination of the water</span></div>
+          <div class="option" onclick="selectOption(this,'q38','D')"><span class="option-letter">D</span><span class="option-text">The presence of Clostridium perfringens</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q38','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q38"><strong>Correct: B.</strong> A high total coliform count with zero thermotolerant coliforms does not necessarily indicate faecal contamination. It may be caused by entry of soil or organic matter, or conditions that favour non-faecal coliform growth.</div>
+      </div>
+
+      <!-- Q39 -->
+      <div class="q-card" id="q39">
+        <div class="q-head"><span class="q-num">Q39</span><span class="q-text">Which of these diseases is caused by waterborne bacteria that produce an enteric fever?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q39','A')"><span class="option-letter">A</span><span class="option-text">Malaria</span></div>
+          <div class="option" onclick="selectOption(this,'q39','B')"><span class="option-letter">B</span><span class="option-text">Typhoid fever</span></div>
+          <div class="option" onclick="selectOption(this,'q39','C')"><span class="option-letter">C</span><span class="option-text">Dengue fever</span></div>
+          <div class="option" onclick="selectOption(this,'q39','D')"><span class="option-letter">D</span><span class="option-text">Yellow fever</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q39','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q39"><strong>Correct: B.</strong> Typhoid fever (caused by Salmonella typhi) is a waterborne bacterial disease classified as an enteric fever. Paratyphoid is also an enteric fever caused by Salmonella paratyphi. Malaria, dengue, and yellow fever are vector-borne.</div>
+      </div>
+
+      <!-- Q40 -->
+      <div class="q-card" id="q40">
+        <div class="q-head"><span class="q-num">Q40</span><span class="q-text">In the plate count method, incubation at 22°C is used to detect which type of organisms?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q40','A')"><span class="option-letter">A</span><span class="option-text">Faecal/gut organisms</span></div>
+          <div class="option" onclick="selectOption(this,'q40','B')"><span class="option-letter">B</span><span class="option-text">Thermophilic organisms</span></div>
+          <div class="option" onclick="selectOption(this,'q40','C')"><span class="option-letter">C</span><span class="option-text">Environmental/psychrotrophic organisms</span></div>
+          <div class="option" onclick="selectOption(this,'q40','D')"><span class="option-letter">D</span><span class="option-text">Spore-forming anaerobes</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q40','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q40"><strong>Correct: C.</strong> In the plate count method, 22°C incubation detects environmental (psychrotrophic) organisms, while 37°C incubation targets gut/faecal organisms. Running both temperatures gives a complete picture of contamination.</div>
+      </div>
+
+      <!-- Q41 -->
+      <div class="q-card" id="q41">
+        <div class="q-head"><span class="q-num">Q41</span><span class="q-text">The Completed Test uses organisms from the Confirmed Test to inoculate:</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q41','A')"><span class="option-letter">A</span><span class="option-text">A lactose broth tube only</span></div>
+          <div class="option" onclick="selectOption(this,'q41','B')"><span class="option-letter">B</span><span class="option-text">A nutrient agar slant only</span></div>
+          <div class="option" onclick="selectOption(this,'q41','C')"><span class="option-letter">C</span><span class="option-text">Both a nutrient agar slant and a lactose broth tube</span></div>
+          <div class="option" onclick="selectOption(this,'q41','D')"><span class="option-letter">D</span><span class="option-text">An EMB agar plate and a MacConkey plate</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q41','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q41"><strong>Correct: C.</strong> In the Completed Test, organisms from the EMB plate are used to inoculate BOTH a nutrient agar slant (for Gram staining) and a lactose broth tube (for gas production). Both results together confirm coliforms.</div>
+      </div>
+
+      <!-- Q42 -->
+      <div class="q-card" id="q42">
+        <div class="q-head"><span class="q-num">Q42</span><span class="q-text">Which component of mFC medium serves as a pH indicator for lactose fermentation by faecal coliforms?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q42','A')"><span class="option-letter">A</span><span class="option-text">Rosolic acid</span></div>
+          <div class="option" onclick="selectOption(this,'q42','B')"><span class="option-letter">B</span><span class="option-text">Bile salts</span></div>
+          <div class="option" onclick="selectOption(this,'q42','C')"><span class="option-letter">C</span><span class="option-text">Aniline blue</span></div>
+          <div class="option" onclick="selectOption(this,'q42','D')"><span class="option-letter">D</span><span class="option-text">Crystal violet</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q42','C')">Check Answer</button></div>
+        <div class="explanation" id="exp-q42"><strong>Correct: C.</strong> Aniline blue in mFC medium is the pH indicator. When faecal coliforms ferment lactose to acid, the pH drops and aniline blue changes colour, visually identifying faecal coliform colonies.</div>
+      </div>
+
+      <!-- Q43 -->
+      <div class="q-card" id="q43">
+        <div class="q-head"><span class="q-num">Q43</span><span class="q-text">The most common multiple fermentation tube procedure uses how many aliquots from each of three dilutions?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q43','A')"><span class="option-letter">A</span><span class="option-text">Three aliquots</span></div>
+          <div class="option" onclick="selectOption(this,'q43','B')"><span class="option-letter">B</span><span class="option-text">Five aliquots</span></div>
+          <div class="option" onclick="selectOption(this,'q43','C')"><span class="option-letter">C</span><span class="option-text">Ten aliquots</span></div>
+          <div class="option" onclick="selectOption(this,'q43','D')"><span class="option-letter">D</span><span class="option-text">One aliquot</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q43','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q43"><strong>Correct: B.</strong> The standard procedure uses five aliquots from each of three consecutive 10-fold dilutions (e.g. 1:1, 1:10, 1:100), giving 15 tubes total. The pattern of positives at each dilution is used to determine the MPN.</div>
+      </div>
+
+      <!-- Q44 -->
+      <div class="q-card" id="q44">
+        <div class="q-head"><span class="q-num">Q44</span><span class="q-text">Rosolic acid in mFC medium functions to:</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q44','A')"><span class="option-letter">A</span><span class="option-text">Provide a carbon source for coliform growth</span></div>
+          <div class="option" onclick="selectOption(this,'q44','B')"><span class="option-letter">B</span><span class="option-text">Inhibit general bacterial growth except faecal coliforms</span></div>
+          <div class="option" onclick="selectOption(this,'q44','C')"><span class="option-letter">C</span><span class="option-text">Indicate acid production from lactose fermentation</span></div>
+          <div class="option" onclick="selectOption(this,'q44','D')"><span class="option-letter">D</span><span class="option-text">Enhance growth of Gram-positive organisms</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q44','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q44"><strong>Correct: B.</strong> Rosolic acid in mFC medium inhibits general bacterial growth, allowing mainly faecal coliforms to grow. Bile salts specifically target non-enteric bacteria, while aniline blue serves as the pH indicator.</div>
+      </div>
+
+      <!-- Q45 -->
+      <div class="q-card" id="q45">
+        <div class="q-head"><span class="q-num">Q45</span><span class="q-text">Which waterborne pathogen causes liver damage with flu-like symptoms?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q45','A')"><span class="option-letter">A</span><span class="option-text">Rotavirus</span></div>
+          <div class="option" onclick="selectOption(this,'q45','B')"><span class="option-letter">B</span><span class="option-text">Hepatitis A and E viruses</span></div>
+          <div class="option" onclick="selectOption(this,'q45','C')"><span class="option-letter">C</span><span class="option-text">E. coli O157:H7</span></div>
+          <div class="option" onclick="selectOption(this,'q45','D')"><span class="option-letter">D</span><span class="option-text">Campylobacter</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q45','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q45"><strong>Correct: B.</strong> Hepatitis A and E are waterborne viruses that cause flu-like illness with significant liver damage. Rotavirus and Norwalk virus cause diarrhoea/dysentery. E. coli and Campylobacter cause bacterial gastroenteritis.</div>
+      </div>
+
+      <!-- Q46 -->
+      <div class="q-card" id="q46">
+        <div class="q-head"><span class="q-num">Q46</span><span class="q-text">Which of the following correctly describes the E. coli colony appearance on MacConkey agar?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q46','A')"><span class="option-letter">A</span><span class="option-text">Colourless, non-lactose fermenting colonies</span></div>
+          <div class="option" onclick="selectOption(this,'q46','B')"><span class="option-letter">B</span><span class="option-text">Pink/red colonies due to lactose fermentation detected by neutral red dye</span></div>
+          <div class="option" onclick="selectOption(this,'q46','C')"><span class="option-letter">C</span><span class="option-text">Black colonies on pale background</span></div>
+          <div class="option" onclick="selectOption(this,'q46','D')"><span class="option-letter">D</span><span class="option-text">Green metallic sheen colonies</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q46','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q46"><strong>Correct: B.</strong> On MacConkey agar, E. coli (a lactose fermenter) produces pink/red colonies because the acid produced from lactose fermentation causes the neutral red dye indicator to change colour. Green metallic sheen is specific to EMB agar.</div>
+      </div>
+
+      <!-- Q47 -->
+      <div class="q-card" id="q47">
+        <div class="q-head"><span class="q-num">Q47</span><span class="q-text">In membrane filtration, what is the consequence of testing two or more sample volumes when water quality is unknown?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q47','A')"><span class="option-letter">A</span><span class="option-text">Results are averaged and divided</span></div>
+          <div class="option" onclick="selectOption(this,'q47','B')"><span class="option-letter">B</span><span class="option-text">Colony counts from multiple membranes are added together for total count</span></div>
+          <div class="option" onclick="selectOption(this,'q47','C')"><span class="option-letter">C</span><span class="option-text">The lowest colony count is taken as the result</span></div>
+          <div class="option" onclick="selectOption(this,'q47','D')"><span class="option-letter">D</span><span class="option-text">The highest colony count is taken as the result</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q47','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q47"><strong>Correct: B.</strong> If a single membrane cannot accommodate the required volume, the sample is filtered through two or more membranes and the colony counts from all membranes are added together to give the total count.</div>
+      </div>
+
+      <!-- Q48 -->
+      <div class="q-card" id="q48">
+        <div class="q-head"><span class="q-num">Q48</span><span class="q-text">Total coliforms are grown in the laboratory at which temperature?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q48','A')"><span class="option-letter">A</span><span class="option-text">22–25°C</span></div>
+          <div class="option" onclick="selectOption(this,'q48','B')"><span class="option-letter">B</span><span class="option-text">35–37°C</span></div>
+          <div class="option" onclick="selectOption(this,'q48','C')"><span class="option-letter">C</span><span class="option-text">44–44.5°C</span></div>
+          <div class="option" onclick="selectOption(this,'q48','D')"><span class="option-letter">D</span><span class="option-text">55–60°C</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q48','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q48"><strong>Correct: B.</strong> Total coliforms are grown at 35–37°C in or on a lactose-containing medium and provisionally identified by acid and gas production from lactose fermentation.</div>
+      </div>
+
+      <!-- Q49 -->
+      <div class="q-card" id="q49">
+        <div class="q-head"><span class="q-num">Q49</span><span class="q-text">Which statement best explains why E. coli, not E. aerogenes, is used as a faecal indicator?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q49','A')"><span class="option-letter">A</span><span class="option-text">E. coli produces gas while E. aerogenes does not</span></div>
+          <div class="option" onclick="selectOption(this,'q49','B')"><span class="option-letter">B</span><span class="option-text">E. coli is found only in faeces of warm-blooded animals; E. aerogenes is widespread in the environment</span></div>
+          <div class="option" onclick="selectOption(this,'q49','C')"><span class="option-letter">C</span><span class="option-text">E. coli is easier to culture than E. aerogenes</span></div>
+          <div class="option" onclick="selectOption(this,'q49','D')"><span class="option-letter">D</span><span class="option-text">E. aerogenes is pathogenic while E. coli is not</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q49','B')">Check Answer</button></div>
+        <div class="explanation" id="exp-q49"><strong>Correct: B.</strong> E. coli is the only true faecal coliform — found exclusively in intestinal tracts of warm-blooded animals. E. aerogenes is distributed widely in nature (soil, plants) outside the gut, so its presence in water does not indicate faecal contamination.</div>
+      </div>
+
+      <!-- Q50 -->
+      <div class="q-card" id="q50">
+        <div class="q-head"><span class="q-num">Q50</span><span class="q-text">Which of the following is an advantage of the multiple tube technique over membrane filtration?</span></div>
+        <div class="options">
+          <div class="option" onclick="selectOption(this,'q50','A')"><span class="option-letter">A</span><span class="option-text">Faster turnaround time</span></div>
+          <div class="option" onclick="selectOption(this,'q50','B')"><span class="option-letter">B</span><span class="option-text">Applicable to all types of water including turbid samples</span></div>
+          <div class="option" onclick="selectOption(this,'q50','C')"><span class="option-letter">C</span><span class="option-text">Lower cost of consumables</span></div>
+          <div class="option" onclick="selectOption(this,'q50','D')"><span class="option-letter">D</span><span class="option-text">Both B and C</span></div>
+        </div>
+        <div class="q-footer"><button class="check-btn" onclick="checkMCQ('q50','D')">Check Answer</button></div>
+        <div class="explanation" id="exp-q50"><strong>Correct: D.</strong> The multiple tube technique is applicable to ALL water types (including turbid water that blocks membrane filters) AND uses consumables that are widely available at lower cost in most countries. Membrane filtration is faster and more precise but limited to clear water and has higher consumable costs.</div>
+      </div>
+
+    </div><!-- /MCQ section -->
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION B: SHORT ANSWER -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="short">
+      <div class="section-header">
+        <div class="section-icon">✏️</div>
+        <h2>Section B — Short Answer Questions</h2>
+        <span class="badge">25 Questions · 2 Marks Each</span>
+      </div>
+
+      <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:20px;">Write your answer in the box, then click <strong>Reveal Model Answer</strong> to compare.</p>
+
+      <!-- SA Q1 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA1</span><span class="q-text">Define bacteriological water analysis and state ONE reason why it is routinely performed.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button>
+            <span class="marks-tag">2 marks</span>
+          </div>
+          <div class="model-answer">
+            <div class="ans-label">✅ Model Answer</div>
+            Bacteriological water analysis is the method of examining water to estimate the <strong>number (concentration) and type of bacteria present</strong> (1 mark). It is routinely performed to ensure a safe supply of water for drinking, bathing, swimming, and other domestic and industrial uses (1 mark).
+          </div>
+        </div>
+      </div>
+
+      <!-- SA Q2 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA2</span><span class="q-text">List FOUR categories of waterborne microbial pathogens.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Any four of: Bacteria, Viruses, Protozoa, Helminths, Spirochetes, Rickettsia, Algae. (½ mark each, max 2 marks)</div>
+        </div>
+      </div>
+
+      <!-- SA Q3 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA3</span><span class="q-text">State TWO reasons why it is impractical to test water for every individual pathogen.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Any two of: (i) Individual pathogen numbers may be too low to detect in a reasonably-sized water sample; (ii) Isolation and detection of some pathogens can take days, weeks, or months; (iii) Numerous pathogens exist and testing each is impossible; (iv) Absence of one pathogen does not rule out others. (1 mark each)</div>
+        </div>
+      </div>
+
+      <!-- SA Q4 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA4</span><span class="q-text">Define an indicator organism and name TWO examples used in water bacteriology.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>An indicator organism is a bacterium commonly found in the human or animal gut which, if detected in water, suggests the presence of sewage/faecal contamination (1 mark). Examples: E. coli, non-specific coliforms, Pseudomonas aeruginosa (any two — ½ mark each).</div>
+        </div>
+      </div>
+
+      <!-- SA Q5 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA5</span><span class="q-text">Distinguish between total coliforms and thermotolerant coliforms in terms of their growth temperature and significance.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Total coliforms grow at 35–37°C and may not indicate faecal contamination (they include environmental organisms) (1 mark). Thermotolerant coliforms grow at 44–44.5°C and nearly always indicate faecal contamination; over 95% are E. coli (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q6 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA6</span><span class="q-text">What is the purpose of the Presumptive Test and what constitutes a positive result?</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>The Presumptive Test screens for possible coliform presence by detecting lactose fermentation and gas production in lactose broth tubes (1 mark). A positive result is gas production in ANY one of the inoculated tubes, which is presumptive evidence of coliforms — indicating the water may be unsafe (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q7 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA7</span><span class="q-text">Explain why the Confirmed Test is necessary after a positive Presumptive Test.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Gas production in the Presumptive Test is not specific to coliforms — other non-coliform bacteria may also produce gas from lactose (1 mark). The Confirmed Test (using EMB agar) is therefore necessary to confirm that gas production was specifically caused by coliforms, and to distinguish E. coli (faecal indicator) from E. aerogenes (non-faecal) (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q8 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA8</span><span class="q-text">State the distinguishing colony characteristics of E. coli and E. aerogenes on EMB agar.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>E. coli produces small colonies with a distinctive green metallic sheen on EMB agar (1 mark). E. aerogenes forms large, pinkish colonies without metallic sheen (1 mark). Only the presence of E. coli (with or without E. aerogenes) constitutes a positive confirmed test.</div>
+        </div>
+      </div>
+
+      <!-- SA Q9 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA9</span><span class="q-text">What is MPN? How is it determined in the multiple tube technique?</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>MPN (Most Probable Number) is a statistical estimate of the number of viable coliforms per 100 ml of water (1 mark). It is determined by comparing the pattern of positive tubes (number of gas-producing tubes at each dilution) to statistical MPN tables (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q10 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA10</span><span class="q-text">Describe the principle of the membrane filtration method for detecting coliforms.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>A measured volume of water is vacuum-filtered through a cellulose acetate membrane (0.45 µm pore size) that retains bacteria on its surface (1 mark). The membrane is placed on a selective medium and incubated; if coliforms are present, characteristic colonies form and are counted directly — giving a precise cfu per 100 ml result (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q11 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA11</span><span class="q-text">State TWO advantages of membrane filtration over the multiple tube technique.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Any two of: (i) Faster — quantitative results in about 18 hours vs 48 hours; (ii) Direct colony count giving higher precision vs statistical approximation; (iii) Less labour-intensive; (iv) Requires less culture medium and glassware; (v) Readily adapted for field use. (1 mark each)</div>
+        </div>
+      </div>
+
+      <!-- SA Q12 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA12</span><span class="q-text">Why is membrane filtration unsuitable for highly turbid water samples?</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>High levels of suspended material (sludge, sediment, particulates) physically block the 0.45 µm membrane pores (1 mark), preventing an adequate volume of water from passing through before the membrane becomes clogged — making the method unworkable for turbid samples (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q13 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA13</span><span class="q-text">Explain the principle behind ATP testing for detecting microorganisms in water.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>ATP (adenosine triphosphate) is a molecule found only in and around living cells, so its detection gives a direct measure of biological concentration (1 mark). ATP is quantified by reacting it with the enzyme firefly luciferase to produce bioluminescence; the amount of light produced (measured by a luminometer) is directly proportional to the amount of ATP (and therefore living microorganisms) present (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q14 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA14</span><span class="q-text">State the acceptable colony range for the plate count method and explain why very low or very high counts are problematic.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>The target range is 30–300 colonies per plate (½ mark). Fewer than 30 colonies makes the interpretation statistically unreliable (½ mark); more than 300 colonies leads to overlapping colonies, making accurate counting impossible (½ mark). Serial dilutions are made to ensure the count falls in this optimal range (½ mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q15 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA15</span><span class="q-text">What is the purpose of the pour plate method and what organism count does it measure?</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>The pour plate method is used for bacteria that grow poorly in air (anaerobic/microaerophilic organisms). Samples are mixed in molten agar, poured into sealed bottles, and incubated, allowing colonies to grow throughout the agar body (1 mark). It measures the Total Viable Count (TVC), expressed in cfu/ml, calculated as colony count × dilution factor (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q16 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA16</span><span class="q-text">Name the components of MacConkey agar and the role of each.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Bile salts — inhibit most Gram-positive bacteria; Crystal violet dye — additional inhibition of certain Gram-positive bacteria; Neutral red dye — stains lactose-fermenting colonies pink/red; Lactose — fermented by target organisms; Peptone — nitrogen/carbon source for growth. (½ mark per component with role, max 2 marks)</div>
+        </div>
+      </div>
+
+      <!-- SA Q17 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA17</span><span class="q-text">What are faecal streptococci and why are they useful indicators when thermotolerant coliforms are absent?</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Faecal streptococci (e.g. S. faecalis, S. faecium, S. bovis) are Gram-positive, chain-forming cocci with Lancefield Group D antigens, found in the gut of warm-blooded animals (1 mark). They persist much longer in the environment and are more resistant to drying than coliforms, so they may be detected even when contamination is old or geographically distant — useful when coliforms have already died off (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q18 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA18</span><span class="q-text">State TWO waterborne bacterial diseases that cause enteric fever.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Typhoid fever (caused by Salmonella typhi) and Paratyphoid fever (caused by Salmonella paratyphi). (1 mark each)</div>
+        </div>
+      </div>
+
+      <!-- SA Q19 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA19</span><span class="q-text">Describe Sulphite-reducing Clostridia and state TWO situations where they are most useful as indicators.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>They are Gram-positive, anaerobic, spore-forming rods whose spores survive much longer than other indicators and are highly resistant to chlorination (1 mark). They are most useful for: (i) water supplies sampled only occasionally with intermittent contamination (e.g. shallow wells/springs), and (ii) examining marine sediments to detect zones affected by sewage outfall up to 10+ km away (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q20 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA20</span><span class="q-text">What is a Colony Forming Unit (cfu) and how is it used in membrane filtration results?</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>A colony forming unit (cfu) is one bacterium, clump of bacteria, or particle with bacteria attached that gives rise to a single visible colony on culture medium (1 mark). In membrane filtration, results are expressed as the number of thermotolerant coliforms [cfu] per 100 ml — each colony on the membrane counts as one cfu (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q21 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA21</span><span class="q-text">Give TWO specific reasons why E. coli (not E. aerogenes) is used as an indicator of faecal contamination.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>(i) E. coli is found exclusively in the intestinal tract of warm-blooded animals and is not normally found in fresh water or soil — its presence in water therefore definitively indicates faecal contamination (1 mark). (ii) E. aerogenes is widely distributed in nature outside the intestinal tract (soil, plants), so its presence in water cannot be attributed to faecal contamination (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q22 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA22</span><span class="q-text">Why does the multiple fermentation tube technique use five aliquots from each of three dilutions?</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Using five aliquots (replicates) at each dilution level increases the sensitivity and statistical reliability of the MPN estimate (1 mark). Three consecutive 10-fold dilutions ensure that at least one dilution falls within the range where growth can be detected and the MPN accurately estimated — covering a wide range of possible bacterial concentrations (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q23 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA23</span><span class="q-text">State the role of aniline blue in mFC medium and the role of TYEA medium in water analysis.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Aniline blue in mFC medium is a pH indicator — it changes colour when faecal coliforms ferment lactose to acid, allowing visual identification of faecal coliform colonies (1 mark). TYEA is a non-selective medium used to determine the general level of contamination (colony count); it is cultivated at both 22°C and 36°C to capture environmental and gut organisms respectively (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q24 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA24</span><span class="q-text">Name THREE waterborne protozoan pathogens and state what feature of Cryptosporidia makes it particularly dangerous in treated water.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Three waterborne protozoa: Giardia, Cryptosporidia, Amoeba (1 mark for all three, or ½ for any two). Cryptosporidia is highly resistant to chlorination at standard water treatment doses, meaning it can survive and remain infectious even in chlorinated municipal water supplies (1 mark).</div>
+        </div>
+      </div>
+
+      <!-- SA Q25 -->
+      <div class="sa-card">
+        <div class="sa-head"><span class="q-num">SA25</span><span class="q-text">Explain why all water microbiology methods rely on statistical principles.</span></div>
+        <div class="sa-body">
+          <textarea class="sa-input" placeholder="Write your answer here…"></textarea>
+          <div class="sa-actions"><button class="reveal-btn" onclick="revealAnswer(this)">Reveal Model Answer</button><span class="marks-tag">2 marks</span></div>
+          <div class="model-answer"><div class="ans-label">✅ Model Answer</div>Analysis is always performed on a very small sample volume taken from a very large volume of water (1 mark). Because the sample is only a tiny fraction of the total, results cannot be exact — they are estimates of the bacterial density in the whole water body. Statistical tools (e.g. MPN tables, serial dilution calculations) are used to extrapolate from the sample to the whole population (1 mark).</div>
+        </div>
+      </div>
+
+    </div><!-- /Short Answer section -->
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION C: LONG ANSWER -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="long">
+      <div class="section-header">
+        <div class="section-icon">📝</div>
+        <h2>Section C — Long Answer / Essay Questions</h2>
+        <span class="badge">10 Questions · 10 Marks Each</span>
+      </div>
+
+      <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:20px;">Write a full structured answer, then reveal the marking scheme to assess your response.</p>
+
+      <!-- LA Q1 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA1</span>
+          <span class="q-text">Describe the three-stage standard water analysis system (Presumptive, Confirmed, and Completed Tests). For each test, state the medium used, procedure, and how results are interpreted. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Presumptive Test:</strong> Uses nine tubes of double-strength lactose broth inoculated with 10 ml, 1.0 ml, and 0.1 ml of water sample. Incubated at 37°C for 24–48 hours. Gas production in any tube = presumptive evidence of coliforms; MPN estimated from positive tube pattern.</div>
+            <div class="ms-point"><span class="ms-pts">1</span>Explains WHY the Presumptive Test is only presumptive — other bacteria can also produce gas from lactose.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Confirmed Test:</strong> EMB agar is inoculated from positive presumptive tube. Incubated at 37°C for 24 hours. E. coli = small colonies with green metallic sheen (POSITIVE); E. aerogenes only = large pink colonies (NEGATIVE). Both present = POSITIVE.</div>
+            <div class="ms-point"><span class="ms-pts">1</span>States that methylene blue in EMB inhibits Gram-positive organisms, allowing Gram-negative coliforms to grow selectively.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Completed Test:</strong> Organisms from EMB plate used to inoculate nutrient agar slant AND lactose broth tube. Incubated at 37°C for 24 hours. Gram stain from slant + gas from lactose broth. Positive = Gram-negative non-spore-forming rod + gas production = coliforms definitively confirmed.</div>
+            <div class="ms-point"><span class="ms-pts">1</span>Correctly explains the sequence/logic — each test builds on the previous to progressively confirm with greater certainty.</div>
+            <div class="ms-point"><span class="ms-pts">1</span>Presentation, organisation, and accuracy of scientific terminology throughout.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LA Q2 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA2</span>
+          <span class="q-text">Compare and contrast the multiple fermentation tube technique with the membrane filtration method for coliform analysis in water. Include principles, advantages, limitations, and when each method is most appropriate. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Multiple tube principle:</strong> Serial dilutions of water inoculated into multiple tubes of culture medium. Incubated; growth detected by turbidity, pH change, gas in Durham tubes. Result = MPN per 100 ml from statistical tables.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Membrane filtration principle:</strong> Water vacuum-filtered through 0.45 µm membrane; bacteria retained on surface; membrane placed on selective medium and incubated; colonies counted directly. Result = cfu per 100 ml.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Multiple tube advantages/limitations:</strong> More sensitive, applicable to all water types including turbid, consumables widely available, low cost. BUT slower (48 hrs), more labour, indirect low-precision results, not field-adaptable.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Membrane filtration advantages/limitations:</strong> Faster (~18 hrs), direct high-precision colony count, less labour and glassware, field-adaptable. BUT unsuitable for turbid water, less sensitive, consumables costly and less available.</div>
+            <div class="ms-point"><span class="ms-pts">1</span>Appropriate use: membrane filtration for clear treated water where speed matters; multiple tube for turbid/polluted water or low-resource settings.</div>
+            <div class="ms-point"><span class="ms-pts">1</span>Quality of comparison (uses contrasting language, direct comparison table equivalent, accurate detail).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LA Q3 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA3</span>
+          <span class="q-text">Discuss the four groups of indicator organisms used in water microbiology. For each group, describe their characteristics, laboratory detection methods, and significance as indicators of faecal contamination. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Total Coliforms:</strong> Gram-negative rod-shaped bacteria; grown at 35–37°C on lactose medium; identified by acid + gas production. Significance: non-specific — includes environmental and faecal organisms; presence may or may not indicate faecal contamination. High count with zero thermotolerant coliforms suggests soil/organic matter entry.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Thermotolerant Coliforms:</strong> Grow at 44–44.5°C; ferment lactose to acid + gas. Over 95% are E. coli. Significance: near-definitive indicator of faecal contamination. Nutrient-rich environments may support non-E. coli thermotolerant coliforms — specialist confirmation may be needed.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Faecal Streptococci:</strong> Gram-positive, chain-forming cocci; Lancefield Group D; grow on sodium azide media at 37–44°C; detected by tetrazolium dye reduction or aesculin hydrolysis. Significance: evidence of faecal contamination; persist longer than coliforms; useful when contamination is old or distant.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Sulphite-reducing Clostridia / C. perfringens:</strong> Gram-positive, anaerobic, spore-forming rods; spores extremely resistant to chlorination and persist long-term. Significance: best for intermittent contamination (wells, springs) and marine sediment sewage outfall detection (>10 km range).</div>
+            <div class="ms-point"><span class="ms-pts">1</span>General explanation of why indicators are used instead of pathogens directly (excreted in far greater numbers, easier to detect).</div>
+            <div class="ms-point"><span class="ms-pts">1</span>Organisation, scientific accuracy, and depth of discussion throughout.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LA Q4 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA4</span>
+          <span class="q-text">Classify and describe the range of waterborne microbial pathogens, giving examples of diseases caused by each category. Explain why testing for these pathogens individually in routine water monitoring is impractical. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">1.5</span><strong>Bacteria:</strong> Campylobacter, E. coli O157:H7, Salmonella, Shigella (enteritis/diarrhoea/dysentery); Salmonella typhi (typhoid), S. paratyphi (paratyphoid — enteric fevers); Clostridium botulinum (botulism/paralysis). (½ per disease category with example, max 1.5)</div>
+            <div class="ms-point"><span class="ms-pts">1.5</span><strong>Viruses:</strong> Rotavirus, Norwalk (diarrhoea); Hepatitis A and E (liver damage); Poliovirus (paralysis). (½ per disease category, max 1.5)</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Protozoa:</strong> Giardia, Cryptosporidia, Amoeba — cause diarrhoea, dysentery, and gastrointestinal illness.</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Helminths:</strong> Roundworm, tapeworm, hookworm, whipworm — transmitted through ingestion or skin penetration in contaminated water.</div>
+            <div class="ms-point"><span class="ms-pts">0.5</span><strong>Algae:</strong> Microcystis, dinoflagellates — produce toxins in water. <strong>Fungi</strong> and water-related disease vectors (malaria, schistosomiasis, dengue).</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Why individual testing is impractical — 4 reasons:</strong> (i) Numerous pathogens exist; (ii) Individual pathogen numbers may be below detection threshold; (iii) Isolation can take days to months; (iv) Absence of one pathogen doesn't exclude others. (½ each)</div>
+            <div class="ms-point"><span class="ms-pts">1.5</span>Explains the solution — use of indicator organisms (E. coli) as a proxy for faecal contamination, with rationale (present in far greater numbers than pathogens, easier to detect).</div>
+            <div class="ms-point"><span class="ms-pts">1</span>Organisation and quality of scientific presentation.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LA Q5 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA5</span>
+          <span class="q-text">Describe the culture media used in water bacteriology. For each medium, state its composition (major components), purpose, and how results are interpreted. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>MacConkey Agar:</strong> Bile salts + crystal violet (inhibit Gram-positives), neutral red dye (indicator), lactose, peptone. Used to grow Gram-negative bacteria and differentiate lactose fermenters (pink/red colonies) from non-fermenters (colourless).</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Endo / mEndo Agar:</strong> Peptone, lactose, dipotassium phosphate, sodium sulfite, basic fuchsin. Originally for Salmonella typhi; now used in membrane filtration. Coliforms = red colonies; non-fermenters = colourless.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>mFC Medium:</strong> Rosolic acid (inhibits most bacteria), bile salts (inhibit non-enteric bacteria), aniline blue (pH indicator). Used in membrane filtration for faecal coliform detection; aniline blue changes colour with acid from lactose fermentation.</div>
+            <div class="ms-point"><span class="ms-pts">1.5</span><strong>VRBA (Violet Red Bile Agar):</strong> Bile salts promote Gram-negative growth, partial inhibition of Gram-positives; contains lactose for fermentation differential. Used in direct plate count method.</div>
+            <div class="ms-point"><span class="ms-pts">1.5</span><strong>TYEA:</strong> Tryptone, yeast extract, salt, L-arabinose. Non-selective; used for general colony count at 22°C (environmental organisms) and 36°C (gut organisms).</div>
+            <div class="ms-point"><span class="ms-pts">1</span>Mentions EMB agar (confirmed test) with correct description: methylene blue inhibits Gram-positives; E. coli = green metallic sheen; E. aerogenes = large pink colonies.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LA Q6 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA6</span>
+          <span class="q-text">Write a comprehensive account of the membrane filtration method for the detection of coliforms in water. Include the principle, equipment, procedure, interpretation of results, advantages, and limitations. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Principle:</strong> Water is vacuum-filtered through a 0.45 µm cellulose acetate membrane that retains bacteria on its surface. The membrane is incubated on selective medium and characteristic colonies counted directly. Each bacterium/clump = one cfu.</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Equipment:</strong> Vacuum filtration apparatus, cellulose acetate membranes (0.45 µm, with millimetre grid), selective media (mEndo, mFC), sterile container, binocular microscope.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Procedure:</strong> Filter measured volume under vacuum → transfer membrane to appropriate selective medium → incubate at appropriate temperature → count characteristic colonies under binocular microscope using printed grid. Optimum range 20–80 colonies. If quality unknown, test multiple volumes.</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Result interpretation:</strong> Results expressed as thermotolerant coliforms [Number] cfu per 100 ml. If multiple membranes used, add counts together.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Advantages:</strong> Faster (~18 hours), direct high-precision count (cfu), less labour, less medium and glassware, portable and field-adaptable.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Limitations:</strong> Cannot be used for turbid water (blocks membrane); less sensitive than tube method; consumables costly and less available in many countries. Highly polluted samples must be diluted before filtration.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LA Q7 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA7</span>
+          <span class="q-text">Explain the concept of indicator organisms in water microbiology. Discuss why E. coli is the preferred indicator, the limitations of using coliforms alone, and how other indicator groups (faecal streptococci and Clostridia) complement coliform testing. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Indicator organism concept:</strong> Cannot test for all pathogens; instead use non-pathogenic gut bacteria as proxies. Infected individuals excrete millions of times more indicator organisms than pathogens — making indicators far easier to detect. If indicators are present, faecal contamination (and possible pathogens) may be present.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Why E. coli preferred:</strong> Found exclusively in intestinal tracts of warm-blooded animals; not normally found in fresh water or soil. Its presence in water is definitive proof of recent faecal contamination. Over 95% of thermotolerant coliforms in water are E. coli.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Limitations of coliforms alone:</strong> Total coliforms include environmental organisms — not specific to faecal contamination. High total coliforms with zero thermotolerant coliforms may indicate soil/organic matter entry. Thermotolerant coliforms can, in nutrient-rich environments, include non-E. coli species — needs specialist confirmation.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Faecal streptococci complement:</strong> Persist longer in environment; highly resistant to drying. Detectable when coliforms have died off — contamination old or source distant. Useful when coliforms are absent but contamination is suspected.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Clostridia complement:</strong> Spore-forming; extremely resistant to chlorination and environmental degradation. Ideal for intermittent/occasional sampling (wells, springs) and marine sediment analysis (>10 km range). Detectable long after initial contamination event when other indicators have been eliminated by treatment.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LA Q8 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA8</span>
+          <span class="q-text">Describe the multiple fermentation tube (MPN) technique in full detail. Include the principle, the role of the Durham tube, how MPN is calculated, and compare the sensitivity and precision of this method with membrane filtration. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Principle:</strong> Serial dilutions of water sample processed across multiple tubes. Individual portions inoculate culture medium, incubated at standard temperature. Coliforms indicated by turbidity, pH change, and/or gas production. Statistical basis — small sample from large volume; results rely on statistical tables.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Standard procedure:</strong> Five aliquots from each of three consecutive 10-fold dilutions (e.g. undiluted, 1:10, 1:100) — 15 tubes total. Aliquots can be 1 ml into 10 ml single-strength or 10 ml into 10 ml double-strength medium. Alternatively, 9-tube variant with 10 ml, 1.0 ml, 0.1 ml volumes used in standard water lab protocol.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Durham tube role:</strong> Small inverted glass tube inside each broth tube captures gas produced during lactose fermentation. Gas trapped in Durham tube = positive result for that dilution. Gas at 37°C is strong indication of E. coli. Can be enhanced with indicator medium that changes colour with acid production.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>MPN calculation:</strong> Count positive tubes at each of three dilutions. Compare pattern of positives (e.g. 5-3-1) to MPN statistical tables. Tabulated value reported as MPN per 100 ml. More tubes used = more sensitive and reliable estimate.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Comparison:</strong> Multiple tube is more sensitive but gives low-precision indirect statistical results; slower (48 hrs for confirmed positive); applicable to all water types. Membrane filtration is faster (18 hrs), gives high-precision direct colony counts (cfu), but less sensitive and unsuitable for turbid water.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LA Q9 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA9</span>
+          <span class="q-text">You receive a water sample from a shallow well that has been collecting runoff after heavy rains. Outline how you would conduct a full bacteriological analysis of this sample, from sample receipt to final reporting of results. Justify your choice of methods at each step. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Sample assessment:</strong> Well water after runoff is likely to be turbid (suspended soil/organic matter). Note appearance. If turbid, membrane filtration is ruled out — must use multiple tube method.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Multiple tube / MPN:</strong> Inoculate five aliquots from three dilutions (or 9-tube 10/1/0.1 ml protocol) into lactose broth with Durham tubes. Incubate at 37°C. Read at 24 and 48 hours. Record gas-positive tubes and estimate MPN per 100 ml using statistical tables. Justification: applicable to turbid water, more sensitive.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Confirmed Test:</strong> From any positive presumptive tube, inoculate EMB agar plates. Incubate at 37°C for 24 hrs. Look for small green metallic sheen colonies (E. coli — positive for faecal contamination). Justification: confirms gas was from coliforms, not other organisms.</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Completed Test:</strong> From EMB plate, inoculate nutrient agar slant + lactose broth. Incubate 37°C for 24 hrs. Gram stain from slant; check for gas in broth. Gram-negative non-spore-forming rod + gas = coliforms definitively confirmed.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>Additional indicator testing for well water:</strong> Test for Sulphite-reducing Clostridia (given intermittent nature of well contamination and chlorine resistance of spores — spores may persist). Justification: well water may have intermittent contamination; Clostridia useful for this scenario.</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>General plate count (TYEA):</strong> At 22°C and 36°C to determine overall contamination level.</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Final reporting:</strong> Express coliform results as MPN per 100 ml; cfu/ml for viable count. Document all positive/negative results, media used, temperatures, and incubation times. State conclusion on safety.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LA Q10 -->
+      <div class="la-card">
+        <div class="la-head">
+          <span class="la-num">LA10</span>
+          <span class="q-text">Discuss the role of culture media as selective and differential tools in water bacteriology. Using specific examples from water analysis practice, explain how media composition determines which organisms grow and how they are visually identified. (10 marks)</span>
+        </div>
+        <div class="la-body">
+          <textarea class="la-input" placeholder="Write your full answer here…"></textarea>
+          <div class="sa-actions" style="margin-top:10px">
+            <button class="reveal-btn" onclick="revealAnswer(this)">Reveal Marking Scheme</button>
+            <span class="marks-tag">10 marks</span>
+          </div>
+          <div class="marking-scheme">
+            <div class="ms-title">📋 Marking Scheme — 10 Marks</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Definitions:</strong> Selective medium — contains agents that inhibit certain organisms while permitting target organisms to grow. Differential medium — produces visually distinct colony appearances (colour, morphology) allowing identification without further tests.</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Core principle in water bacteriology:</strong> Most coliform detection media exploit lactose fermentation — coliforms ferment lactose to acid (sometimes gas); pH indicators in media change colour in response, making coliforms visually distinct from non-fermenters.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>MacConkey agar example:</strong> Bile salts + crystal violet (selective — inhibit Gram-positives). Neutral red dye (differential — stains acid-producers pink/red). E. coli and coliforms = pink/red colonies; non-fermenters = colourless. Allows rapid visual identification of Gram-negative lactose fermenters.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>EMB agar example:</strong> Methylene blue (selective — inhibits Gram-positives). Differential: E. coli produces characteristic green metallic sheen (due to intense dye absorption from high acid production at 37°C); E. aerogenes = large pink colonies. Critical for the Confirmed Test interpretation.</div>
+            <div class="ms-point"><span class="ms-pts">2</span><strong>mFC medium example:</strong> Triple selectivity: rosolic acid (inhibits most bacteria), bile salts (inhibit non-enteric bacteria), leaving mainly faecal coliforms; aniline blue as differential pH indicator — colour change shows lactose fermentation by faecal coliforms. Used in membrane filtration for faecal coliform-specific detection.</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>Endo agar:</strong> Sodium sulfite + basic fuchsin — coliforms restore fuchsin colour → red colonies; non-fermenters remain colourless. Originally selective for Salmonella; now used in total coliform membrane filtration.</div>
+            <div class="ms-point"><span class="ms-pts">1</span><strong>TYEA contrast:</strong> Non-selective — lacks any inhibitory or differential agents. Used purely to assess general bacterial contamination at two temperatures (22°C environmental, 36°C gut organisms) to give a complete picture of the microbiological load.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /Long Answer section -->
+
+  </div><!-- /content-wrapper -->
+</div><!-- /main -->
+
+<script>
+  // ── State tracking ──
+  const mcqState = {};
+  let correctCount = 0;
+  let wrongCount = 0;
+  let answered = 0;
+
+  function selectOption(el, qid, letter) {
+    if (mcqState[qid] && mcqState[qid].locked) return;
+    const options = el.closest('.options').querySelectorAll('.option');
+    options.forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    if (!mcqState[qid]) mcqState[qid] = {};
+    mcqState[qid].selected = letter;
+  }
+
+  function checkMCQ(qid, correct) {
+    const state = mcqState[qid] || {};
+    if (state.locked) return;
+    const card = document.getElementById(qid);
+    const options = card.querySelectorAll('.option');
+    const letters = ['A','B','C','D'];
+    const selected = state.selected;
+    const exp = document.getElementById('exp-' + qid);
+    const footer = card.querySelector('.q-footer');
+
+    if (!selected) {
+      footer.innerHTML += '<span style="font-size:12px; color:var(--warning);">⚠ Please select an option first</span>';
+      setTimeout(() => {
+        const warn = footer.querySelector('span');
+        if (warn) warn.remove();
+      }, 2000);
+      return;
+    }
+
+    state.locked = true;
+    mcqState[qid] = state;
+    answered++;
+
+    options.forEach((opt, i) => {
+      const l = letters[i];
+      if (l === correct) opt.classList.add('correct');
+      else if (l === selected && selected !== correct) opt.classList.add('wrong');
+      opt.style.cursor = 'default';
+    });
+
+    const isCorrect = selected === correct;
+    card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+    if (isCorrect) { correctCount++; } else { wrongCount++; }
+
+    footer.innerHTML = `<span class="result-badge ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '✓ Correct' : '✗ Incorrect'}</span>`;
+    exp.classList.add('show');
+
+    updateScore();
+  }
+
+  function updateScore() {
+    document.getElementById('mcq-score').textContent = correctCount + ' / 50';
+    document.getElementById('correct-count').textContent = correctCount;
+    document.getElementById('wrong-count').textContent = wrongCount;
+    const pct = Math.round((correctCount / 50) * 100);
+    document.getElementById('mcq-bar').style.width = pct + '%';
+  }
+
+  function revealAnswer(btn) {
+    const container = btn.closest('.sa-body, .la-body');
+    const ansDiv = container.querySelector('.model-answer, .marking-scheme');
+    if (!ansDiv) return;
+    ansDiv.classList.toggle('show');
+    btn.textContent = ansDiv.classList.contains('show') ? 'Hide Answer' : 'Reveal Model Answer';
+  }
+
+  function resetAll() {
+    if (!confirm('Reset all answers? This cannot be undone.')) return;
+    location.reload();
+  }
+
+  // ── SIDEBAR ──
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+  function closeSidebarMobile() {
+    if (window.innerWidth <= 768) closeSidebar();
+  }
+
+  // ── SCROLLSPY ──
+  const sections = document.querySelectorAll('.section[id]');
+  const navItems = document.querySelectorAll('.nav-item[href^="#"]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navItems.forEach(a => {
+          a.classList.remove('active');
+          if (a.getAttribute('href') === '#' + id) a.classList.add('active');
+        });
+      }
+    });
+  }, { rootMargin: '-60px 0px -60% 0px', threshold: 0 });
+  sections.forEach(s => observer.observe(s));
+
+  // ── SMOOTH SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
