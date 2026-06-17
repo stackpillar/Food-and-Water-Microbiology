@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrepreneurship Question Bank — MLS</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --card: #1e2333;
+    --border: #2a2f42;
+    --accent: #4f8ef7;
+    --accent2: #7c5cbf;
+    --gold: #e6b84a;
+    --green: #34d399;
+    --red: #f87171;
+    --text: #dde3f0;
+    --muted: #7c8aaa;
+    --heading: #f0f4ff;
+    --tag-bg: #252c42;
+    --sidebar-w: 280px;
+    --radius: 10px;
+    --font-main: 'Segoe UI', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-main);
+    font-size: 15.5px;
+    line-height: 1.75;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+  }
+
+  .sidebar-header {
+    padding: 22px 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-header h1 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3px;
+  }
+  .sidebar-header p { font-size: 11.5px; color: var(--muted); }
+
+  .score-display {
+    margin: 14px;
+    padding: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  .score-display .score-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+  .score-display .score-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .score-display .score-detail {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  nav ul { list-style: none; padding: 6px 0 20px; }
+  nav ul li a {
+    display: block;
+    padding: 7px 20px;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all .15s;
+  }
+  nav ul li a:hover, nav ul li a.active {
+    color: var(--text);
+    background: var(--tag-bg);
+    border-left-color: var(--accent);
+  }
+  nav ul li a.active { color: var(--accent); font-weight: 600; }
+  nav .section-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 14px 20px 4px;
+  }
+
+  .sidebar-actions {
+    padding: 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .btn-sidebar {
+    padding: 9px 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--tag-bg);
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .15s;
+    text-align: center;
+  }
+  .btn-sidebar:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-sidebar.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-sidebar.primary:hover { background: #3a7ae0; }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 48px 56px 80px;
+    max-width: 960px;
+  }
+
+  .page-hero {
+    margin-bottom: 50px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-hero .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 11.5px;
+    color: var(--accent);
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .page-hero h2 {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--heading);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .page-hero p { color: var(--muted); font-size: 15px; max-width: 620px; }
+
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 14px;
+    margin-bottom: 50px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .stat-card .num {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-card .num.gold { color: var(--gold); }
+  .stat-card .num.purple { color: var(--accent2); }
+  .stat-card .lbl {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  /* ── QUESTION SECTIONS ── */
+  .q-section {
+    margin-bottom: 70px;
+    scroll-margin-top: 30px;
+  }
+  .q-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--accent);
+  }
+  .q-section-header .icon {
+    width: 36px; height: 36px;
+    background: var(--tag-bg);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .q-section-header h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--heading);
+    flex: 1;
+  }
+  .q-section-header .q-count {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--tag-bg);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── MCQ CARD ── */
+  .mcq-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    transition: border-color .2s;
+  }
+  .mcq-card.correct { border-color: var(--green); }
+  .mcq-card.incorrect { border-color: var(--red); }
+
+  .mcq-q {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+  }
+  .mcq-q .qnum {
+    color: var(--accent);
+    font-weight: 800;
+    min-width: 28px;
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .option-btn {
+    padding: 10px 14px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 13.5px;
+    cursor: pointer;
+    text-align: left;
+    transition: all .15s;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--heading);
+    background: #2a3050;
+  }
+  .option-btn .opt-label {
+    color: var(--accent);
+    font-weight: 700;
+    min-width: 18px;
+  }
+  .option-btn.selected { border-color: var(--accent); background: #1e2d52; }
+  .option-btn.correct-ans { border-color: var(--green) !important; background: #0d2e22 !important; color: var(--green) !important; }
+  .option-btn.correct-ans .opt-label { color: var(--green); }
+  .option-btn.wrong-ans { border-color: var(--red) !important; background: #2e0d0d !important; color: var(--red) !important; }
+  .option-btn.wrong-ans .opt-label { color: var(--red); }
+  .option-btn:disabled { cursor: default; }
+
+  .mcq-feedback {
+    display: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    margin-top: 8px;
+  }
+  .mcq-feedback.show { display: block; }
+  .mcq-feedback.correct-fb {
+    background: #0d2e22;
+    border: 1px solid var(--green);
+    color: var(--green);
+  }
+  .mcq-feedback.incorrect-fb {
+    background: #2e1010;
+    border: 1px solid var(--red);
+    color: #f9a8a8;
+  }
+  .mcq-feedback strong { color: inherit; }
+
+  /* ── SHORT ANSWER ── */
+  .sa-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 18px;
+  }
+  .sa-q {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 14px;
+    display: flex;
+    gap: 10px;
+  }
+  .sa-q .qnum { color: var(--gold); font-weight: 800; min-width: 32px; }
+
+  .sa-textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: var(--font-main);
+    resize: vertical;
+    outline: none;
+    margin-bottom: 12px;
+  }
+  .sa-textarea:focus { border-color: var(--gold); }
+
+  .sa-btn {
+    padding: 8px 18px;
+    background: var(--gold);
+    color: #1a1200;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .sa-btn:hover { background: #d4a73e; }
+
+  .model-answer {
+    display: none;
+    margin-top: 14px;
+    padding: 16px 18px;
+    background: #1a1c2b;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+  }
+  .model-answer.show { display: block; }
+  .model-answer .ma-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .model-answer p { color: var(--text); margin-bottom: 6px; }
+  .model-answer ul, .model-answer ol {
+    margin: 6px 0 6px 20px;
+    color: var(--text);
+  }
+  .model-answer li { margin-bottom: 4px; font-size: 13.5px; }
+  .model-answer strong { color: var(--heading); }
+
+  /* ── LONG ANSWER ── */
+  .la-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-bottom: 22px;
+  }
+  .la-q {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  .la-q .qnum { color: var(--accent2); font-weight: 800; min-width: 32px; }
+
+  .la-marks {
+    display: inline-block;
+    padding: 2px 10px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .la-textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: var(--font-main);
+    resize: vertical;
+    outline: none;
+    margin-bottom: 12px;
+  }
+  .la-textarea:focus { border-color: var(--accent2); }
+
+  .la-btn {
+    padding: 8px 18px;
+    background: var(--accent2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .la-btn:hover { background: #6a4baf; }
+
+  .la-answer {
+    display: none;
+    margin-top: 16px;
+    padding: 20px 22px;
+    background: #1a1825;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+  }
+  .la-answer.show { display: block; }
+  .la-answer .la-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--accent2);
+    margin-bottom: 12px;
+  }
+  .la-answer h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 14px 0 6px;
+  }
+  .la-answer h4:first-of-type { margin-top: 0; }
+  .la-answer p { color: var(--text); margin-bottom: 8px; font-size: 14px; }
+  .la-answer ul, .la-answer ol {
+    margin: 6px 0 10px 20px;
+    color: var(--text);
+  }
+  .la-answer li { margin-bottom: 5px; font-size: 13.5px; }
+  .la-answer strong { color: var(--heading); }
+  .la-answer .marks-guide {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--tag-bg);
+    border-radius: 8px;
+    font-size: 12.5px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* PROGRESS BAR */
+  #progress {
+    position: fixed;
+    top: 0; left: var(--sidebar-w);
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    z-index: 99;
+    width: 0;
+    transition: width .1s;
+  }
+
+  #scroll-top {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    box-shadow: 0 4px 14px rgba(79,142,247,.35);
+  }
+  #scroll-top.visible { display: flex; }
+
+  .callout {
+    border-left: 4px solid var(--accent);
+    background: var(--card);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 12px 16px;
+    margin: 0 0 24px;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 768px) {
+    :root { --sidebar-w: 0px; }
+    #sidebar { transform: translateX(-280px); width: 280px; transition: transform .3s; }
+    #sidebar.open { transform: translateX(0); }
+    #main { margin-left: 0; padding: 24px 20px 60px; }
+    #progress { left: 0; }
+    .options-grid { grid-template-columns: 1fr; }
+    .stats-bar { grid-template-columns: 1fr; }
+    .hamburger { display: flex !important; }
+  }
+
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 14px; left: 14px;
+    z-index: 300;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 38px; height: 38px;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <h1>📝 MLS Question Bank</h1>
+    <p>Entrepreneurship · Exam Preparation</p>
+  </div>
+
+  <div class="score-display">
+    <span class="score-num" id="mcq-score-display">0 / 50</span>
+    <span class="score-label">MCQ Score</span>
+    <div class="score-detail" id="mcq-pct">Answer questions to track progress</div>
+  </div>
+
+  <nav>
+    <ul>
+      <li class="section-label">Sections</li>
+      <li><a href="#mcq-section">🔵 Multiple Choice (50)</a></li>
+      <li><a href="#sa-section">🟡 Short Answer (25)</a></li>
+      <li><a href="#la-section">🟣 Long Answer (10)</a></li>
+      <li class="section-label">MCQ Topics</li>
+      <li><a href="#mcq1">Q1–10: Foundations</a></li>
+      <li><a href="#mcq11">Q11–20: The Entrepreneur</a></li>
+      <li><a href="#mcq21">Q21–30: Starting a Business</a></li>
+      <li><a href="#mcq31">Q31–40: Management</a></li>
+      <li><a href="#mcq41">Q41–50: Business & Finance</a></li>
+      <li class="section-label">Short Answer</li>
+      <li><a href="#sa1">SA1–10: Concepts</a></li>
+      <li><a href="#sa11">SA11–25: Applied</a></li>
+      <li class="section-label">Long Answer</li>
+      <li><a href="#la1">LA1–5: Essays I</a></li>
+      <li><a href="#la6">LA6–10: Essays II</a></li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-actions">
+    <button class="btn-sidebar primary" onclick="revealAllMCQ()">Show All MCQ Answers</button>
+    <button class="btn-sidebar" onclick="resetAll()">Reset All Answers</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+
+  <div class="page-hero">
+    <span class="tag">Department of Medical Laboratory Sciences</span>
+    <h2>Entrepreneurship Question Bank</h2>
+    <p>Practice questions covering all 28 topics. Answer each question, then reveal the model answer to check your understanding. MCQs are auto-marked.</p>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card">
+      <span class="num">50</span>
+      <span class="lbl">Multiple Choice</span>
+    </div>
+    <div class="stat-card">
+      <span class="num gold">25</span>
+      <span class="lbl">Short Answer</span>
+    </div>
+    <div class="stat-card">
+      <span class="num purple">10</span>
+      <span class="lbl">Long Answer / Essays</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 1: MCQs -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="q-section" id="mcq-section">
+    <div class="q-section-header">
+      <div class="icon">🔵</div>
+      <h2>Multiple Choice Questions</h2>
+      <span class="q-count">50 Questions · Auto-marked</span>
+    </div>
+    <div class="callout">Select one answer per question. Your selection is marked immediately. Green = correct, Red = wrong. The correct answer is always revealed after you answer.</div>
+
+    <!-- Q1–10 FOUNDATIONS -->
+    <div id="mcq1"></div>
+
+    <!-- Q1 -->
+    <div class="mcq-card" id="mcq-card-1">
+      <div class="mcq-q"><span class="qnum">1.</span> The ILO report that sparked Kenya's entrepreneurship movement focused primarily on the potential of which sector?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(1,'A','D')"><span class="opt-label">A.</span> The formal corporate sector</button>
+        <button class="option-btn" onclick="checkMCQ(1,'B','D')"><span class="opt-label">B.</span> The agricultural export sector</button>
+        <button class="option-btn" onclick="checkMCQ(1,'C','D')"><span class="opt-label">C.</span> The government parastatal sector</button>
+        <button class="option-btn" onclick="checkMCQ(1,'D','D')"><span class="opt-label">D.</span> The informal sector</button>
+      </div>
+      <div class="mcq-feedback" id="fb-1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="mcq-card" id="mcq-card-2">
+      <div class="mcq-q"><span class="qnum">2.</span> In which year did the Kenyan government publish a Sessional Paper recognizing the role of entrepreneurship in employment creation?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(2,'A','C')"><span class="opt-label">A.</span> 1963</button>
+        <button class="option-btn" onclick="checkMCQ(2,'B','C')"><span class="opt-label">B.</span> 1969</button>
+        <button class="option-btn" onclick="checkMCQ(2,'C','C')"><span class="opt-label">C.</span> 1973</button>
+        <button class="option-btn" onclick="checkMCQ(2,'D','C')"><span class="opt-label">D.</span> 1980</button>
+      </div>
+      <div class="mcq-feedback" id="fb-2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="mcq-card" id="mcq-card-3">
+      <div class="mcq-q"><span class="qnum">3.</span> Which of the following is NOT one of the three outcomes the ILO report proposed from developing the informal sector?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(3,'A','D')"><span class="opt-label">A.</span> Promote employment</button>
+        <button class="option-btn" onclick="checkMCQ(3,'B','D')"><span class="opt-label">B.</span> Facilitate development</button>
+        <button class="option-btn" onclick="checkMCQ(3,'C','D')"><span class="opt-label">C.</span> Equitable distribution of resources</button>
+        <button class="option-btn" onclick="checkMCQ(3,'D','D')"><span class="opt-label">D.</span> Nationalize small businesses</button>
+      </div>
+      <div class="mcq-feedback" id="fb-3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="mcq-card" id="mcq-card-4">
+      <div class="mcq-q"><span class="qnum">4.</span> High taxation affects entrepreneurial development primarily by:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(4,'A','B')"><span class="opt-label">A.</span> Increasing consumer purchasing power</button>
+        <button class="option-btn" onclick="checkMCQ(4,'B','B')"><span class="opt-label">B.</span> Reducing profits and raising production costs</button>
+        <button class="option-btn" onclick="checkMCQ(4,'C','B')"><span class="opt-label">C.</span> Encouraging more foreign investment</button>
+        <button class="option-btn" onclick="checkMCQ(4,'D','B')"><span class="opt-label">D.</span> Strengthening the currency exchange rate</button>
+      </div>
+      <div class="mcq-feedback" id="fb-4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="mcq-card" id="mcq-card-5">
+      <div class="mcq-q"><span class="qnum">5.</span> The myth that "entrepreneurs are born, not made" is challenged today primarily by:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(5,'A','C')"><span class="opt-label">A.</span> Evidence that most entrepreneurs come from wealthy families</button>
+        <button class="option-btn" onclick="checkMCQ(5,'B','C')"><span class="opt-label">B.</span> Studies showing entrepreneurs have lower IQs</button>
+        <button class="option-btn" onclick="checkMCQ(5,'C','C')"><span class="opt-label">C.</span> Recognition of entrepreneurship as a teachable discipline</button>
+        <button class="option-btn" onclick="checkMCQ(5,'D','C')"><span class="opt-label">D.</span> Government policies that restrict new businesses</button>
+      </div>
+      <div class="mcq-feedback" id="fb-5"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="mcq-card" id="mcq-card-6">
+      <div class="mcq-q"><span class="qnum">6.</span> According to the Psychological Theory of entrepreneurship, which of the following is NOT listed as a key trait of entrepreneurs?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(6,'A','D')"><span class="opt-label">A.</span> Need for achievement</button>
+        <button class="option-btn" onclick="checkMCQ(6,'B','D')"><span class="opt-label">B.</span> Locus of control</button>
+        <button class="option-btn" onclick="checkMCQ(6,'C','D')"><span class="opt-label">C.</span> Risk-taking propensity</button>
+        <button class="option-btn" onclick="checkMCQ(6,'D','D')"><span class="opt-label">D.</span> Political affiliation</button>
+      </div>
+      <div class="mcq-feedback" id="fb-6"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="mcq-card" id="mcq-card-7">
+      <div class="mcq-q"><span class="qnum">7.</span> The Heterogeneous Demand Theory explains entrepreneurship through:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(7,'A','B')"><span class="opt-label">A.</span> The role of the government in directing business</button>
+        <button class="option-btn" onclick="checkMCQ(7,'B','B')"><span class="opt-label">B.</span> Diverse, varied consumer needs creating niche business opportunities</button>
+        <button class="option-btn" onclick="checkMCQ(7,'C','B')"><span class="opt-label">C.</span> The impact of social networks on entrepreneurship</button>
+        <button class="option-btn" onclick="checkMCQ(7,'D','B')"><span class="opt-label">D.</span> Personality traits inherited at birth</button>
+      </div>
+      <div class="mcq-feedback" id="fb-7"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="mcq-card" id="mcq-card-8">
+      <div class="mcq-q"><span class="qnum">8.</span> Corruption in business primarily harms entrepreneurs by:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(8,'A','C')"><span class="opt-label">A.</span> Reducing competition in the market</button>
+        <button class="option-btn" onclick="checkMCQ(8,'B','C')"><span class="opt-label">B.</span> Increasing consumer demand for products</button>
+        <button class="option-btn" onclick="checkMCQ(8,'C','C')"><span class="opt-label">C.</span> Forcing bribes that increase operating costs and create uncertainty</button>
+        <button class="option-btn" onclick="checkMCQ(8,'D','C')"><span class="opt-label">D.</span> Improving access to government contracts</button>
+      </div>
+      <div class="mcq-feedback" id="fb-8"></div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="mcq-card" id="mcq-card-9">
+      <div class="mcq-q"><span class="qnum">9.</span> Trade liberalization can harm local entrepreneurs because it:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(9,'A','A')"><span class="opt-label">A.</span> Opens importation of competing goods that undercut local producers</button>
+        <button class="option-btn" onclick="checkMCQ(9,'B','A')"><span class="opt-label">B.</span> Prevents entrepreneurs from exporting their goods</button>
+        <button class="option-btn" onclick="checkMCQ(9,'C','A')"><span class="opt-label">C.</span> Increases government taxation on local businesses</button>
+        <button class="option-btn" onclick="checkMCQ(9,'D','A')"><span class="opt-label">D.</span> Reduces the supply of raw materials</button>
+      </div>
+      <div class="mcq-feedback" id="fb-9"></div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="mcq-card" id="mcq-card-10">
+      <div class="mcq-q"><span class="qnum">10.</span> Weber's theory on culture and entrepreneurship argues that which religion encourages entrepreneurial values such as individualism and self-reliance?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(10,'A','B')"><span class="opt-label">A.</span> Islam</button>
+        <button class="option-btn" onclick="checkMCQ(10,'B','B')"><span class="opt-label">B.</span> Protestantism</button>
+        <button class="option-btn" onclick="checkMCQ(10,'C','B')"><span class="opt-label">C.</span> Hinduism</button>
+        <button class="option-btn" onclick="checkMCQ(10,'D','B')"><span class="opt-label">D.</span> Buddhism</button>
+      </div>
+      <div class="mcq-feedback" id="fb-10"></div>
+    </div>
+
+    <!-- Q11–20 THE ENTREPRENEUR -->
+    <div id="mcq11"></div>
+
+    <!-- Q11 -->
+    <div class="mcq-card" id="mcq-card-11">
+      <div class="mcq-q"><span class="qnum">11.</span> A craft entrepreneur is best described as someone who:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(11,'A','B')"><span class="opt-label">A.</span> Seeks to aggressively expand the business to the maximum</button>
+        <button class="option-btn" onclick="checkMCQ(11,'B','B')"><span class="opt-label">B.</span> Uses personal technical skills without focusing on growth or expansion</button>
+        <button class="option-btn" onclick="checkMCQ(11,'C','B')"><span class="opt-label">C.</span> Recognizes a social problem and creates a venture to solve it</button>
+        <button class="option-btn" onclick="checkMCQ(11,'D','B')"><span class="opt-label">D.</span> Uses political systems to promote commercial ventures</button>
+      </div>
+      <div class="mcq-feedback" id="fb-11"></div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="mcq-card" id="mcq-card-12">
+      <div class="mcq-q"><span class="qnum">12.</span> Which entrepreneur type buys a company specifically to improve it before selling it at a profit?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(12,'A','C')"><span class="opt-label">A.</span> Acquirer</button>
+        <button class="option-btn" onclick="checkMCQ(12,'B','C')"><span class="opt-label">B.</span> Concept Multiplier</button>
+        <button class="option-btn" onclick="checkMCQ(12,'C','C')"><span class="opt-label">C.</span> Buy/Sell Artist</button>
+        <button class="option-btn" onclick="checkMCQ(12,'D','C')"><span class="opt-label">D.</span> Speculator</button>
+      </div>
+      <div class="mcq-feedback" id="fb-12"></div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="mcq-card" id="mcq-card-13">
+      <div class="mcq-q"><span class="qnum">13.</span> The internal motivation called "self-actualization" in entrepreneurship refers to:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(13,'A','D')"><span class="opt-label">A.</span> The need to earn a higher salary than peers</button>
+        <button class="option-btn" onclick="checkMCQ(13,'B','D')"><span class="opt-label">B.</span> The desire to be recognized by government authorities</button>
+        <button class="option-btn" onclick="checkMCQ(13,'C','D')"><span class="opt-label">C.</span> The need for social acceptance by friends and family</button>
+        <button class="option-btn" onclick="checkMCQ(13,'D','D')"><span class="opt-label">D.</span> The need to fully realize one's potential and accomplish unique goals</button>
+      </div>
+      <div class="mcq-feedback" id="fb-13"></div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="mcq-card" id="mcq-card-14">
+      <div class="mcq-q"><span class="qnum">14.</span> In Maslow's hierarchy, which level of need is associated with esteem and social recognition through entrepreneurship?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(14,'A','C')"><span class="opt-label">A.</span> Physiological needs</button>
+        <button class="option-btn" onclick="checkMCQ(14,'B','C')"><span class="opt-label">B.</span> Safety needs</button>
+        <button class="option-btn" onclick="checkMCQ(14,'C','C')"><span class="opt-label">C.</span> Esteem needs</button>
+        <button class="option-btn" onclick="checkMCQ(14,'D','C')"><span class="opt-label">D.</span> Belonging needs</button>
+      </div>
+      <div class="mcq-feedback" id="fb-14"></div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="mcq-card" id="mcq-card-15">
+      <div class="mcq-q"><span class="qnum">15.</span> Which of the following is an EXTERNAL motivation for entrepreneurship?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(15,'A','D')"><span class="opt-label">A.</span> Need for independence</button>
+        <button class="option-btn" onclick="checkMCQ(15,'B','D')"><span class="opt-label">B.</span> Need for recognition</button>
+        <button class="option-btn" onclick="checkMCQ(15,'C','D')"><span class="opt-label">C.</span> Need for power</button>
+        <button class="option-btn" onclick="checkMCQ(15,'D','D')"><span class="opt-label">D.</span> Availability of credit facilities</button>
+      </div>
+      <div class="mcq-feedback" id="fb-15"></div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="mcq-card" id="mcq-card-16">
+      <div class="mcq-q"><span class="qnum">16.</span> Which entrepreneurial trait involves repeating actions to overcome obstacles even in the face of significant challenges?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(16,'A','B')"><span class="opt-label">A.</span> Self-confidence</button>
+        <button class="option-btn" onclick="checkMCQ(16,'B','B')"><span class="opt-label">B.</span> Persistence and patience</button>
+        <button class="option-btn" onclick="checkMCQ(16,'C','B')"><span class="opt-label">C.</span> Persuasion</button>
+        <button class="option-btn" onclick="checkMCQ(16,'D','B')"><span class="opt-label">D.</span> Efficiency orientation</button>
+      </div>
+      <div class="mcq-feedback" id="fb-16"></div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="mcq-card" id="mcq-card-17">
+      <div class="mcq-q"><span class="qnum">17.</span> An entrepreneurial culture can best be developed in a country by:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(17,'A','C')"><span class="opt-label">A.</span> Reducing the number of universities offering business degrees</button>
+        <button class="option-btn" onclick="checkMCQ(17,'B','C')"><span class="opt-label">B.</span> Increasing corporate taxes to fund government programs</button>
+        <button class="option-btn" onclick="checkMCQ(17,'C','C')"><span class="opt-label">C.</span> Integrating entrepreneurship training into the overall education system</button>
+        <button class="option-btn" onclick="checkMCQ(17,'D','C')"><span class="opt-label">D.</span> Encouraging all businesses to be government-owned</button>
+      </div>
+      <div class="mcq-feedback" id="fb-17"></div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="mcq-card" id="mcq-card-18">
+      <div class="mcq-q"><span class="qnum">18.</span> A social entrepreneur's primary goal is to:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(18,'A','B')"><span class="opt-label">A.</span> Maximize personal financial profit</button>
+        <button class="option-btn" onclick="checkMCQ(18,'B','B')"><span class="opt-label">B.</span> Achieve social change by solving a social problem</button>
+        <button class="option-btn" onclick="checkMCQ(18,'C','B')"><span class="opt-label">C.</span> Use political connections to gain business advantages</button>
+        <button class="option-btn" onclick="checkMCQ(18,'D','B')"><span class="opt-label">D.</span> Duplicate a successful business concept in a new location</button>
+      </div>
+      <div class="mcq-feedback" id="fb-18"></div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="mcq-card" id="mcq-card-19">
+      <div class="mcq-q"><span class="qnum">19.</span> According to Maslow, once a need is satisfied, it:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(19,'A','C')"><span class="opt-label">A.</span> Becomes stronger and more urgent</button>
+        <button class="option-btn" onclick="checkMCQ(19,'B','C')"><span class="opt-label">B.</span> Creates anxiety and dissatisfaction</button>
+        <button class="option-btn" onclick="checkMCQ(19,'C','C')"><span class="opt-label">C.</span> No longer motivates behavior</button>
+        <button class="option-btn" onclick="checkMCQ(19,'D','C')"><span class="opt-label">D.</span> Becomes the most important need in the hierarchy</button>
+      </div>
+      <div class="mcq-feedback" id="fb-19"></div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="mcq-card" id="mcq-card-20">
+      <div class="mcq-q"><span class="qnum">20.</span> Which cultural habit promotes entrepreneurship by helping people understand future market changes?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(20,'A','B')"><span class="opt-label">A.</span> Money orientation</button>
+        <button class="option-btn" onclick="checkMCQ(20,'B','B')"><span class="opt-label">B.</span> Future orientation</button>
+        <button class="option-btn" onclick="checkMCQ(20,'C','B')"><span class="opt-label">C.</span> Trust and honesty</button>
+        <button class="option-btn" onclick="checkMCQ(20,'D','B')"><span class="opt-label">D.</span> Hard work</button>
+      </div>
+      <div class="mcq-feedback" id="fb-20"></div>
+    </div>
+
+    <!-- Q21–30 STARTING A BUSINESS -->
+    <div id="mcq21"></div>
+
+    <!-- Q21 -->
+    <div class="mcq-card" id="mcq-card-21">
+      <div class="mcq-q"><span class="qnum">21.</span> A business opportunity is distinguished from a mere idea by the presence of:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(21,'A','D')"><span class="opt-label">A.</span> A detailed business plan and government approval</button>
+        <button class="option-btn" onclick="checkMCQ(21,'B','D')"><span class="opt-label">B.</span> A large team of qualified staff</button>
+        <button class="option-btn" onclick="checkMCQ(21,'C','D')"><span class="opt-label">C.</span> A catchy brand name and marketing budget</button>
+        <button class="option-btn" onclick="checkMCQ(21,'D','D')"><span class="opt-label">D.</span> A good market scope and attractive return on investment</button>
+      </div>
+      <div class="mcq-feedback" id="fb-21"></div>
+    </div>
+
+    <!-- Q22 -->
+    <div class="mcq-card" id="mcq-card-22">
+      <div class="mcq-q"><span class="qnum">22.</span> In brainstorming, which rule is most important?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(22,'A','B')"><span class="opt-label">A.</span> Only the leader's ideas are considered</button>
+        <button class="option-btn" onclick="checkMCQ(22,'B','B')"><span class="opt-label">B.</span> Ideas are generated freely without immediate criticism or analysis</button>
+        <button class="option-btn" onclick="checkMCQ(22,'C','B')"><span class="opt-label">C.</span> All ideas must be financially viable before being listed</button>
+        <button class="option-btn" onclick="checkMCQ(22,'D','B')"><span class="opt-label">D.</span> Only practical, proven ideas are welcome</button>
+      </div>
+      <div class="mcq-feedback" id="fb-22"></div>
+    </div>
+
+    <!-- Q23 -->
+    <div class="mcq-card" id="mcq-card-23">
+      <div class="mcq-q"><span class="qnum">23.</span> In a SWOT analysis, "Opportunities" refer to:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(23,'A','C')"><span class="opt-label">A.</span> Internal strengths of the business</button>
+        <button class="option-btn" onclick="checkMCQ(23,'B','C')"><span class="opt-label">B.</span> Internal management weaknesses</button>
+        <button class="option-btn" onclick="checkMCQ(23,'C','C')"><span class="opt-label">C.</span> Favorable external conditions that the business can exploit</button>
+        <button class="option-btn" onclick="checkMCQ(23,'D','C')"><span class="opt-label">D.</span> Competitor advantages that pose a danger</button>
+      </div>
+      <div class="mcq-feedback" id="fb-23"></div>
+    </div>
+
+    <!-- Q24 -->
+    <div class="mcq-card" id="mcq-card-24">
+      <div class="mcq-q"><span class="qnum">24.</span> Globally, approximately what percentage of start-up businesses fail?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(24,'A','C')"><span class="opt-label">A.</span> 30%</button>
+        <button class="option-btn" onclick="checkMCQ(24,'B','C')"><span class="opt-label">B.</span> 60%</button>
+        <button class="option-btn" onclick="checkMCQ(24,'C','C')"><span class="opt-label">C.</span> 90%</button>
+        <button class="option-btn" onclick="checkMCQ(24,'D','C')"><span class="opt-label">D.</span> 50%</button>
+      </div>
+      <div class="mcq-feedback" id="fb-24"></div>
+    </div>
+
+    <!-- Q25 -->
+    <div class="mcq-card" id="mcq-card-25">
+      <div class="mcq-q"><span class="qnum">25.</span> A patent is best described as:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(25,'A','A')"><span class="opt-label">A.</span> A government grant of property rights to an inventor, giving exclusive ownership</button>
+        <button class="option-btn" onclick="checkMCQ(25,'B','A')"><span class="opt-label">B.</span> A confidentiality agreement between business partners</button>
+        <button class="option-btn" onclick="checkMCQ(25,'C','A')"><span class="opt-label">C.</span> A license to use another company's trademark</button>
+        <button class="option-btn" onclick="checkMCQ(25,'D','A')"><span class="opt-label">D.</span> An agreement to share profits from a joint invention</button>
+      </div>
+      <div class="mcq-feedback" id="fb-25"></div>
+    </div>
+
+    <!-- Q26 -->
+    <div class="mcq-card" id="mcq-card-26">
+      <div class="mcq-q"><span class="qnum">26.</span> Copyright protection for intellectual property lasts for:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(26,'A','C')"><span class="opt-label">A.</span> 10 years from the date of registration</button>
+        <button class="option-btn" onclick="checkMCQ(26,'B','C')"><span class="opt-label">B.</span> 25 years from the date of creation</button>
+        <button class="option-btn" onclick="checkMCQ(26,'C','C')"><span class="opt-label">C.</span> The life of the creator plus 50 years</button>
+        <button class="option-btn" onclick="checkMCQ(26,'D','C')"><span class="opt-label">D.</span> 5 years, renewable indefinitely</button>
+      </div>
+      <div class="mcq-feedback" id="fb-26"></div>
+    </div>
+
+    <!-- Q27 -->
+    <div class="mcq-card" id="mcq-card-27">
+      <div class="mcq-q"><span class="qnum">27.</span> The "attribute listening" method of generating business ideas involves:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(27,'A','B')"><span class="opt-label">A.</span> Listening to radio programs to find market gaps</button>
+        <button class="option-btn" onclick="checkMCQ(27,'B','B')"><span class="opt-label">B.</span> Changing the way you look at something to find a new use for it</button>
+        <button class="option-btn" onclick="checkMCQ(27,'C','B')"><span class="opt-label">C.</span> Interviewing customers about existing products</button>
+        <button class="option-btn" onclick="checkMCQ(27,'D','B')"><span class="opt-label">D.</span> Attending trade exhibitions to observe competitors</button>
+      </div>
+      <div class="mcq-feedback" id="fb-27"></div>
+    </div>
+
+    <!-- Q28 -->
+    <div class="mcq-card" id="mcq-card-28">
+      <div class="mcq-q"><span class="qnum">28.</span> A Trade Secret differs from a Patent in that a trade secret:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(28,'A','D')"><span class="opt-label">A.</span> Must be registered with the government to be valid</button>
+        <button class="option-btn" onclick="checkMCQ(28,'B','D')"><span class="opt-label">B.</span> Gives the holder exclusive rights for 20 years</button>
+        <button class="option-btn" onclick="checkMCQ(28,'C','D')"><span class="opt-label">C.</span> Can be used freely by any competitor</button>
+        <button class="option-btn" onclick="checkMCQ(28,'D','D')"><span class="opt-label">D.</span> Lasts as long as the information remains confidential, with no formal registration</button>
+      </div>
+      <div class="mcq-feedback" id="fb-28"></div>
+    </div>
+
+    <!-- Q29 -->
+    <div class="mcq-card" id="mcq-card-29">
+      <div class="mcq-q"><span class="qnum">29.</span> The success rate of businesses that go through a business incubation program is approximately:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(29,'A','C')"><span class="opt-label">A.</span> 30%</button>
+        <button class="option-btn" onclick="checkMCQ(29,'B','C')"><span class="opt-label">B.</span> 50%</button>
+        <button class="option-btn" onclick="checkMCQ(29,'C','C')"><span class="opt-label">C.</span> Over 80%</button>
+        <button class="option-btn" onclick="checkMCQ(29,'D','C')"><span class="opt-label">D.</span> 60%</button>
+      </div>
+      <div class="mcq-feedback" id="fb-29"></div>
+    </div>
+
+    <!-- Q30 -->
+    <div class="mcq-card" id="mcq-card-30">
+      <div class="mcq-q"><span class="qnum">30.</span> Innovation differs from creativity in that innovation:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(30,'A','B')"><span class="opt-label">A.</span> Is purely about generating new ideas in the mind</button>
+        <button class="option-btn" onclick="checkMCQ(30,'B','B')"><span class="opt-label">B.</span> Commercializes ideas and turns them into tangible, value-creating realities</button>
+        <button class="option-btn" onclick="checkMCQ(30,'C','B')"><span class="opt-label">C.</span> Only happens in large corporations with R&D departments</button>
+        <button class="option-btn" onclick="checkMCQ(30,'D','B')"><span class="opt-label">D.</span> Requires government approval before implementation</button>
+      </div>
+      <div class="mcq-feedback" id="fb-30"></div>
+    </div>
+
+    <!-- Q31–40 MANAGEMENT -->
+    <div id="mcq31"></div>
+
+    <!-- Q31 -->
+    <div class="mcq-card" id="mcq-card-31">
+      <div class="mcq-q"><span class="qnum">31.</span> Leadership is best defined as the ability to:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(31,'A','C')"><span class="opt-label">A.</span> Control others through force and authority</button>
+        <button class="option-btn" onclick="checkMCQ(31,'B','C')"><span class="opt-label">B.</span> Assign tasks and monitor completion through strict supervision</button>
+        <button class="option-btn" onclick="checkMCQ(31,'C','C')"><span class="opt-label">C.</span> Inspire and persuade others to give maximum effort willingly toward shared goals</button>
+        <button class="option-btn" onclick="checkMCQ(31,'D','C')"><span class="opt-label">D.</span> Make all decisions without consulting the team</button>
+      </div>
+      <div class="mcq-feedback" id="fb-31"></div>
+    </div>
+
+    <!-- Q32 -->
+    <div class="mcq-card" id="mcq-card-32">
+      <div class="mcq-q"><span class="qnum">32.</span> According to McGregor's Theory Y, workers are best described as:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(32,'A','D')"><span class="opt-label">A.</span> Lazy and needing close supervision</button>
+        <button class="option-btn" onclick="checkMCQ(32,'B','D')"><span class="opt-label">B.</span> Motivated only by financial rewards</button>
+        <button class="option-btn" onclick="checkMCQ(32,'C','D')"><span class="opt-label">C.</span> Irresponsible and resistant to change</button>
+        <button class="option-btn" onclick="checkMCQ(32,'D','D')"><span class="opt-label">D.</span> Naturally active, creative, and capable of self-direction</button>
+      </div>
+      <div class="mcq-feedback" id="fb-32"></div>
+    </div>
+
+    <!-- Q33 -->
+    <div class="mcq-card" id="mcq-card-33">
+      <div class="mcq-q"><span class="qnum">33.</span> The Situational Theory of leadership is based on the assumption that:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(33,'A','B')"><span class="opt-label">A.</span> Leaders have innate, unchangeable personality traits</button>
+        <button class="option-btn" onclick="checkMCQ(33,'B','B')"><span class="opt-label">B.</span> Leadership is a function of the situation — the right person emerges for each context</button>
+        <button class="option-btn" onclick="checkMCQ(33,'C','B')"><span class="opt-label">C.</span> Leadership effectiveness depends entirely on the leader's behavior</button>
+        <button class="option-btn" onclick="checkMCQ(33,'D','B')"><span class="opt-label">D.</span> All leaders use the same style regardless of context</button>
+      </div>
+      <div class="mcq-feedback" id="fb-33"></div>
+    </div>
+
+    <!-- Q34 -->
+    <div class="mcq-card" id="mcq-card-34">
+      <div class="mcq-q"><span class="qnum">34.</span> In the decision-making process, what is the correct ORDER of the first three steps?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(34,'A','A')"><span class="opt-label">A.</span> Identify problem → Determine causes → Generate potential solutions</button>
+        <button class="option-btn" onclick="checkMCQ(34,'B','A')"><span class="opt-label">B.</span> Generate solutions → Identify problem → Select best solution</button>
+        <button class="option-btn" onclick="checkMCQ(34,'C','A')"><span class="opt-label">C.</span> Implement solution → Verify → Identify problem</button>
+        <button class="option-btn" onclick="checkMCQ(34,'D','A')"><span class="opt-label">D.</span> Select solution → Evaluate → Generate options</button>
+      </div>
+      <div class="mcq-feedback" id="fb-34"></div>
+    </div>
+
+    <!-- Q35 -->
+    <div class="mcq-card" id="mcq-card-35">
+      <div class="mcq-q"><span class="qnum">35.</span> Which of the following is a time-wasting behavior that entrepreneurs should avoid?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(35,'A','C')"><span class="opt-label">A.</span> Keeping a business diary</button>
+        <button class="option-btn" onclick="checkMCQ(35,'B','C')"><span class="opt-label">B.</span> Delegating tasks to qualified staff</button>
+        <button class="option-btn" onclick="checkMCQ(35,'C','C')"><span class="opt-label">C.</span> Failure to delegate and excessive interruptions from friends</button>
+        <button class="option-btn" onclick="checkMCQ(35,'D','C')"><span class="opt-label">D.</span> Scheduling activities according to priority</button>
+      </div>
+      <div class="mcq-feedback" id="fb-35"></div>
+    </div>
+
+    <!-- Q36 -->
+    <div class="mcq-card" id="mcq-card-36">
+      <div class="mcq-q"><span class="qnum">36.</span> "Creative destruction" in entrepreneurship refers to:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(36,'A','B')"><span class="opt-label">A.</span> Deliberately destroying competitors' businesses</button>
+        <button class="option-btn" onclick="checkMCQ(36,'B','B')"><span class="opt-label">B.</span> Innovations making old arrangements obsolete, freeing resources for more efficient uses</button>
+        <button class="option-btn" onclick="checkMCQ(36,'C','B')"><span class="opt-label">C.</span> The process of filing for bankruptcy to restart a business</button>
+        <button class="option-btn" onclick="checkMCQ(36,'D','B')"><span class="opt-label">D.</span> A management strategy that restructures staff to reduce costs</button>
+      </div>
+      <div class="mcq-feedback" id="fb-36"></div>
+    </div>
+
+    <!-- Q37 -->
+    <div class="mcq-card" id="mcq-card-37">
+      <div class="mcq-q"><span class="qnum">37.</span> The primary reason people RESIST change in organizations is:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(37,'A','D')"><span class="opt-label">A.</span> They want to earn higher salaries</button>
+        <button class="option-btn" onclick="checkMCQ(37,'B','D')"><span class="opt-label">B.</span> They disagree with government policies</button>
+        <button class="option-btn" onclick="checkMCQ(37,'C','D')"><span class="opt-label">C.</span> They want to reduce the number of workers</button>
+        <button class="option-btn" onclick="checkMCQ(37,'D','D')"><span class="opt-label">D.</span> Fear of the unknown and threat to their established status quo</button>
+      </div>
+      <div class="mcq-feedback" id="fb-37"></div>
+    </div>
+
+    <!-- Q38 -->
+    <div class="mcq-card" id="mcq-card-38">
+      <div class="mcq-q"><span class="qnum">38.</span> Referent power in leadership comes from:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(38,'A','C')"><span class="opt-label">A.</span> The ability to give or withhold financial rewards</button>
+        <button class="option-btn" onclick="checkMCQ(38,'B','C')"><span class="opt-label">B.</span> Holding an official position such as manager or director</button>
+        <button class="option-btn" onclick="checkMCQ(38,'C','C')"><span class="opt-label">C.</span> Personal charisma, reputation, or attractive character that others admire</button>
+        <button class="option-btn" onclick="checkMCQ(38,'D','C')"><span class="opt-label">D.</span> Specialized knowledge or technical expertise</button>
+      </div>
+      <div class="mcq-feedback" id="fb-38"></div>
+    </div>
+
+    <!-- Q39 -->
+    <div class="mcq-card" id="mcq-card-39">
+      <div class="mcq-q"><span class="qnum">39.</span> The Laissez-Faire leadership style is characterized by:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(39,'A','B')"><span class="opt-label">A.</span> Strict discipline with clear rules for every situation</button>
+        <button class="option-btn" onclick="checkMCQ(39,'B','B')"><span class="opt-label">B.</span> A very permissive approach where employees are left to reach their own potential</button>
+        <button class="option-btn" onclick="checkMCQ(39,'C','B')"><span class="opt-label">C.</span> Building a strong sense of union and shared goals through consultation</button>
+        <button class="option-btn" onclick="checkMCQ(39,'D','B')"><span class="opt-label">D.</span> Directing all decisions from the top without input from employees</button>
+      </div>
+      <div class="mcq-feedback" id="fb-39"></div>
+    </div>
+
+    <!-- Q40 -->
+    <div class="mcq-card" id="mcq-card-40">
+      <div class="mcq-q"><span class="qnum">40.</span> Which of these is an INDIRECT competitor?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(40,'A','D')"><span class="opt-label">A.</span> Two pharmacies on the same street</button>
+        <button class="option-btn" onclick="checkMCQ(40,'B','D')"><span class="opt-label">B.</span> Two supermarkets selling the same groceries in the same area</button>
+        <button class="option-btn" onclick="checkMCQ(40,'C','D')"><span class="opt-label">C.</span> Two matatu companies operating the same route</button>
+        <button class="option-btn" onclick="checkMCQ(40,'D','D')"><span class="opt-label">D.</span> A cinema and a restaurant — both competing for customer leisure spending</button>
+      </div>
+      <div class="mcq-feedback" id="fb-40"></div>
+    </div>
+
+    <!-- Q41–50 BUSINESS & FINANCE -->
+    <div id="mcq41"></div>
+
+    <!-- Q41 -->
+    <div class="mcq-card" id="mcq-card-41">
+      <div class="mcq-q"><span class="qnum">41.</span> The 4Ps of the Marketing Mix are:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(41,'A','B')"><span class="opt-label">A.</span> People, Process, Physical, Profit</button>
+        <button class="option-btn" onclick="checkMCQ(41,'B','B')"><span class="opt-label">B.</span> Product, Price, Placement, Promotion</button>
+        <button class="option-btn" onclick="checkMCQ(41,'C','B')"><span class="opt-label">C.</span> Plan, Produce, Package, Publish</button>
+        <button class="option-btn" onclick="checkMCQ(41,'D','B')"><span class="opt-label">D.</span> Profit, Position, Performance, People</button>
+      </div>
+      <div class="mcq-feedback" id="fb-41"></div>
+    </div>
+
+    <!-- Q42 -->
+    <div class="mcq-card" id="mcq-card-42">
+      <div class="mcq-q"><span class="qnum">42.</span> A sole proprietorship has UNLIMITED liability. This means:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(42,'A','C')"><span class="opt-label">A.</span> The owner can borrow unlimited amounts from banks</button>
+        <button class="option-btn" onclick="checkMCQ(42,'B','C')"><span class="opt-label">B.</span> The business has no limit on its annual turnover</button>
+        <button class="option-btn" onclick="checkMCQ(42,'C','C')"><span class="opt-label">C.</span> The owner's personal property can be used to settle business debts</button>
+        <button class="option-btn" onclick="checkMCQ(42,'D','C')"><span class="opt-label">D.</span> The business can operate in unlimited locations</button>
+      </div>
+      <div class="mcq-feedback" id="fb-42"></div>
+    </div>
+
+    <!-- Q43 -->
+    <div class="mcq-card" id="mcq-card-43">
+      <div class="mcq-q"><span class="qnum">43.</span> A public limited company in Kenya can start operations after receiving a:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(43,'A','B')"><span class="opt-label">A.</span> Certificate of Incorporation only</button>
+        <button class="option-btn" onclick="checkMCQ(43,'B','B')"><span class="opt-label">B.</span> Certificate of Commencement (trading)</button>
+        <button class="option-btn" onclick="checkMCQ(43,'C','B')"><span class="opt-label">C.</span> License from the Ministry of Finance</button>
+        <button class="option-btn" onclick="checkMCQ(43,'D','B')"><span class="opt-label">D.</span> Approval from the Kenya Revenue Authority</button>
+      </div>
+      <div class="mcq-feedback" id="fb-43"></div>
+    </div>
+
+    <!-- Q44 -->
+    <div class="mcq-card" id="mcq-card-44">
+      <div class="mcq-q"><span class="qnum">44.</span> Retained earnings as a source of finance are best described as:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(44,'A','C')"><span class="opt-label">A.</span> Profits distributed to shareholders as dividends</button>
+        <button class="option-btn" onclick="checkMCQ(44,'B','C')"><span class="opt-label">B.</span> Money borrowed from commercial banks for expansion</button>
+        <button class="option-btn" onclick="checkMCQ(44,'C','C')"><span class="opt-label">C.</span> Undistributed profits kept within the business for reinvestment</button>
+        <button class="option-btn" onclick="checkMCQ(44,'D','C')"><span class="opt-label">D.</span> Government grants given to support small businesses</button>
+      </div>
+      <div class="mcq-feedback" id="fb-44"></div>
+    </div>
+
+    <!-- Q45 -->
+    <div class="mcq-card" id="mcq-card-45">
+      <div class="mcq-q"><span class="qnum">45.</span> Factoring as a source of finance involves:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(45,'A','B')"><span class="opt-label">A.</span> Leasing equipment from a financial institution</button>
+        <button class="option-btn" onclick="checkMCQ(45,'B','B')"><span class="opt-label">B.</span> Selling trade debtors outright to a financial institution for immediate cash</button>
+        <button class="option-btn" onclick="checkMCQ(45,'C','B')"><span class="opt-label">C.</span> Borrowing against the value of fixed assets</button>
+        <button class="option-btn" onclick="checkMCQ(45,'D','B')"><span class="opt-label">D.</span> Issuing new shares to the public</button>
+      </div>
+      <div class="mcq-feedback" id="fb-45"></div>
+    </div>
+
+    <!-- Q46 -->
+    <div class="mcq-card" id="mcq-card-46">
+      <div class="mcq-q"><span class="qnum">46.</span> The Memorandum of Association defines the company's relationship with:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(46,'A','C')"><span class="opt-label">A.</span> Its internal employees and directors</button>
+        <button class="option-btn" onclick="checkMCQ(46,'B','C')"><span class="opt-label">B.</span> The board of directors and shareholders only</button>
+        <button class="option-btn" onclick="checkMCQ(46,'C','C')"><span class="opt-label">C.</span> The outside world — informing outsiders what the company does and its scope</button>
+        <button class="option-btn" onclick="checkMCQ(46,'D','C')"><span class="opt-label">D.</span> The Kenya Revenue Authority for tax purposes</button>
+      </div>
+      <div class="mcq-feedback" id="fb-46"></div>
+    </div>
+
+    <!-- Q47 -->
+    <div class="mcq-card" id="mcq-card-47">
+      <div class="mcq-q"><span class="qnum">47.</span> The Executive Summary of a business plan should be:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(47,'A','D')"><span class="opt-label">A.</span> The first thing written and the most detailed section</button>
+        <button class="option-btn" onclick="checkMCQ(47,'B','D')"><span class="opt-label">B.</span> A technical financial analysis of projected revenues</button>
+        <button class="option-btn" onclick="checkMCQ(47,'C','D')"><span class="opt-label">C.</span> Written at the beginning to guide the writing of other sections</button>
+        <button class="option-btn" onclick="checkMCQ(47,'D','D')"><span class="opt-label">D.</span> Written last, but placed first — a concise, compelling overview of the entire plan</button>
+      </div>
+      <div class="mcq-feedback" id="fb-47"></div>
+    </div>
+
+    <!-- Q48 -->
+    <div class="mcq-card" id="mcq-card-48">
+      <div class="mcq-q"><span class="qnum">48.</span> In cooperative societies, the principle of "one person, one vote" reflects which democratic principle?</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(48,'A','B')"><span class="opt-label">A.</span> Profits are shared equally regardless of contribution</button>
+        <button class="option-btn" onclick="checkMCQ(48,'B','B')"><span class="opt-label">B.</span> Every member has equal voting power regardless of the number of shares held</button>
+        <button class="option-btn" onclick="checkMCQ(48,'C','B')"><span class="opt-label">C.</span> Only the board of directors votes on major decisions</button>
+        <button class="option-btn" onclick="checkMCQ(48,'D','B')"><span class="opt-label">D.</span> Large investors have proportionally more votes</button>
+      </div>
+      <div class="mcq-feedback" id="fb-48"></div>
+    </div>
+
+    <!-- Q49 -->
+    <div class="mcq-card" id="mcq-card-49">
+      <div class="mcq-q"><span class="qnum">49.</span> Hire purchase differs from a standard bank loan primarily because:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(49,'A','C')"><span class="opt-label">A.</span> Hire purchase does not require any down payment</button>
+        <button class="option-btn" onclick="checkMCQ(49,'B','C')"><span class="opt-label">B.</span> Hire purchase is cheaper than a bank loan in the long run</button>
+        <button class="option-btn" onclick="checkMCQ(49,'C','C')"><span class="opt-label">C.</span> The asset belongs to the lender (hiree) until all instalments are paid; does not require collateral, needs guarantors</button>
+        <button class="option-btn" onclick="checkMCQ(49,'D','C')"><span class="opt-label">D.</span> Hire purchase is only available for purchasing land and buildings</button>
+      </div>
+      <div class="mcq-feedback" id="fb-49"></div>
+    </div>
+
+    <!-- Q50 -->
+    <div class="mcq-card" id="mcq-card-50">
+      <div class="mcq-q"><span class="qnum">50.</span> The 4Cs of credit that lenders evaluate in a business plan are:</div>
+      <div class="options-grid">
+        <button class="option-btn" onclick="checkMCQ(50,'A','A')"><span class="opt-label">A.</span> Cash flow, Collateral, Character, Contribution of equity</button>
+        <button class="option-btn" onclick="checkMCQ(50,'B','A')"><span class="opt-label">B.</span> Cost, Capital, Customers, Competition</button>
+        <button class="option-btn" onclick="checkMCQ(50,'C','A')"><span class="opt-label">C.</span> Creativity, Commitment, Cash, Collateral</button>
+        <button class="option-btn" onclick="checkMCQ(50,'D','A')"><span class="opt-label">D.</span> Credit history, Contacts, Contracts, Cash</button>
+      </div>
+      <div class="mcq-feedback" id="fb-50"></div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 2: SHORT ANSWER -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="q-section" id="sa-section">
+    <div class="q-section-header">
+      <div class="icon">🟡</div>
+      <h2>Short Answer Questions</h2>
+      <span class="q-count">25 Questions · ~4–6 marks each</span>
+    </div>
+    <div class="callout">Write your answer in the box, then click "Show Model Answer" to compare. Focus on key terms and correct concepts.</div>
+
+    <div id="sa1"></div>
+
+    <!-- SA1 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA1.</span> Define entrepreneurship and distinguish it from ordinary business ownership.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-1')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-1">
+        <div class="ma-label">✦ Model Answer</div>
+        <p><strong>Entrepreneurship</strong> is the process of identifying a business opportunity, gathering the necessary resources, and creating and managing a new venture to satisfy a need while taking on associated risks in pursuit of profit and growth.</p>
+        <p>Key distinctions from ordinary business ownership:</p>
+        <ul>
+          <li><strong>Innovation:</strong> Entrepreneurs are more innovative — they develop new ideas, products, or processes. Ordinary business owners often replicate existing models.</li>
+          <li><strong>Risk appetite:</strong> Entrepreneurs take calculated risks to pursue growth; ordinary owners may prefer stability.</li>
+          <li><strong>Growth orientation:</strong> Entrepreneurs aim to grow and expand; some business owners are content to remain small.</li>
+          <li><strong>Value creation:</strong> Entrepreneurs often create new market value (e.g., a new product or service); ordinary owners manage existing value.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SA2 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA2.</span> State FIVE myths about entrepreneurship and briefly explain why each is false.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-2')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-2">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Entrepreneurs are born, not made</strong> — False: Entrepreneurial skills can be learned and developed through education and experience.</li>
+          <li><strong>Entrepreneurs need a lot of money to start</strong> — False: Many successful businesses started with minimal capital through creative use of available resources.</li>
+          <li><strong>Entrepreneurs are gamblers</strong> — False: They take <em>calculated, moderate</em> risks after careful analysis, not random chances.</li>
+          <li><strong>Entrepreneurs are always inventors</strong> — False: Many entrepreneurs succeed by improving existing products or entering new markets, not inventing new things.</li>
+          <li><strong>Entrepreneurs are lucky</strong> — False: What appears as luck is actually preparation meeting opportunity; they are better prepared to seize chances when they arise.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA3 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA3.</span> Explain FOUR internal motivations that drive a person to become an entrepreneur.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-3')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-3">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Need for independence:</strong> The desire to be one's own boss, control one's own destiny, and make autonomous business decisions without taking orders from others.</li>
+          <li><strong>Need for recognition:</strong> The aspiration to be acknowledged and respected by peers, family, and society for one's achievements — entrepreneurship provides a visible platform for this.</li>
+          <li><strong>Need for security:</strong> The drive to ensure financial stability for oneself and family. Wage employment may not be pensionable or sufficient; owning a business provides a more controllable security.</li>
+          <li><strong>Self-actualization:</strong> The deepest need — to fully realize one's potential and accomplish something unique. Entrepreneurship offers the freedom and challenge to express this more than formal employment typically allows.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA4 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA4.</span> What is a SWOT analysis? State TWO examples for each component.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-4')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-4">
+        <div class="ma-label">✦ Model Answer</div>
+        <p>A <strong>SWOT analysis</strong> is a systematic evaluation tool used to assess a business idea by examining internal and external factors that affect its success or failure.</p>
+        <ul>
+          <li><strong>Strengths (internal):</strong> e.g., Adequate capital reserves; highly skilled and experienced management team</li>
+          <li><strong>Weaknesses (internal):</strong> e.g., Lack of key technical skills; poor brand recognition in the target market</li>
+          <li><strong>Opportunities (external):</strong> e.g., Growing demand for the product in an underserved market segment; favorable government policy supporting the industry</li>
+          <li><strong>Threats (external):</strong> e.g., Strong, well-established competitors; adverse government regulation or increasing taxation</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SA5 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA5.</span> Explain the concept of business incubation and state THREE benefits it provides to start-up businesses.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-5')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-5">
+        <div class="ma-label">✦ Model Answer</div>
+        <p><strong>Business incubation</strong> is the process of nurturing start-up and small businesses to relative maturity through a structured support programme — helping them become self-sustaining, healthy, and wealth-generating enterprises. The global business failure rate is 90%, but incubated businesses have an over 80% success rate.</p>
+        <p>Three benefits:</p>
+        <ol>
+          <li><strong>Job and wealth creation:</strong> Incubated businesses that survive go on to hire staff and generate income, contributing to local economic growth.</li>
+          <li><strong>Access to resources and expertise:</strong> Incubators provide shared resources (office space, equipment, legal advice) that start-ups cannot afford individually.</li>
+          <li><strong>Reduced failure rate:</strong> Mentorship, business training, and networking provided through incubation programs dramatically improve the chance of survival and success.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA6 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA6.</span> Distinguish between a trademark and a copyright, giving one example of each.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-6')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-6">
+        <div class="ma-label">✦ Model Answer</div>
+        <ul>
+          <li><strong>Trademark:</strong> A word, name, symbol, or device used by a manufacturer or merchant to identify goods and distinguish them from competitors. It must be used commercially. <em>Example: The Nike "swoosh" symbol or the brand name "Safaricom."</em></li>
+          <li><strong>Copyright:</strong> Protects intellectual property — creative works like books, music, and art. It covers the creator's expression of ideas (not the ideas themselves) and lasts for the life of the creator plus 50 years. <em>Example: A textbook written by a medical professor; a song recorded by an artist.</em></li>
+        </ul>
+        <p><strong>Key difference:</strong> Trademarks protect commercial identifiers (brand names/logos), while copyrights protect creative and intellectual works. Trademarks may last indefinitely if renewed; copyrights expire.</p>
+      </div>
+    </div>
+
+    <!-- SA7 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA7.</span> State and briefly explain THREE types of co-operative societies.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-7')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-7">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Producer Co-operative:</strong> An association of producers (e.g., farmers) who come together to collect, process, market, and distribute their produce collectively. This gives them better prices, improved transport, and access to markets they could not reach individually. Example: a dairy farmers' co-operative.</li>
+          <li><strong>Consumer Co-operative:</strong> Members pool resources to buy goods in bulk and sell to each other at lower prices, eliminating the middleman. The primary function is to purchase and distribute quality goods to members at reasonable prices.</li>
+          <li><strong>SACCO (Savings and Credit Co-operative Society):</strong> Members save money into a common pool and can access loans at low interest rates (typically 1% per month). Deductions are often made from salaries through a check-off system. Members' savings serve as security for loans alongside guarantors and payslips.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA8 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA8.</span> Explain what is meant by the "marketing mix" and name its four components.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-8')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-8">
+        <div class="ma-label">✦ Model Answer</div>
+        <p>The <strong>marketing mix</strong> refers to the combination, design, and integration of all marketing elements into a single coordinated program aimed at achieving the business's marketing objectives. It describes how a company combines various inputs to reach and satisfy its target customers.</p>
+        <p>The four components (4Ps):</p>
+        <ol>
+          <li><strong>Product:</strong> The actual good or service offered — its design, quality, range, packaging, and warranties</li>
+          <li><strong>Price:</strong> The value charged to the buyer — reflects quality, generates revenue, and influences demand</li>
+          <li><strong>Placement (Distribution):</strong> How the product reaches the customer — channels, transport, warehousing</li>
+          <li><strong>Promotion:</strong> How the business communicates with customers — advertising, personal selling, sales promotions, publicity, and PR</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA9 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA9.</span> State FOUR advantages of operating a business as a sole proprietorship.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-9')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-9">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Easy and inexpensive to start:</strong> Only a government license is required; minimal legal formalities compared to other business forms.</li>
+          <li><strong>Quick decision making:</strong> The owner makes all decisions without needing to consult partners or a board, allowing rapid responses to market changes.</li>
+          <li><strong>Full profit retention:</strong> All profits belong entirely to the owner — there is no sharing with partners or shareholders.</li>
+          <li><strong>Control over business secrets:</strong> Sensitive business information remains with the owner alone, protecting competitive advantages.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA10 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA10.</span> What is business ethics? State THREE ethical principles that guide business behavior.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-10')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-10">
+        <div class="ma-label">✦ Model Answer</div>
+        <p><strong>Business ethics</strong> is concerned with what is right and wrong in the practice of business. It addresses the set of moral principles governing the conduct of managers, entrepreneurs, and employees in their business operations and relationships.</p>
+        <p>Three guiding principles:</p>
+        <ol>
+          <li><strong>Honesty:</strong> Being truthful, sincere, and forthright in all business dealings — in advertising claims, financial reporting, and dealings with partners and customers.</li>
+          <li><strong>Fairness:</strong> Giving appropriate consideration to all stakeholders — workers, customers, suppliers — regardless of personal relationships or profit motives.</li>
+          <li><strong>Trust:</strong> Building mutual trust where both parties (business and customer; employer and employee) can rely on each other to honor commitments. Without trust, no lasting business relationship can develop.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div id="sa11"></div>
+
+    <!-- SA11 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA11.</span> Describe THREE methods of generating business ideas with a practical example for each.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-11')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-11">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Identifying a need:</strong> Noticing an unmet need in the community and creating a product or service to fill it. <em>Example: Observing that a neighborhood lacks a reliable pharmacy and opening one to meet that health need.</em></li>
+          <li><strong>Gaining from waste:</strong> Recognizing value in materials others discard and building a business around repurposing them. <em>Example: Collecting used plastic bottles, shredding them, and selling recycled plastic pellets to manufacturers.</em></li>
+          <li><strong>Spin-off from employment:</strong> Using experience gained in formal employment to start an independent business in the same field. <em>Example: A laboratory technician who works in a hospital laboratory for years then opens a private diagnostic clinic using the skills and market knowledge acquired.</em></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA12 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA12.</span> Explain the concept of "creative destruction" with a real-world example.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-12')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-12">
+        <div class="ma-label">✦ Model Answer</div>
+        <p><strong>Creative destruction</strong> is the process by which new innovations make existing products, services, or business arrangements obsolete, freeing up resources (capital, labour, talent) to be redeployed in more productive and efficient ways. The term is associated with economist Joseph Schumpeter.</p>
+        <p><strong>Example:</strong> The rise of mobile money platforms like M-Pesa disrupted and largely replaced traditional money transfer agencies (Western Union for local transfers) and reduced the need for physical bank visits for small transactions. While some jobs in those sectors were lost, entirely new industries and roles (mobile money agents, fintech developers, digital lending) were created, leading to greater economic efficiency overall.</p>
+      </div>
+    </div>
+
+    <!-- SA13 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA13.</span> State FOUR characteristics of a good business opportunity.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-13')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-13">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Existence of demand:</strong> There must be a real, sustainable market for the product or service — actual customers willing and able to pay.</li>
+          <li><strong>Attractive return on investment:</strong> The opportunity must be sufficiently profitable — expected revenues must exceed costs by a reasonable margin.</li>
+          <li><strong>Short gestation period:</strong> The business should start generating returns relatively quickly so the entrepreneur can meet financial obligations while growing.</li>
+          <li><strong>Scope for growth and diversification:</strong> A good business opportunity has room to expand into new products, markets, or customer segments over time, providing long-term value.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA14 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA14.</span> Explain what a Partnership Deed is and state FOUR things it typically contains.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-14')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-14">
+        <div class="ma-label">✦ Model Answer</div>
+        <p>A <strong>Partnership Deed</strong> (also called Articles of Partnership) is a written legal agreement between partners that documents the terms and conditions governing the partnership. Although not legally required, it is strongly advised — especially for businesses with significant financial commitments — as it protects each partner's interests.</p>
+        <p>Four typical contents:</p>
+        <ol>
+          <li>The nature of the business to be carried out</li>
+          <li>The capital contributions of each partner and how profits and losses will be shared</li>
+          <li>The powers, duties, and responsibilities of each partner</li>
+          <li>The procedures for admitting new partners, retiring partners, or dissolving the partnership</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA15 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA15.</span> What is an overdraft and state TWO advantages and TWO disadvantages of using it as a source of finance.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-15')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-15">
+        <div class="ma-label">✦ Model Answer</div>
+        <p>A <strong>bank overdraft</strong> is a short-term facility where the bank allows a business to withdraw more money than is in its account up to an agreed limit. It is used to solve short-term liquidity gaps.</p>
+        <p><strong>Advantages:</strong></p>
+        <ol>
+          <li>Flexible and quickly available — can be used in emergencies without lengthy paperwork</li>
+          <li>Usually unsecured — the bank relies on the business's goodwill and relationship, not collateral</li>
+        </ol>
+        <p><strong>Disadvantages:</strong></p>
+        <ol>
+          <li>Most expensive form of short-term debt — interest rates are 1–2% higher than normal lending rates</li>
+          <li>Can be recalled by the bank at any time — creates financial uncertainty for the business</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA16 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA16.</span> State FOUR reasons why people resist change in a business.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-16')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-16">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Fear of the unknown:</strong> People are uncertain about what the change will bring and feel more comfortable with familiar routines and systems.</li>
+          <li><strong>Misinformation or lack of information:</strong> When people are not properly communicated with about why and how change is happening, they fill information gaps with fear and rumors.</li>
+          <li><strong>Threat to existing power base:</strong> Employees who hold influence under the current system fear losing it under a new arrangement, and so resist the change to protect their position.</li>
+          <li><strong>No perceived tangible benefits:</strong> People resist change when they cannot see clear, immediate personal gains from it. They ask "What's in it for me?" — and if the answer is unclear, they resist.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA17 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA17.</span> Describe THREE differences between a public limited company and a private limited company.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-17')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-17">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Membership:</strong> A public limited company has a minimum of 7 members with no maximum. A private limited company has a minimum of 2 and a maximum of 50 members (excluding employees).</li>
+          <li><strong>Share invitation:</strong> A public limited company can invite the general public to buy its shares (through a prospectus). A private limited company cannot publicly advertise or invite the public to purchase shares — shares are placed privately.</li>
+          <li><strong>Share transferability:</strong> In a public limited company, shares are freely transferable through the stock exchange. In a private limited company, shares can only be transferred with the consent of other shareholders — they are not quoted on the stock exchange.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA18 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA18.</span> What is Corporate Social Responsibility (CSR)? Give THREE examples of CSR activities a business might undertake.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-18')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-18">
+        <div class="ma-label">✦ Model Answer</div>
+        <p><strong>Corporate Social Responsibility (CSR)</strong> refers to the roles and obligations that a business undertakes toward its surrounding community and environment — going beyond profit-making to positively impact society.</p>
+        <p>Three examples:</p>
+        <ol>
+          <li><strong>Environmental protection:</strong> A manufacturing company investing in waste treatment systems and using recyclable packaging to minimize pollution and environmental damage.</li>
+          <li><strong>Community development:</strong> A bank sponsoring bursary funds for students in poor communities, or a hospital offering free health camps in underserved villages.</li>
+          <li><strong>Gender empowerment:</strong> A company creating a mentorship and funding program specifically for women entrepreneurs, or funding campaigns against gender-based violence (GBV) in local communities.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA19 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA19.</span> Explain FOUR factors an entrepreneur should consider when choosing a promotional method.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-19')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-19">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Cost:</strong> The promotion must be affordable. The expected return from the promotional activity must justify the expenditure. A small business cannot afford a national TV campaign.</li>
+          <li><strong>Target audience:</strong> Different customer groups respond to different media. Reaching rural customers may require community radio; reaching urban youth may require social media.</li>
+          <li><strong>Nature of the product:</strong> Complex or technical products (e.g., medical equipment) may require demonstrations or personal selling, while simple consumer goods can be advertised broadly.</li>
+          <li><strong>Urgency of the message:</strong> If a promotion needs to reach the public quickly (e.g., a flash sale or product recall), fast media like radio, TV, or SMS are appropriate. Print media is better for detailed, lasting messages.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA20 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA20.</span> Explain what e-business is and state THREE advantages it offers to small enterprises.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-20')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-20">
+        <div class="ma-label">✦ Model Answer</div>
+        <p><strong>E-business</strong> is the use of the internet and information technology to support electronic commerce, enterprise communication, and collaboration. It encompasses web-enabled business processes both within a company and with its customers and business partners.</p>
+        <p>Three advantages for small enterprises:</p>
+        <ol>
+          <li><strong>Access to new markets:</strong> A small business in Nairobi can sell products to customers in Kisumu, Mombasa, or internationally without opening physical branches — dramatically expanding the potential customer base.</li>
+          <li><strong>Lower costs:</strong> E-business reduces distribution costs, minimizes inventory through just-in-time systems, and cuts advertising costs through targeted digital marketing, which is cheaper than traditional media.</li>
+          <li><strong>Improved customer service:</strong> Businesses can offer 24/7 ordering, instant responses to inquiries, and home delivery — creating a better customer experience that was previously only possible for large companies.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA21 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA21.</span> Define leadership and state THREE qualities a good business leader should possess.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-21')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-21">
+        <div class="ma-label">✦ Model Answer</div>
+        <p><strong>Leadership</strong> is the ability to inspire, influence, and persuade others to give maximum effort and cooperation willingly and voluntarily toward the attainment of shared goals.</p>
+        <p>Three qualities of a good business leader:</p>
+        <ol>
+          <li><strong>Vision and foresight:</strong> The ability to see beyond the present, anticipate future changes in the market, and plan accordingly to keep the business ahead of emerging challenges.</li>
+          <li><strong>Self-confidence:</strong> A leader must believe in their abilities and be willing to make and stand by decisions even when faced with opposition or early setbacks.</li>
+          <li><strong>Good human relations:</strong> The ability to communicate, empathize, and build trust with employees, customers, and partners — creating a positive business culture and image.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA22 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA22.</span> Explain what "debentures" are and state TWO types based on redemption.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-22')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-22">
+        <div class="ma-label">✦ Model Answer</div>
+        <p>A <strong>debenture</strong> is a document that provides evidence of a long-term debt owed by a company. The word comes from the Latin <em>deboe</em> meaning "I owe." It confirms the company has borrowed a specific sum from the holder and includes a fixed interest rate paid twice yearly. Interest on debentures is a legal obligation and a tax-allowable expense.</p>
+        <p>Two types based on redemption:</p>
+        <ol>
+          <li><strong>Redeemable debentures:</strong> The company buys back (redeems) these within a stated minimum and maximum period (typically 10–15 years). After the maximum redemption period, failure to redeem can lead to receivership.</li>
+          <li><strong>Irredeemable (perpetual) debentures:</strong> These are never bought back by the company during its normal life — they form a permanent source of finance and are only redeemed in the event of the company's liquidation. Only financially strong companies with a good dividend history sell these.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA23 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA23.</span> What is time management? State FOUR effective time management practices for an entrepreneur.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-23')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-23">
+        <div class="ma-label">✦ Model Answer</div>
+        <p><strong>Time management</strong> is the management of activities undertaken during one's available time to achieve set goals. Time is unique — it is shared equally by all, cannot be stored, and cannot be replaced once lost.</p>
+        <p>Four effective practices:</p>
+        <ol>
+          <li><strong>Draw up a daily action plan:</strong> Create a "things to do" list every morning, ranked by priority — this ensures the most important tasks receive attention before less critical ones.</li>
+          <li><strong>Delegate effectively:</strong> Assign tasks to qualified staff and monitor their progress rather than trying to do everything personally. This frees the entrepreneur for high-level strategic work.</li>
+          <li><strong>Control interruptions:</strong> Set specific times for meetings, visitor access, and phone calls. Unplanned interruptions are one of the biggest time wasters in business.</li>
+          <li><strong>Schedule realistically:</strong> Create a timetable that accounts for travel, preparation, and buffer time — do not overcommit. Then adhere to the schedule with discipline.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA24 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA24.</span> Explain globalization and state THREE advantages for entrepreneurs who go global.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-24')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-24">
+        <div class="ma-label">✦ Model Answer</div>
+        <p><strong>Globalization</strong> is an international phenomenon eliminating political and economic barriers to business, where electronic media and communication reduce distances, enabling companies to operate across national boundaries and treat the globe as their market.</p>
+        <p>Three advantages:</p>
+        <ol>
+          <li><strong>Access to larger markets:</strong> Entrepreneurs can sell to millions of customers beyond their home country — dramatically increasing potential revenue and growth.</li>
+          <li><strong>Access to cheaper inputs:</strong> Going global allows businesses to source raw materials, components, and skilled labour from countries where they are cheaper, reducing production costs and improving competitiveness.</li>
+          <li><strong>Earning foreign exchange:</strong> Exporting products and services earns foreign currency, which strengthens both the business's and the home country's economic position.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- SA25 -->
+    <div class="sa-card">
+      <div class="sa-q"><span class="qnum">SA25.</span> Explain THREE components of a business plan that are most important for attracting investors.</div>
+      <textarea class="sa-textarea" placeholder="Write your answer here…"></textarea>
+      <button class="sa-btn" onclick="toggleAnswer('sa-ans-25')">Show Model Answer</button>
+      <div class="model-answer" id="sa-ans-25">
+        <div class="ma-label">✦ Model Answer</div>
+        <ol>
+          <li><strong>Executive Summary:</strong> This is the most critical section for investors — it is the first thing they read and determines whether they continue. It must be concise yet compelling, clearly articulating the business concept, the market opportunity, the entrepreneur's unique advantage, and how much funding is needed and why.</li>
+          <li><strong>Financial Plan:</strong> Investors focus heavily on financial projections — projected cash flow statements, income statements, and balance sheets. This demonstrates whether the business will generate sufficient returns to justify investment, when the business will become profitable, and how the investor's money will be used.</li>
+          <li><strong>Marketing Plan:</strong> Investors need to see evidence that a real market exists and that the entrepreneur has a credible strategy to capture it. This includes market size data, target customer definition, competitive analysis, and specific strategies for pricing, distribution, and promotion.</li>
+        </ol>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION 3: LONG ANSWER -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="q-section" id="la-section">
+    <div class="q-section-header">
+      <div class="icon">🟣</div>
+      <h2>Long Answer / Essay Questions</h2>
+      <span class="q-count">10 Questions · 20 marks each</span>
+    </div>
+    <div class="callout">These questions require detailed, well-structured answers. Use paragraphs and headings where appropriate. After writing, reveal the model answer to check your coverage of key points.</div>
+
+    <div id="la1"></div>
+
+    <!-- LA1 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA1.</span> Discuss the evolution of entrepreneurship in Kenya, explaining the key factors that led to its development and the government's response to the ILO report. How do economic, social, and political factors continue to affect entrepreneurial development in Kenya today?</div>
+      <span class="la-marks">20 marks — Approximately 500–700 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-1')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-1">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. Background and Context</h4>
+        <p>Entrepreneurship in Kenya gained momentum in the early 1960s–1970s as a response to stagnating economic growth and rising unemployment. The economy was struggling to absorb school leavers into formal employment, and there was growing recognition that the private sector — particularly small enterprises — needed to play a larger role.</p>
+        <h4>2. The ILO Report — The Catalyst</h4>
+        <p>The <strong>International Labour Organization (ILO)</strong> published a landmark report that focused on Kenya's informal sector, noting that the bulk of Nairobi's urban workers were self-employed in small enterprises. The report proposed that developing this sector could: (i) promote employment, (ii) facilitate economic development, and (iii) achieve a more equitable distribution of resources. This shifted thinking away from the view that only formal, large-scale businesses mattered.</p>
+        <h4>3. Government Response</h4>
+        <p>Responding to the ILO report, the government published a <strong>Sessional Paper in 1973</strong>, officially recognizing entrepreneurship's role in employment creation across both informal and formal sectors. Subsequent development plans introduced: the Industrial Estate Programme (providing shared physical workspaces); development agencies like <strong>KIE</strong> (Kenya Industrial Estates) and <strong>ICDC</strong> (Industrial and Commercial Development Corporation) to offer credit and advisory services; a policy and institutional framework; and specific efforts to promote indigenous Kenyan entrepreneurs who had historically been marginalized.</p>
+        <h4>4. Economic Factors Affecting Development Today</h4>
+        <p>Despite these efforts, entrepreneurs today still face: high taxation that reduces margins and raises production costs; high interest rates from commercial banks that make borrowing expensive; inflation eroding purchasing power; and the collapse of businesses due to inability to service loans. Trade liberalization has opened the market to cheap imports that undercut local producers.</p>
+        <h4>5. Social and Cultural Factors</h4>
+        <p>Lack of an entrepreneurial culture in many communities, religious prohibitions on certain businesses, family obligations that drain resources, and negative attitudes toward failure all suppress entrepreneurial activity. The absence of role models in entrepreneurship — particularly in rural communities — means many potential entrepreneurs never attempt self-employment.</p>
+        <h4>6. Political Factors</h4>
+        <p>Political instability, corruption, unnecessary bureaucracy, and regulatory harassment continue to discourage entrepreneurship. However, devolution through counties has created new opportunities by bringing government services and procurement closer to local entrepreneurs.</p>
+        <h4>7. Conclusion</h4>
+        <p>While Kenya has made significant strides since the 1970s, creating a truly enabling environment for entrepreneurship requires sustained government action — reducing bureaucratic barriers, improving credit access, investing in infrastructure, and building an entrepreneurial culture through education from an early age.</p>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Background/ILO (4) · Government response (4) · Economic factors (4) · Social/cultural factors (4) · Political factors (2) · Quality of argument/conclusion (2) = 20 marks</div>
+      </div>
+    </div>
+
+    <!-- LA2 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA2.</span> "Entrepreneurs are born, not made." Critically discuss this statement, drawing on relevant theories of entrepreneurship and evidence from the study of entrepreneurship as a discipline.</div>
+      <span class="la-marks">20 marks — Approximately 500–700 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-2')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-2">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. Introduction — The Statement's Origin</h4>
+        <p>The belief that entrepreneurs are born, not made, suggests that entrepreneurial traits are innate — present from birth — and cannot be taught or developed. For much of the 20th century this view was widely held, particularly because of stories of famous entrepreneurs who seemed to have natural gifts.</p>
+        <h4>2. Arguments SUPPORTING the Statement (Born View)</h4>
+        <p>The <strong>Trait Theory of leadership and entrepreneurship</strong> argues that certain personality traits — such as high need for achievement, risk tolerance, creativity, and internal locus of control — are stable, inherited characteristics. Studies have shown consistent personality profiles among successful entrepreneurs. Additionally, some argue that the childhood environment and early exposure to business cannot be replicated by formal education.</p>
+        <h4>3. Arguments AGAINST the Statement (Made View)</h4>
+        <p>The strongest counter-argument is the <strong>growing recognition of entrepreneurship as a teachable academic discipline</strong>. Universities worldwide — including in Kenya — now offer entrepreneurship degrees, and thousands of successful entrepreneurs attribute their skills to formal training, mentorship, and experience rather than innate ability. The <strong>Behavioral Theory</strong> holds that leadership and entrepreneurial behaviors can be learned and refined. The <strong>Motivational Theory</strong> suggests that both internal and external factors (credit access, training, supportive policies) shape entrepreneurial behavior — meaning the environment plays a crucial role that pure genetics cannot explain. The success of business incubation programs (80%+ success rates) further proves that training and structured support transform ordinary people into effective entrepreneurs.</p>
+        <h4>4. Myths That Perpetuate This View</h4>
+        <p>Several myths sustain this belief: that entrepreneurs must fit a specific personality "profile"; that money is the most critical ingredient (suggesting only certain privileged people can succeed); and that failure is inevitable. Each of these has been disproven by evidence from entrepreneurship research.</p>
+        <h4>5. The Balanced View</h4>
+        <p>Most modern scholars accept a <strong>nature AND nurture</strong> position: certain personality predispositions (risk tolerance, curiosity, resilience) may give some people a head start, but entrepreneurial competencies — planning, marketing, financial management, leadership — are learnable skills that can be developed by virtually anyone with the right training, experience, and support environment.</p>
+        <h4>6. Conclusion</h4>
+        <p>The statement is largely a myth. While natural temperament may give some individuals an initial advantage, the evidence overwhelmingly shows that entrepreneurship can be and is learned. The statement should be reframed as: "Some entrepreneurs are born with helpful traits, but all entrepreneurs are ultimately made through learning, practice, and experience."</p>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Introduction (2) · Arguments for (4) · Arguments against (6) · Myths discussed (4) · Balanced conclusion (4) = 20 marks</div>
+      </div>
+    </div>
+
+    <!-- LA3 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA3.</span> Explain Maslow's Hierarchy of Needs and discuss how each level of the hierarchy relates to entrepreneurial motivation. Why might entrepreneurship better fulfill higher-order needs than formal employment?</div>
+      <span class="la-marks">20 marks — Approximately 500–700 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-3')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-3">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. Introduction — The Theory</h4>
+        <p>Abraham Maslow was a psychologist who proposed that human motivation is driven by a hierarchy of needs, arranged from the most basic biological needs to the most abstract psychological needs. His three core assumptions: (i) humans are never fully satisfied; (ii) a satisfied need no longer motivates; (iii) needs are arranged in a hierarchy of importance.</p>
+        <h4>2. Level 1 — Physiological Needs and Entrepreneurship</h4>
+        <p>These are the most basic survival needs: food, clothing, and shelter. When formal employment cannot meet these — due to low wages, unemployment, or insufficient income — people are pushed into entrepreneurship as a survival strategy. Starting a small business (e.g., selling produce, doing repairs) becomes the primary means of meeting basic needs.</p>
+        <h4>3. Level 2 — Safety/Security Needs and Entrepreneurship</h4>
+        <p>Once physiological needs are met, people worry about security — job security, income stability, and the future. Entrepreneurs save money, buy insurance, and build their businesses to create a sustainable income stream that they control. Unlike formal employment (which can end with retrenchment), a well-run business can provide long-term financial security.</p>
+        <h4>4. Level 3 — Belonging/Social Needs</h4>
+        <p>Entrepreneurs fulfill this need through business networks, trade associations, partnerships, and mentorship relationships. The sense of belonging to a professional business community provides social connection and peer support.</p>
+        <h4>5. Level 4 — Esteem Needs and Entrepreneurship</h4>
+        <p>Owning a successful business is one of the most powerful ways to gain recognition, prestige, and status in society. An entrepreneur who employs others, provides community services, or grows a visible business earns esteem from family, peers, and the broader community — often more so than an employee, however senior.</p>
+        <h4>6. Level 5 — Self-Actualization and Entrepreneurship</h4>
+        <p>This is where entrepreneurship most powerfully surpasses formal employment. Self-actualization is about fully realizing one's potential — pursuing a unique purpose. Entrepreneurship allows individuals to express creativity, take on challenges, make independent decisions, and build something lasting that reflects their unique capabilities. Formal employment, by contrast, often constrains individuals to predefined roles within someone else's vision.</p>
+        <h4>7. Why Entrepreneurship Better Fulfills Higher-Order Needs</h4>
+        <p>Formal employment limits autonomy, constrains creative expression, and places the individual within a hierarchy they did not create. Entrepreneurship offers freedom, challenge, and the possibility of building something meaningful — all of which directly feed esteem and self-actualization. This is why many people leave well-paying jobs to start businesses: they are trading lower-order security for higher-order fulfillment.</p>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Theory/3 assumptions (3) · Each of 5 levels linked to entrepreneurship (10) · Why entrepreneurship is superior for higher needs (4) · Quality of argument (3) = 20 marks</div>
+      </div>
+    </div>
+
+    <!-- LA4 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA4.</span> Discuss the forms of business organization available to an entrepreneur in Kenya. For each form, explain its formation process, liability implications, and TWO advantages and TWO disadvantages.</div>
+      <span class="la-marks">20 marks — Approximately 600–800 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-4')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-4">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. Sole Proprietorship</h4>
+        <p><strong>Formation:</strong> The simplest form — only a government trading license is required. If the business name differs from the owner's name, it must be registered with the Registrar of Business Names.</p>
+        <p><strong>Liability:</strong> <em>Unlimited</em> — the owner's personal property can be used to settle business debts.</p>
+        <p><strong>Advantages:</strong> (i) Easy and cheap to form with minimal legal requirements; (ii) All profits belong entirely to the owner with no sharing.</p>
+        <p><strong>Disadvantages:</strong> (i) Unlimited liability puts personal assets at risk; (ii) Limited life — the business legally ceases upon the owner's death.</p>
+        <h4>2. Partnership</h4>
+        <p><strong>Formation:</strong> Can be formed orally, by written agreement, or by a formal Partnership Deed. Must comply with the Partnership Act (1934). Cannot have more than 20 partners.</p>
+        <p><strong>Liability:</strong> Typically <em>unlimited</em> for general partners (their personal property is at risk); limited partners have liability only up to their capital contribution.</p>
+        <p><strong>Advantages:</strong> (i) Combines capital and skills from multiple partners, allowing larger investment than a sole trader; (ii) Sound decision making through consultation among partners with complementary expertise.</p>
+        <p><strong>Disadvantages:</strong> (i) Mutual agency — one partner's unauthorized actions can bind and harm all others; (ii) Dissolution risk — death, bankruptcy, or withdrawal of one partner can dissolve the partnership.</p>
+        <h4>3. Private Limited Company</h4>
+        <p><strong>Formation:</strong> Requires submission of five documents to the Registrar of Companies (Memorandum of Association, Articles of Association, List of Directors, etc.) and issuance of a Certificate of Incorporation. Minimum 2, maximum 50 members.</p>
+        <p><strong>Liability:</strong> <em>Limited</em> — shareholders are only liable up to the value of their shares.</p>
+        <p><strong>Advantages:</strong> (i) Limited liability protects shareholders' personal property; (ii) Perpetual succession — the company continues even if shareholders change or die.</p>
+        <p><strong>Disadvantages:</strong> (i) Cannot invite the public to buy shares — restricts capital raising; (ii) Costly and complex formation process requiring legal expertise.</p>
+        <h4>4. Public Limited Company</h4>
+        <p><strong>Formation:</strong> As above, but also requires a Prospectus (invitation to the public to buy shares) and a Certificate of Commencement before trading. Minimum 7 members.</p>
+        <p><strong>Liability:</strong> <em>Limited</em> to share value or guarantee amount.</p>
+        <p><strong>Advantages:</strong> (i) Can raise large amounts of capital from the public through stock exchange listing; (ii) High credibility and ability to attract highly qualified professional managers.</p>
+        <p><strong>Disadvantages:</strong> (i) Lack of secrecy — required to publish annual financial statements; (ii) Double taxation — profits taxed at company level, then dividends taxed again at the shareholder level.</p>
+        <h4>5. Co-operative Society</h4>
+        <p><strong>Formation:</strong> Minimum 10 members submit a constitution to the Commissioner of Co-operative Societies. A Certificate of Registration is issued upon approval.</p>
+        <p><strong>Liability:</strong> <em>Limited</em> to members' contributions.</p>
+        <p><strong>Advantages:</strong> (i) Democratic management — one person, one vote regardless of shares held; (ii) Low-cost services to members (e.g., cheap credit for SACCOs).</p>
+        <p><strong>Disadvantages:</strong> (i) Poor management risk due to election of managers by popular vote rather than merit; (ii) Constant political interference and disagreements among members.</p>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Each of 5 forms: formation (1) + liability (1) + advantages (1) + disadvantages (1) = 4 marks × 5 forms = 20 marks</div>
+      </div>
+    </div>
+
+    <!-- LA5 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA5.</span> Explain the concept of innovation in entrepreneurship. Discuss the reasons why entrepreneurs may resist or oppose innovation, the requirements for innovation to take place, and the potential consequences of failing to innovate.</div>
+      <span class="la-marks">20 marks — Approximately 500–700 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-5')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-5">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. Definition of Innovation</h4>
+        <p><strong>Innovation</strong> is the process of improving an existing idea or commercializing a concept — turning ideas into tangible, value-creating realities. It builds on creativity (the generation of new ideas) to produce goods, services, or processes that create wealth. <strong>Creative destruction</strong> — where innovation makes old arrangements obsolete — is a natural consequence of innovation (e.g., mobile banking replacing traditional money transfer).</p>
+        <h4>2. Why Entrepreneurs Resist Innovation</h4>
+        <ul>
+          <li><strong>Fear of unforeseen consequences:</strong> New products may have unexpected side effects (e.g., a drug with unknown interactions), creating liability risks.</li>
+          <li><strong>Fear of profit loss:</strong> The investment in innovation may not yield the expected returns, resulting in financial loss.</li>
+          <li><strong>Protection of monopoly:</strong> Entrepreneurs who dominate a market may resist innovation that could disrupt their advantageous position.</li>
+          <li><strong>Social and moral resistance:</strong> Some innovations may clash with community values or customs, reducing consumer acceptance.</li>
+          <li><strong>Fear of competition:</strong> Innovation requires sharing new ideas with the market, which competitors may copy and improve upon, eroding the innovator's advantage.</li>
+        </ul>
+        <h4>3. Requirements for Innovation to Occur</h4>
+        <ul>
+          <li><strong>Economic demand:</strong> People innovate when they believe returns will exceed costs — a viable market must exist.</li>
+          <li><strong>Surplus capital:</strong> Resources must be available for experimentation, prototyping, and the costly process of bringing innovations to market.</li>
+          <li><strong>Mobile, stable capital:</strong> Investment capital must be able to flow toward potential innovators through functioning financial markets.</li>
+          <li><strong>Supportive institutions:</strong> Universities, research centers, patent offices, and legal systems must exist to protect innovations and accelerate their development.</li>
+          <li><strong>Cultural openness:</strong> Societies that punish creative thinking or treat new ideas as sinful will not innovate. A culture of experimentation and tolerance of failure is essential.</li>
+        </ul>
+        <h4>4. Consequences of Failing to Innovate</h4>
+        <p>Businesses that fail to innovate face: loss of competitive advantage as rivals introduce superior products; loss of market share to more innovative competitors; eventual business failure as products become obsolete; inability to attract talented employees who prefer dynamic organizations; and irrelevance in the market as customer preferences evolve. History is full of once-dominant businesses that failed to innovate and were overtaken (e.g., Kodak's resistance to digital photography).</p>
+        <h4>5. Conclusion</h4>
+        <p>Innovation is not optional in a competitive economy — it is an imperative for survival. Entrepreneurs must balance the natural caution that comes with risk against the very real danger of stagnation. A culture that rewards thoughtful innovation while learning from failure is the foundation of long-term entrepreneurial success.</p>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Definition/creative destruction (3) · Reasons for resistance — 5 points (5) · Requirements — 5 points (7) · Consequences of failure (3) · Conclusion (2) = 20 marks</div>
+      </div>
+    </div>
+
+    <div id="la6"></div>
+
+    <!-- LA6 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA6.</span> Discuss the sources of business finance available to entrepreneurs. Explain the difference between equity and debt financing, and analyze the factors that influence the type of finance an entrepreneur should seek.</div>
+      <span class="la-marks">20 marks — Approximately 600–800 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-6')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-6">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. Introduction</h4>
+        <p>Every business requires finance to start, operate, and grow. Entrepreneurs can access finance from two broad categories: <strong>equity financing</strong> (ownership-based) and <strong>debt financing</strong> (borrowing-based), as well as from both internal and external sources.</p>
+        <h4>2. Equity Finance</h4>
+        <p>Equity finance represents ownership in the business and does not require repayment. Key sources include: <strong>Ordinary share capital</strong> (permanent, carries voting rights, earns variable dividends, highest risk/reward); <strong>Retained earnings</strong> (undistributed profits — the largest internal source, cost-free, flexible, and immediately available); and <strong>Preference share capital</strong> (quasi-equity with fixed dividends, paid before ordinary shareholders, lower risk).</p>
+        <h4>3. Debt Finance</h4>
+        <p>Debt finance involves borrowing money that must be repaid with interest. It is a legal obligation. Key sources: <strong>Bank loans</strong> (short, medium, and long-term); <strong>Bank overdraft</strong> (flexible, quick, expensive, can be recalled); <strong>Debentures</strong> (long-term, fixed interest, tax-allowable); <strong>Trade credit</strong> (buying on credit — most popular in Kenya, no explicit cost); <strong>Hire purchase</strong> (asset acquired on instalments, no collateral but needs guarantors); <strong>Factoring</strong> (selling debtors to a factor for immediate cash); <strong>Leasing</strong> (renting assets rather than buying).</p>
+        <h4>4. Key Differences: Equity vs. Debt</h4>
+        <p>Equity does not require repayment and gives investors ownership; debt must be repaid with interest regardless of profits. Equity holders share in growth; debt holders receive a fixed return. Equity carries no legal obligation to pay dividends; interest on debt is a legal obligation and failure to pay can result in receivership. Equity increases owner base; debt increases gearing (financial risk).</p>
+        <h4>5. Factors Influencing the Type of Finance to Seek</h4>
+        <ul>
+          <li><strong>Purpose of finance:</strong> Working capital needs (short-term) should be financed with overdrafts or trade credit; fixed asset acquisition (long-term) should use equity or long-term loans.</li>
+          <li><strong>Cost:</strong> Both explicit costs (interest, dividends) and implicit costs (insurance, maintenance, flotation fees) must be weighed against expected returns.</li>
+          <li><strong>Company gearing level:</strong> A highly geared company (high existing debt) cannot easily borrow more — lenders view it as risky.</li>
+          <li><strong>Size of the business:</strong> Large, well-known companies can access a wider range of finance than small, unknown start-ups who struggle with collateral and credibility.</li>
+          <li><strong>General economic conditions:</strong> In recessions, debt finance is riskier as profits fall and repayment becomes difficult; equity may be preferable.</li>
+          <li><strong>Repayment pattern:</strong> The loan's repayment schedule should match the productive lifespan of the asset it finances — this is the "matching principle."</li>
+        </ul>
+        <h4>6. Conclusion</h4>
+        <p>There is no single "best" source of finance — the right choice depends on the entrepreneur's specific circumstances, the business's stage of development, and prevailing economic conditions. A balanced capital structure that avoids over-reliance on either equity or debt is the hallmark of sound financial management.</p>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Equity sources (4) · Debt sources (4) · Key differences (4) · Factors (6) · Conclusion (2) = 20 marks</div>
+      </div>
+    </div>
+
+    <!-- LA7 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA7.</span> Discuss the importance of a business plan for a new venture. Explain the key components a well-developed business plan must contain and describe how lenders and investors evaluate a business plan differently.</div>
+      <span class="la-marks">20 marks — Approximately 500–700 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-7')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-7">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. What is a Business Plan?</h4>
+        <p>A business plan is a formal document that convincingly demonstrates that a business idea can sell enough products or services to make a satisfactory profit, and that is attractive to potential financiers. It is essentially a road map — providing step-by-step guidance for starting, funding, managing, monitoring, and evaluating a business.</p>
+        <h4>2. Importance of a Business Plan</h4>
+        <ul>
+          <li>Helps avoid costly and preventable mistakes by forcing advance thinking</li>
+          <li>Defines and focuses business objectives and goals (making them SMART)</li>
+          <li>Serves as a fundraising tool — required by most lenders and investors before committing capital</li>
+          <li>Enables realistic assessment of the opportunity — testing viability on paper before spending money</li>
+          <li>Acts as a monitoring and evaluation tool — actual performance can be measured against the plan</li>
+          <li>Identifies critical success factors for the market the business is entering</li>
+        </ul>
+        <h4>3. Key Components</h4>
+        <ul>
+          <li><strong>Executive Summary:</strong> Written last, placed first — a concise, compelling overview that stimulates investor interest</li>
+          <li><strong>Business Description:</strong> Mission, vision, legal form, location, background of the founders</li>
+          <li><strong>Marketing Plan:</strong> Target market, product/service details, pricing, distribution, and promotion strategies</li>
+          <li><strong>Competitor Analysis:</strong> SWOT analysis; understanding of the competitive landscape</li>
+          <li><strong>Management Plan:</strong> Key staff qualifications, organizational structure, HR practices</li>
+          <li><strong>Operations Plan:</strong> How products/services will be produced and delivered; facilities and equipment needed</li>
+          <li><strong>Financial Plan:</strong> Pre-operational costs, working capital, projected cash flows, income statements, balance sheets</li>
+          <li><strong>Appendices:</strong> Supporting documents — licenses, certificates, research data, asset lists</li>
+        </ul>
+        <h4>4. How Lenders Evaluate a Business Plan</h4>
+        <p>Lenders (banks) primarily want to know if the business can repay the loan with interest within the agreed period. They evaluate using the <strong>4Cs of credit</strong>: Cash flow (can the business generate enough income to service debt?); Collateral (what assets secure the loan?); Character (what is the entrepreneur's credit history and reputation?); Contribution of equity (how much has the entrepreneur personally invested — showing commitment).</p>
+        <h4>5. How Investors Evaluate a Business Plan</h4>
+        <p>Investors place more emphasis on the <strong>entrepreneur's character and vision</strong> than lenders do. They want to see passion, competence, and willingness to accept external involvement. They also demand a higher return on investment, so they focus intensely on market projections, growth potential, and the scalability of the business model. Investors want to know when they will get their money back and how much it will multiply.</p>
+        <h4>6. Conclusion</h4>
+        <p>A business plan is not merely a document for obtaining finance — it is a strategic management tool. Entrepreneurs who write and regularly update their business plans are significantly more likely to succeed than those who operate without one.</p>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Definition (2) · Importance — 5 points (5) · Components — 8 items (6) · Lenders' evaluation (3) · Investors' evaluation (3) · Conclusion (1) = 20 marks</div>
+      </div>
+    </div>
+
+    <!-- LA8 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA8.</span> Discuss the role of leadership in entrepreneurship. Compare and contrast the three major leadership styles, discuss McGregor's Theory X and Theory Y, and explain how an entrepreneur can effectively motivate employees.</div>
+      <span class="la-marks">20 marks — Approximately 600–800 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-8')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-8">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. Leadership Defined</h4>
+        <p><strong>Leadership</strong> is the ability to inspire, influence, and persuade others to give maximum effort and cooperation willingly toward the attainment of shared goals. Good leadership is essential in any business — it is what transforms a group of individuals into a productive, motivated team.</p>
+        <h4>2. The Three Leadership Styles</h4>
+        <p><strong>Autocratic Style:</strong> The leader maintains firm discipline with clear rules about what can and cannot be done. Decisions are made by the leader alone. Advantage: gives employees a sense of security and clear expectations. Disadvantage: stifles creativity and employee initiative; can create resentment. Best suited to emergencies or highly structured environments.</p>
+        <p><strong>Laissez-Faire (Free-Reign) Style:</strong> Highly permissive — employees are largely left to determine their own work approach and reach their potential independently. Advantage: works well with highly skilled, self-motivated professionals. Disadvantage: can be abused; some employees may not meet expected standards without guidance. Best suited to creative or research teams.</p>
+        <p><strong>Democratic Style:</strong> The leader builds a common purpose by consulting with the team before making decisions. Discipline lines are set through consensus. Advantage: increases employee buy-in and satisfaction; produces better, more accepted decisions. Disadvantage: time-consuming; may be seen as indecisive. Best for complex organizations with diverse, educated teams. <em>Most successful leaders use a combination of styles adapted to the situation.</em></p>
+        <h4>3. McGregor's Theory X and Theory Y</h4>
+        <p>Douglas McGregor argued that a manager's approach to leadership depends on their underlying assumptions about human nature. <strong>Theory X</strong> assumes workers are inherently lazy, dislike work, avoid responsibility, need to be pushed and closely supervised, and are motivated primarily by money and threats. This leads to autocratic management styles. <strong>Theory Y</strong> assumes workers are naturally active, creative, and responsible — they seek meaning in their work, can direct themselves when committed to goals, and respond to achievement and recognition more than coercion. This leads to participative, democratic management. Modern management theory strongly favors Theory Y as most people respond better to empowerment than control.</p>
+        <h4>4. Motivating Employees Effectively</h4>
+        <p>An entrepreneur can motivate employees through: (i) <strong>Building self-esteem</strong> — praising good work and appreciating contributions; (ii) <strong>Communicating the vision</strong> — telling staff what the business is trying to achieve, so they understand their role; (iii) <strong>Delegation</strong> — giving employees real responsibility, which shows trust and develops their skills; (iv) <strong>Setting specific, measurable goals</strong> — clear targets give direction and allow people to feel the satisfaction of achievement; (v) <strong>Applying reinforcement</strong> — rewarding desirable behaviors consistently (people repeat rewarded behaviors); (vi) <strong>Active listening</strong> — employees feel valued when their concerns and ideas are genuinely heard.</p>
+        <h4>5. Conclusion</h4>
+        <p>Effective leadership is the difference between a business that merely survives and one that thrives. Entrepreneurs who adapt their leadership style to the situation, build a Theory-Y mindset, and actively invest in motivating their teams will consistently outperform those who rely on authority alone.</p>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Leadership definition (2) · 3 styles compared (6) · Theory X vs Y (5) · Motivation techniques — 5 points (5) · Conclusion (2) = 20 marks</div>
+      </div>
+    </div>
+
+    <!-- LA9 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA9.</span> Discuss the concept of entrepreneurial culture. Explain its importance to national economic development, the cultural habits that promote it, the cultural factors that inhibit it, and how a country can deliberately build a stronger entrepreneurial culture.</div>
+      <span class="la-marks">20 marks — Approximately 500–700 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-9')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-9">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. Definition of Entrepreneurial Culture</h4>
+        <p><strong>Entrepreneurial culture</strong> is a way in which a society collectively embraces the concept of finding new business opportunities and gathering the necessary resources to fill them. It is the set of shared values, beliefs, and norms that encourage people to start businesses, take risks, innovate, and accept both success and failure as part of economic life. Weber defined culture as "the collective programming of the mind" — and argued that Protestantism, with its emphasis on individualism, self-reliance, and achievement, was historically associated with strong entrepreneurial cultures.</p>
+        <h4>2. Importance to National Economic Development</h4>
+        <ul>
+          <li>Enhances economic growth and builds social capital</li>
+          <li>Creates employment — entrepreneurship is the primary engine of job creation in developing economies</li>
+          <li>Acts as the primary driver of innovation, which improves productivity and quality of life</li>
+          <li>Supports devolution and decentralization of economic activity</li>
+          <li>Drives technology adoption, human capital formation, and infrastructure development</li>
+        </ul>
+        <h4>3. Cultural Habits that PROMOTE Entrepreneurship</h4>
+        <ul>
+          <li><strong>Money orientation:</strong> Communities that value wealth creation and see money as a positive motivator produce more entrepreneurs</li>
+          <li><strong>Future orientation:</strong> Societies that plan ahead and anticipate change are better positioned to seize emerging business opportunities</li>
+          <li><strong>Time consciousness:</strong> Valuing and managing time effectively is foundational to business success</li>
+          <li><strong>Trust and honesty:</strong> High-trust societies have lower transaction costs, facilitating more business activity</li>
+          <li><strong>Hard work:</strong> Cultures that celebrate diligence distinguish between those who succeed and those who fail</li>
+        </ul>
+        <h4>4. Cultural Factors that INHIBIT Entrepreneurship</h4>
+        <ul>
+          <li><strong>Religious prohibitions:</strong> Certain faiths discourage investment in sectors like alcohol, gaming, or interest-bearing finance</li>
+          <li><strong>Fear of failure stigma:</strong> In cultures where business failure brings social shame, risk-taking is suppressed</li>
+          <li><strong>Poor networking:</strong> Cultures that do not support professional relationship building limit entrepreneurial opportunity discovery</li>
+          <li><strong>Attitude toward innovation:</strong> Conservative cultures that resist change slow the adoption of new products and processes</li>
+          <li><strong>Family obligations:</strong> Extended family financial demands can drain entrepreneurial capital and distract from business focus</li>
+        </ul>
+        <h4>5. How to Build a Stronger Entrepreneurial Culture</h4>
+        <ul>
+          <li>Integrate entrepreneurship education into the curriculum from primary school onward</li>
+          <li>Expose potential entrepreneurs to real business environments through internships, mentorship, and business networks</li>
+          <li>Create a conducive legal and regulatory environment where starting businesses is easy and failure is not criminalized</li>
+          <li>Celebrate entrepreneurial success stories through media — making local entrepreneurs role models</li>
+          <li>Build culture from genuine local values and community strengths rather than importing foreign models</li>
+        </ul>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Definition (3) · Economic importance — 5 points (4) · Promoting habits — 5 points (4) · Inhibiting factors — 5 points (5) · How to build (4) = 20 marks</div>
+      </div>
+    </div>
+
+    <!-- LA10 -->
+    <div class="la-card">
+      <div class="la-q"><span class="qnum">LA10.</span> "Women entrepreneurs face unique challenges that hinder the development of their enterprises." Discuss this statement comprehensively, identifying the specific challenges women entrepreneurs face, the reasons behind these challenges, and the strategies that can be adopted — by individuals, businesses, and governments — to address them.</div>
+      <span class="la-marks">20 marks — Approximately 600–800 words</span>
+      <textarea class="la-textarea" placeholder="Write your essay answer here…"></textarea>
+      <button class="la-btn" onclick="toggleAnswer('la-ans-10')">Show Model Answer</button>
+      <div class="la-answer" id="la-ans-10">
+        <div class="la-label">✦ Model Answer — Key Points to Cover</div>
+        <h4>1. Introduction</h4>
+        <p>Women entrepreneurs play a crucial but often underappreciated role in economic development globally and in Kenya specifically. Despite comprising over half the population and showing significant entrepreneurial drive, women face a distinct set of challenges that their male counterparts do not encounter to the same degree — rooted in social, cultural, economic, and legal systems that have historically privileged men.</p>
+        <h4>2. Key Challenges Faced by Women Entrepreneurs</h4>
+        <ul>
+          <li><strong>Limited access to finance:</strong> Financial institutions often require collateral (land, property) for loans. In Kenya and many African countries, women have historically had limited legal rights to own property in their own name, making it difficult to provide the security required for business loans.</li>
+          <li><strong>Balancing family and business responsibilities:</strong> Women disproportionately bear domestic responsibilities — childcare, cooking, household management — reducing the time and energy available for business activities. The expectation of being a "good mother and wife" can conflict directly with entrepreneurial demands.</li>
+          <li><strong>Social and cultural barriers:</strong> In many communities, women are not expected to be business leaders. Cultural norms may restrict their mobility, the sectors they can enter, or the people they can interact with professionally. Some communities forbid women from operating certain types of businesses (e.g., those involving men's spaces or nighttime trading).</li>
+          <li><strong>Limited networks and mentorship:</strong> Business networks (where deals are made, contacts forged, and information shared) are often male-dominated. Women may lack access to these networks and to female mentors who have walked the path before them.</li>
+          <li><strong>Lower levels of formal education and training:</strong> Historically, girls have had less access to education, particularly technical and business education. This limits women's business management skills and financial literacy.</li>
+          <li><strong>Lack of confidence and risk aversion:</strong> Socialization that discourages women from asserting themselves can lead to lower self-confidence in business dealings, negotiation, and risk-taking.</li>
+          <li><strong>Sexual harassment and discrimination:</strong> Women in business often face harassment from suppliers, customers, officials, or even within their own organizations, creating hostile environments that make business operation more difficult.</li>
+        </ul>
+        <h4>3. Root Causes</h4>
+        <p>These challenges are rooted in: patriarchal cultural systems that historically assigned women to domestic roles; legal frameworks that disadvantaged women in property ownership and inheritance; religious interpretations that limit women's roles in public life; and economic systems that undervalue women's labour and exclude them from formal financial systems.</p>
+        <h4>4. Strategies to Address These Challenges</h4>
+        <p><strong>Individual level:</strong> Women entrepreneurs can join women's business associations and SACCOs to access credit and networks; invest in business education and skills development; seek mentors who have successfully navigated similar environments; and build peer support communities.</p>
+        <p><strong>Business/organizational level:</strong> Corporations can adopt gender-sensitive procurement policies (preferentially sourcing from women-owned businesses); provide mentorship programs specifically for women; and create workplace policies that support work-life balance (e.g., flexible hours, childcare support).</p>
+        <p><strong>Government level:</strong> Pass and enforce laws giving women equal property rights; create dedicated loan funds for women entrepreneurs with relaxed collateral requirements (e.g., using group guarantees); integrate gender perspectives into entrepreneurship policy; subsidize childcare to free women's time for business; and actively promote women entrepreneurs as role models through public campaigns.</p>
+        <h4>5. Conclusion</h4>
+        <p>Addressing the unique challenges of women entrepreneurs is not just a matter of equity — it is an economic imperative. Research consistently shows that when women have equal access to resources and opportunities, business productivity, family welfare, and national economic growth all improve. A truly entrepreneurial Kenya must be one where women can participate fully and freely in its economic life.</p>
+        <div class="marks-guide">📊 <strong>Marks guide:</strong> Introduction (2) · Challenges — 7 points (7) · Root causes (3) · Individual strategies (2) · Business strategies (2) · Government strategies (2) · Conclusion (2) = 20 marks</div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<button id="scroll-top" onclick="scrollToTop()">↑</button>
+
+<script>
+  // ── MCQ STATE ──
+  const mcqAnswers = {};
+  let mcqScore = 0;
+  const totalMCQ = 50;
+
+  const correctExplanations = {
+    1: "The ILO report centered on the <strong>informal sector</strong>, noting that most of Kenya's urban workers were self-employed in small enterprises.",
+    2: "The government published a <strong>Sessional Paper in 1973</strong> recognizing entrepreneurship's role in employment creation.",
+    3: "The ILO report proposed promoting employment, facilitating development, and equitable distribution of resources. <strong>Nationalizing small businesses</strong> was not proposed — that would contradict the spirit of entrepreneurship.",
+    4: "High taxation reduces profits (making business less attractive) and taxes on raw materials <strong>raise production costs</strong>, compounding the burden on entrepreneurs.",
+    5: "The recognition of <strong>entrepreneurship as a teachable discipline</strong> — offered in universities and colleges — has demonstrated that entrepreneurial skills can be learned and developed by anyone.",
+    6: "The Psychological Theory highlights need for achievement, locus of control, and risk-taking propensity. <strong>Political affiliation</strong> is not a psychological entrepreneurial trait.",
+    7: "Heterogeneous Demand Theory holds that consumers have <strong>diverse, varied needs</strong>, and entrepreneurs profit by identifying and filling niche demands that larger businesses overlook.",
+    8: "Corruption forces entrepreneurs to <strong>pay bribes to officials</strong> to operate or start businesses, increasing costs and creating an unpredictable, hostile business environment.",
+    9: "Trade liberalization <strong>opened importation</strong> of foreign goods that compete with locally produced items, often at lower prices that local producers cannot match.",
+    10: "Max Weber argued that <strong>Protestantism</strong> encourages individualism, achievement motivation, and self-reliance — values that are closely aligned with entrepreneurial success.",
+    11: "A <strong>craft entrepreneur</strong> exploits personal technical or professional skills without focusing on growth or expansion — the skill itself is the business model.",
+    12: "A <strong>Buy/Sell Artist</strong> acquires a company specifically to improve it, then sells it for a profit — combining acquisition, management, and investment skills.",
+    13: "<strong>Self-actualization</strong> in Maslow's hierarchy refers to the need to accomplish everything one is capable of achieving and to express one's unique potential — the highest level of human motivation.",
+    14: "<strong>Esteem needs</strong> include the desire for power, prestige, status, and self-confidence — all of which entrepreneurial success can fulfill through recognition and social standing.",
+    15: "<strong>Credit facilities</strong> (loans and financial support from banks, government agencies, and NGOs) are external motivations — provided by others in the environment rather than coming from within the entrepreneur.",
+    16: "<strong>Persistence and patience</strong> specifically involves repeatedly taking action to overcome obstacles even in the face of significant challenges — not giving up after initial failures.",
+    17: "Integrating <strong>entrepreneurship training into the overall education system</strong> is the most sustainable way to build an entrepreneurial culture — reaching youth at the formative stage of their thinking.",
+    18: "A social entrepreneur's primary purpose is to achieve <strong>social change</strong> by using entrepreneurial principles to solve a recognized social problem, not primarily to maximize personal profit.",
+    19: "Maslow's second assumption: <strong>a satisfied need no longer motivates behavior</strong>. Once a need is met, the next higher level of need takes over as the motivator.",
+    20: "<strong>Future orientation</strong> — having foresight about upcoming changes — helps societies visualize key changes likely to create business opportunities, which is why it promotes entrepreneurship.",
+    21: "A business opportunity is distinguished by two key ingredients: a <strong>good market scope</strong> (real demand) and an <strong>attractive return on investment</strong> (profitability potential).",
+    22: "In brainstorming, the fundamental rule is that <strong>ideas are generated freely without immediate criticism</strong> — even seemingly silly ideas are welcome, as they may spark better ones.",
+    23: "In SWOT analysis, <strong>Opportunities</strong> are favorable external conditions (market trends, policy changes, emerging customer segments) that the business can exploit for growth.",
+    24: "Globally, the start-up failure rate stands at <strong>90%</strong> — which is precisely why business incubation programs (with over 80% success rates) are so important.",
+    25: "A <strong>patent</strong> is a government-granted property right to an inventor, giving them exclusive ownership and the right to sell, transfer, or use the invention as collateral.",
+    26: "<strong>Copyright</strong> protects creative intellectual works for the life of the creator <strong>plus 50 additional years</strong> — one of the longest-lasting forms of intellectual property protection.",
+    27: "<strong>Attribute listening</strong> involves changing how you look at something to find a new use for it — answering the question 'What else could this product or service do?'",
+    28: "A <strong>trade secret</strong> has no formal registration and <strong>lasts as long as the information remains confidential</strong>. Unlike patents, there is no set expiry date — protection ends only when the secret is disclosed.",
+    29: "Business incubation programs achieve a success rate of <strong>over 80%</strong>, compared to the 90% failure rate of unaided start-ups — demonstrating the profound value of structured support.",
+    30: "<strong>Innovation</strong> goes beyond creativity (generating ideas) — it commercializes and turns those ideas into <strong>tangible, value-creating realities</strong> that generate wealth in the market.",
+    31: "Leadership is the ability to <strong>inspire and persuade others to give maximum effort willingly</strong> — the emphasis on voluntarily given effort (not coerced compliance) is what distinguishes true leadership.",
+    32: "<strong>Theory Y</strong> holds that workers are naturally active, creative, capable of self-direction, seek meaning in their work, and respond to achievement and recognition rather than just money or threats.",
+    33: "The <strong>Situational Theory</strong> holds that leadership is a function of the situation — the group naturally turns to the person who knows best what to do in a specific context as their leader.",
+    34: "The correct order is: <strong>Identify the problem → Determine its causes → Generate potential solutions</strong> — you cannot solve a problem you haven't defined, and you cannot evaluate solutions without understanding root causes.",
+    35: "<strong>Failure to delegate</strong> and tolerating unnecessary interruptions from friends and relatives are classic time wasters — they prevent the entrepreneur from focusing on high-priority tasks.",
+    36: "<strong>Creative destruction</strong> is Joseph Schumpeter's concept — innovations make old products, services, and arrangements obsolete, freeing up resources for more efficient deployment elsewhere.",
+    37: "The primary reason people resist change is <strong>fear of the unknown</strong> and the <strong>threat to their established status quo</strong> — uncertainty about what the change will bring creates anxiety and defensiveness.",
+    38: "<strong>Referent power</strong> comes from personal charisma, attractive character, or reputation — people comply because they admire and identify with the leader, not because of their official position or wealth.",
+    39: "The <strong>Laissez-Faire style</strong> is highly permissive — employees are left to reach their potential independently, with minimal direction from the leader. It works best with highly skilled, self-motivated people.",
+    40: "A cinema and restaurant are <strong>indirect competitors</strong> — they offer completely different products but compete for the same pool of consumer leisure spending. Direct competitors offer the same or similar products.",
+    41: "The 4Ps of the marketing mix are <strong>Product, Price, Placement (distribution), and Promotion</strong> — the four key decisions that determine how a business brings a product to market.",
+    42: "<strong>Unlimited liability</strong> means the owner's personal assets (home, car, savings) can be seized to pay business debts — the business and owner are legally one and the same entity.",
+    43: "A public limited company must first raise minimum capital, then receives a <strong>Certificate of Commencement</strong> before it can legally begin trading — unlike a private company which only needs a Certificate of Incorporation.",
+    44: "<strong>Retained earnings</strong> are the portion of profits not distributed to shareholders as dividends but kept within the business for reinvestment — the largest and most flexible internal source of finance.",
+    45: "<strong>Factoring</strong> involves selling trade debtors (money owed by customers) outright to a financial institution (factor) which pays 80% immediately and takes on the responsibility of collecting the debts.",
+    46: "The <strong>Memorandum of Association</strong> defines the company's relationship with the outside world — informing outsiders what the company does, its objectives, location, liability, and capital structure.",
+    47: "The Executive Summary is <strong>written last</strong> after all other sections are complete, but placed first in the plan — it is a concise, compelling overview designed to stimulate investor interest immediately.",
+    48: "The co-operative principle of <strong>one person, one vote</strong> means every member has equal decision-making power regardless of how many shares they own — pure democratic administration.",
+    49: "In hire purchase, the <strong>asset belongs to the financier (hiree) until all instalments are paid</strong>; if the buyer misses payments before clearing 2/3 of the value, the asset can be repossessed. No traditional collateral is needed — guarantors serve this role.",
+    50: "The 4Cs of credit evaluated by lenders are: <strong>Cash flow</strong> (repayment ability), <strong>Collateral</strong> (security), <strong>Character</strong> (creditworthiness), and <strong>Contribution of equity</strong> (personal investment showing commitment)."
+  };
+
+  function checkMCQ(qNum, chosen, correct) {
+    if (mcqAnswers[qNum] !== undefined) return; // already answered
+
+    mcqAnswers[qNum] = chosen;
+    const card = document.getElementById('mcq-card-' + qNum);
+    const fb = document.getElementById('fb-' + qNum);
+    const buttons = card.querySelectorAll('.option-btn');
+
+    buttons.forEach(btn => {
+      btn.disabled = true;
+      const label = btn.querySelector('.opt-label').textContent.replace('.','');
+      if (label === correct) btn.classList.add('correct-ans');
+      if (label === chosen && chosen !== correct) btn.classList.add('wrong-ans');
+    });
+
+    const isCorrect = chosen === correct;
+    if (isCorrect) {
+      mcqScore++;
+      card.classList.add('correct');
+      fb.className = 'mcq-feedback show correct-fb';
+      fb.innerHTML = '✓ Correct! ' + correctExplanations[qNum];
+    } else {
+      card.classList.add('incorrect');
+      fb.className = 'mcq-feedback show incorrect-fb';
+      fb.innerHTML = '✗ Incorrect. The correct answer is <strong>' + correct + '</strong>. ' + correctExplanations[qNum];
+    }
+
+    updateScore();
+  }
+
+  function updateScore() {
+    const answered = Object.keys(mcqAnswers).length;
+    document.getElementById('mcq-score-display').textContent = mcqScore + ' / ' + answered;
+    const pct = answered > 0 ? Math.round((mcqScore / answered) * 100) : 0;
+    const el = document.getElementById('mcq-pct');
+    el.textContent = pct + '% accuracy (' + answered + '/' + totalMCQ + ' answered)';
+  }
+
+  function revealAllMCQ() {
+    // Reveal unanswered MCQs by auto-clicking the correct answer button
+    for (let i = 1; i <= totalMCQ; i++) {
+      if (mcqAnswers[i] !== undefined) continue;
+      const card = document.getElementById('mcq-card-' + i);
+      const buttons = card.querySelectorAll('.option-btn');
+      const onclickStr = buttons[0].getAttribute('onclick');
+      // Extract correct answer from any button's onclick
+      // Format: checkMCQ(N,'X','CORRECT')
+      const match = onclickStr.match(/checkMCQ\(\d+,'[A-D]','([A-D])'\)/);
+      if (!match) continue;
+      const correct = match[1];
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        const label = btn.querySelector('.opt-label').textContent.replace('.','');
+        if (label === correct) btn.classList.add('correct-ans');
+      });
+      const fb = document.getElementById('fb-' + i);
+      fb.className = 'mcq-feedback show correct-fb';
+      fb.innerHTML = '★ Revealed. Correct answer: <strong>' + correct + '</strong>. ' + correctExplanations[i];
+      mcqAnswers[i] = '__revealed__';
+    }
+    updateScore();
+  }
+
+  function resetAll() {
+    if (!confirm('Reset all answers? Your progress will be lost.')) return;
+    location.reload();
+  }
+
+  function toggleAnswer(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('show');
+    const btn = el.previousElementSibling;
+    if (el.classList.contains('show')) {
+      btn.textContent = 'Hide Answer';
+    } else {
+      btn.textContent = el.tagName === 'DIV' && el.classList.contains('la-answer')
+        ? 'Show Model Answer' : 'Show Model Answer';
+    }
+  }
+
+  // ── PROGRESS BAR & SCROLL ──
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    progress.style.width = (scrolled / total * 100) + '%';
+    const btn = document.getElementById('scroll-top');
+    scrolled > 300 ? btn.classList.add('visible') : btn.classList.remove('visible');
+
+    // Active nav
+    const sections = ['mcq-section','sa-section','la-section'];
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 60) current = id;
+    });
+    document.querySelectorAll('nav a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+</script>
+</body>
+</html>
