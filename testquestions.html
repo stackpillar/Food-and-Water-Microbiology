@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microbiology – Test Your Knowledge</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2332;
+    --border: #2a3046;
+    --accent: #4ade80;
+    --accent2: #60a5fa;
+    --accent3: #f472b6;
+    --accent4: #facc15;
+    --text: #e8eaf0;
+    --text-muted: #8892aa;
+    --correct: #4ade80;
+    --wrong: #f87171;
+    --header-h: 60px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: var(--header-h);
+    background: rgba(15,17,23,0.96);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 14px;
+    padding: 0 24px;
+    backdrop-filter: blur(8px);
+  }
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem; color: var(--accent);
+    white-space: nowrap;
+  }
+  .logo span { color: var(--text-muted); font-family: 'Inter',sans-serif; font-size: 0.72rem; font-weight: 400; margin-left: 6px; }
+
+  .back-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text-muted);
+    font-size: 12.5px; font-weight: 500; text-decoration: none;
+    transition: all 0.18s; white-space: nowrap;
+  }
+  .back-btn:hover { color: var(--accent); border-color: var(--accent); background: rgba(74,222,128,0.06); }
+
+  /* scoreboard */
+  #scorebar {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .score-pill {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 99px;
+    font-size: 12px; font-weight: 600;
+  }
+  .score-pill.correct { background: rgba(74,222,128,0.12); color: var(--correct); border: 1px solid rgba(74,222,128,0.25); }
+  .score-pill.wrong   { background: rgba(248,113,113,0.12); color: var(--wrong);  border: 1px solid rgba(248,113,113,0.25); }
+  .score-pill.total   { background: rgba(96,165,250,0.12); color: var(--accent2); border: 1px solid rgba(96,165,250,0.25); }
+
+  /* ── LAYOUT ── */
+  #layout { padding-top: calc(var(--header-h) + 40px); max-width: 860px; margin: 0 auto; padding-left: 24px; padding-right: 24px; padding-bottom: 100px; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--surface2), #111827);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 40px 36px; margin-bottom: 48px; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50px; right: -50px;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, rgba(96,165,250,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent2); margin-bottom: 10px; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: 2.2rem; line-height: 1.2; color: var(--text); margin-bottom: 10px; }
+  .hero h1 em { color: var(--accent2); font-style: normal; }
+  .hero p { color: var(--text-muted); font-size: 14px; max-width: 540px; margin-bottom: 24px; }
+  .hero-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+  .h-stat { text-align: center; }
+  .h-stat .num { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--accent); }
+  .h-stat .lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── SECTION HEADS ── */
+  .section-head {
+    display: flex; align-items: center; gap: 12px;
+    margin: 48px 0 20px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-head .sec-icon { font-size: 22px; }
+  .section-head h2 { font-family: 'DM Serif Display', serif; font-size: 1.55rem; font-weight: 400; }
+  .section-head .sec-badge {
+    margin-left: auto; padding: 4px 12px; border-radius: 99px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .badge-mcq   { background: rgba(74,222,128,0.12); color: var(--accent); border: 1px solid rgba(74,222,128,0.25); }
+  .badge-short { background: rgba(250,204,21,0.12); color: var(--accent4); border: 1px solid rgba(250,204,21,0.25); }
+  .badge-long  { background: rgba(244,114,182,0.12); color: var(--accent3); border: 1px solid rgba(244,114,182,0.25); }
+
+  /* progress bar */
+  .section-progress { height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 24px; }
+  .section-progress-fill { height: 100%; border-radius: 99px; transition: width 0.4s; }
+  .fill-green { background: linear-gradient(90deg, var(--accent), #86efac); }
+  .fill-yellow { background: linear-gradient(90deg, var(--accent4), #fde68a); }
+  .fill-pink  { background: linear-gradient(90deg, var(--accent3), #fda4af); }
+
+  /* ── MCQ CARD ── */
+  .q-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 16px; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .q-card.answered-correct { border-color: rgba(74,222,128,0.4); }
+  .q-card.answered-wrong   { border-color: rgba(248,113,113,0.35); }
+
+  .q-header {
+    padding: 16px 20px 14px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .q-num {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border-radius: 7px; background: var(--surface2); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--accent2);
+    margin-top: 1px;
+  }
+  .q-text { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.55; }
+
+  .options-grid { padding: 4px 20px 18px 60px; display: flex; flex-direction: column; gap: 8px; }
+  .option-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px;
+    cursor: pointer; transition: all 0.18s;
+    text-align: left; width: 100%;
+    font-family: 'Inter', sans-serif; font-size: 13.5px; color: var(--text);
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--accent2); background: rgba(96,165,250,0.06); }
+  .option-btn .opt-letter {
+    width: 22px; height: 22px; border-radius: 5px; flex-shrink: 0;
+    background: var(--surface); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+  }
+  .option-btn.correct { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.5); }
+  .option-btn.correct .opt-letter { background: var(--correct); color: #0f1117; border-color: var(--correct); }
+  .option-btn.wrong   { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.4); }
+  .option-btn.wrong .opt-letter   { background: var(--wrong); color: #0f1117; border-color: var(--wrong); }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback-row {
+    margin: 4px 20px 16px 60px;
+    padding: 10px 14px; border-radius: 8px;
+    font-size: 12.5px; display: none; align-items: flex-start; gap: 8px;
+  }
+  .feedback-row.show { display: flex; }
+  .feedback-row.correct { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); color: #86efac; }
+  .feedback-row.wrong   { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); color: #fca5a5; }
+  .feedback-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── SHORT ANSWER CARD ── */
+  .sa-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 16px; overflow: hidden;
+  }
+  .sa-header { padding: 16px 20px 12px; display: flex; align-items: flex-start; gap: 12px; }
+  .sa-num {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border-radius: 7px; background: var(--surface2); border: 1px solid rgba(250,204,21,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--accent4);
+    margin-top: 1px;
+  }
+  .sa-text { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.55; }
+  .sa-body { padding: 0 20px 18px 60px; }
+  .sa-textarea {
+    width: 100%; min-height: 80px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 13px;
+    font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text);
+    resize: vertical; transition: border-color 0.2s; outline: none;
+    line-height: 1.6;
+  }
+  .sa-textarea:focus { border-color: var(--accent4); }
+  .sa-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .reveal-btn {
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+    border: 1px solid rgba(250,204,21,0.35);
+    background: rgba(250,204,21,0.08); color: var(--accent4);
+    font-family: 'Inter', sans-serif; transition: all 0.18s;
+  }
+  .reveal-btn:hover { background: rgba(250,204,21,0.14); }
+  .model-answer {
+    margin-top: 12px; padding: 14px 16px;
+    background: var(--surface2); border: 1px solid rgba(250,204,21,0.2);
+    border-radius: 8px; font-size: 13px; color: #e8eaf0;
+    display: none; line-height: 1.65;
+  }
+  .model-answer.show { display: block; }
+  .model-answer strong { color: var(--accent4); }
+  .model-answer ul { padding-left: 18px; margin-top: 6px; }
+  .model-answer ul li { margin-bottom: 4px; }
+
+  /* ── LONG ANSWER CARD ── */
+  .la-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 16px; overflow: hidden;
+  }
+  .la-header { padding: 16px 20px 12px; display: flex; align-items: flex-start; gap: 12px; }
+  .la-num {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border-radius: 7px; background: var(--surface2); border: 1px solid rgba(244,114,182,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--accent3);
+    margin-top: 1px;
+  }
+  .la-text { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.55; }
+  .la-body { padding: 0 20px 18px 60px; }
+  .la-marks { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-style: italic; }
+  .la-textarea {
+    width: 100%; min-height: 120px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 13px;
+    font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text);
+    resize: vertical; outline: none; transition: border-color 0.2s; line-height: 1.6;
+  }
+  .la-textarea:focus { border-color: var(--accent3); }
+  .la-reveal-btn {
+    padding: 8px 16px; border-radius: 8px; margin-top: 10px;
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+    border: 1px solid rgba(244,114,182,0.35);
+    background: rgba(244,114,182,0.08); color: var(--accent3);
+    font-family: 'Inter', sans-serif; transition: all 0.18s;
+  }
+  .la-reveal-btn:hover { background: rgba(244,114,182,0.14); }
+  .la-model {
+    margin-top: 12px; padding: 16px 18px;
+    background: var(--surface2); border: 1px solid rgba(244,114,182,0.2);
+    border-radius: 8px; font-size: 13px; color: #e8eaf0;
+    display: none; line-height: 1.7;
+  }
+  .la-model.show { display: block; }
+  .la-model h4 { color: var(--accent3); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; margin-top: 14px; }
+  .la-model h4:first-child { margin-top: 0; }
+  .la-model p { font-size: 13px; margin-bottom: 8px; }
+  .la-model ul { padding-left: 18px; }
+  .la-model ul li { margin-bottom: 5px; font-size: 13px; }
+
+  /* ── RESULTS PANEL ── */
+  #results-panel {
+    display: none; margin-top: 48px;
+    background: linear-gradient(135deg, var(--surface2), #111827);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 36px; text-align: center;
+  }
+  #results-panel.show { display: block; }
+  .results-icon { font-size: 48px; margin-bottom: 12px; }
+  .results-title { font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 8px; }
+  .results-sub { color: var(--text-muted); margin-bottom: 24px; }
+  .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .res-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .res-item .big { font-family: 'DM Serif Display', serif; font-size: 2rem; }
+  .res-item .sm { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .reset-btn {
+    padding: 12px 28px; border-radius: 10px; cursor: pointer;
+    background: linear-gradient(135deg, rgba(74,222,128,0.15), rgba(96,165,250,0.15));
+    border: 1px solid rgba(74,222,128,0.35); color: var(--accent);
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { background: rgba(74,222,128,0.2); }
+
+  /* ── STICKY SUBMIT ── */
+  #submit-mcq {
+    position: sticky; bottom: 20px;
+    display: flex; justify-content: center;
+    margin: 24px 0 0; z-index: 50;
+  }
+  #submit-mcq button {
+    padding: 13px 36px; border-radius: 12px; cursor: pointer;
+    background: linear-gradient(135deg, rgba(74,222,128,0.2), rgba(96,165,250,0.2));
+    border: 1px solid rgba(74,222,128,0.45); color: var(--accent);
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+    transition: all 0.2s; box-shadow: 0 4px 24px rgba(74,222,128,0.12);
+    backdrop-filter: blur(8px);
+    letter-spacing: 0.04em;
+  }
+  #submit-mcq button:hover { background: rgba(74,222,128,0.25); transform: translateY(-1px); }
+  #submit-mcq button:active { transform: translateY(0); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 10px; padding: 13px 16px; margin: 16px 0;
+    font-size: 13px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .callout.info { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.2); }
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.6rem; }
+    .hero { padding: 28px 20px; }
+    .options-grid, .sa-body, .la-body { padding-left: 20px; }
+    .results-grid { grid-template-columns: 1fr; }
+    #layout { padding-left: 16px; padding-right: 16px; }
+    #topbar { padding: 0 14px; }
+    .logo span { display: none; }
+    .score-pill.total { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header id="topbar">
+  <div class="logo">MicroBio Study <span>Test Your Knowledge</span></div>
+  <a href="index.html" class="back-btn">← Back to Notes</a>
+  <div id="scorebar">
+    <div class="score-pill correct">✓ <span id="correct-count">0</span> Correct</div>
+    <div class="score-pill wrong">✗ <span id="wrong-count">0</span> Wrong</div>
+    <div class="score-pill total">50 MCQs</div>
+  </div>
+</header>
+
+<div id="layout">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Bacteriological Analysis of Food & Milk</div>
+    <h1>Test Your <em>Knowledge</em></h1>
+    <p>Challenge yourself across all topics covered in the study guide. Instant feedback on MCQs, model answers for short and long questions. Work through all three sections at your own pace.</p>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="num">50</div><div class="lbl">MCQs</div></div>
+      <div class="h-stat"><div class="num">30</div><div class="lbl">Short Answer</div></div>
+      <div class="h-stat"><div class="num">10</div><div class="lbl">Long Answer</div></div>
+      <div class="h-stat"><div class="num">90</div><div class="lbl">Total Questions</div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION 1: MCQs -->
+  <!-- ════════════════════════════ -->
+  <div class="section-head">
+    <span class="sec-icon">🔬</span>
+    <h2>Section A — Multiple Choice Questions</h2>
+    <span class="sec-badge badge-mcq">50 Questions</span>
+  </div>
+  <div class="section-progress"><div class="section-progress-fill fill-green" id="mcq-prog" style="width:0%"></div></div>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ️</span>
+    <div>Select one answer per question. You will receive instant feedback after each selection. Your running score appears at the top of the page.</div>
+  </div>
+
+  <div id="mcq-container"></div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION 2: SHORT ANSWER -->
+  <!-- ════════════════════════════ -->
+  <div class="section-head" style="margin-top:56px">
+    <span class="sec-icon">✏️</span>
+    <h2>Section B — Short Answer Questions</h2>
+    <span class="sec-badge badge-short">30 Questions</span>
+  </div>
+  <div class="section-progress"><div class="section-progress-fill fill-yellow" id="sa-prog" style="width:0%"></div></div>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ️</span>
+    <div>Write your answer in the box below each question, then click <strong>Reveal Model Answer</strong> to compare. Aim for 2–4 sentences per question.</div>
+  </div>
+
+  <div id="sa-container"></div>
+
+  <!-- ════════════════════════════ -->
+  <!-- SECTION 3: LONG ANSWER -->
+  <!-- ════════════════════════════ -->
+  <div class="section-head" style="margin-top:56px">
+    <span class="sec-icon">📝</span>
+    <h2>Section C — Long Answer / Essay Questions</h2>
+    <span class="sec-badge badge-long">10 Questions</span>
+  </div>
+  <div class="section-progress"><div class="section-progress-fill fill-pink" id="la-prog" style="width:0%"></div></div>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ️</span>
+    <div>These questions require comprehensive, structured answers. Write your essay in the text box, then reveal the model answer to compare key points. Typical answers should be 250–400 words.</div>
+  </div>
+
+  <div id="la-container"></div>
+
+  <!-- RESULTS -->
+  <div id="results-panel">
+    <div class="results-icon" id="results-icon">🏆</div>
+    <div class="results-title" id="results-title">MCQ Results</div>
+    <div class="results-sub" id="results-sub">Here is how you performed on the multiple choice section.</div>
+    <div class="results-grid">
+      <div class="res-item"><div class="big" id="r-correct" style="color:var(--correct)">0</div><div class="sm">Correct</div></div>
+      <div class="res-item"><div class="big" id="r-wrong"   style="color:var(--wrong)">0</div><div class="sm">Incorrect</div></div>
+      <div class="res-item"><div class="big" id="r-pct"     style="color:var(--accent2)">0%</div><div class="sm">Score</div></div>
+    </div>
+    <button class="reset-btn" onclick="resetMCQ()">↺ Retake MCQ Section</button>
+  </div>
+
+</div><!-- /layout -->
+
+<script>
+// ══════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════
+
+const mcqData = [
+  // Food Microbiology Fundamentals
+  { q:"What is the primary focus of food microbiology?", opts:["Study of microorganisms that inhabit, create, or contaminate food","Study of the nutritional composition of food","Study of chemical preservatives in food","Study of physical spoilage of food"], ans:0, exp:"Food microbiology encompasses organisms causing spoilage, pathogens causing disease, and those used in food production such as fermentation." },
+  { q:"Which of the following is a beneficial role of microorganisms in food?", opts:["Producing off-flavours in meat","Causing food-borne illness","Fermenting milk into yogurt","Breaking down vitamins in vegetables"], ans:2, exp:"Fermentation by beneficial microorganisms produces foods like yogurt, cheese, beer, and wine." },
+  { q:"Probiotics are defined as:", opts:["Chemicals added to food to prevent spoilage","Living organisms that confer health benefits when consumed","Dead organisms used as food additives","Enzymes used to break down food proteins"], ans:1, exp:"Probiotics are living microorganisms that, when consumed in adequate amounts, confer health benefits beyond their inherent nutritional effects." },
+  { q:"Which bacterial genus is most commonly associated with probiotic yogurt production?", opts:["Salmonella","Escherichia","Lactobacillus","Clostridium"], ans:2, exp:"Lactobacillus species, together with Streptococcus thermophilus, are used to ferment milk into yogurt and are key probiotic organisms." },
+  { q:"Which of the following is a health benefit of Bifidobacteria?", opts:["They cause intestinal inflammation","They inhibit beneficial bacteria in the gut","They regulate intestinal microbial homeostasis","They produce harmful toxins"], ans:2, exp:"Bifidobacteria regulate intestinal microbial homeostasis, inhibit pathogens, modulate immune responses, and produce vitamins." },
+  // Food Spoilage
+  { q:"Food spoilage is correctly defined as:", opts:["Visible mould growth on food surfaces only","Any change in food texture","Damage or injury to food rendering it unsuitable for human consumption","A change in food colour due to natural processes"], ans:2, exp:"Food spoilage is defined as any damage or injury that makes food unsuitable for human consumption, whether visible or not." },
+  { q:"Which microorganism group is the primary cause of spoilage in low water-activity foods such as dry cereals?", opts:["Bacteria","Viruses","Molds","Protozoa"], ans:2, exp:"Molds are the major causes of spoilage in foods with reduced water activity such as dry cereals and cereal products." },
+  { q:"At 21°C, raw beef has a storage life of approximately:", opts:["1–2 days","7–10 days","30 days","360 days"], ans:0, exp:"Raw beef, like other raw meats and fish, has a very short storage life of only 1–2 days at 21°C due to rapid bacterial growth." },
+  { q:"Oxidation of fat in food is an example of which cause of spoilage?", opts:["Microbial activity","Enzyme activity","Chemical reactions","Vermin damage"], ans:2, exp:"Oxidative rancidity is a non-enzymatic chemical reaction that causes food spoilage without any microbial involvement." },
+  { q:"Vermin are significant in food spoilage mainly because they:", opts:["Produce enzymes that degrade food","Can consume food, transmit pathogens, and have aesthetic impacts","Lower the water activity of food","Reduce the pH of stored food"], ans:1, exp:"Vermin (insects, rodents, birds) cause spoilage through direct food consumption, transmission of pathogenic agents, and aesthetic contamination." },
+  // Sources and Factors
+  { q:"Which of the following is NOT listed as a primary source of microorganisms in food?", opts:["Soil and water","Air and dust","Synthetic preservatives","Food handlers"], ans:2, exp:"Synthetic preservatives are added to prevent microbial growth; they are not a source of microorganisms. Primary sources include soil, water, food utensils, animal intestinal tracts, and food handlers." },
+  { q:"The optimum pH range for most bacteria is:", opts:["1.5 – 3.0","4.0 – 5.0","6.8 – 7.5","9.0 – 11.0"], ans:2, exp:"Most bacteria grow best at neutral to slightly alkaline conditions, within the pH range of 6.8 to 7.5." },
+  { q:"Water activity (Aw) is defined as:", opts:["Total water content of a food by weight","Ratio of vapour pressure of food to that of pure water at the same temperature","Amount of bound water in food","The percentage of free water molecules in food"], ans:1, exp:"Water activity is defined as Aw = VP(Food) / VP(Water), measuring the proportion of free water available for microbial growth." },
+  { q:"Raw meat and milk have a water activity of approximately:", opts:["0.70","0.80","0.90","0.99–1.0"], ans:3, exp:"Raw meat and milk have very high water activity (0.99–1.0) making them highly susceptible to microbial growth and spoilage." },
+  { q:"Which organism requires the lowest minimum water activity to grow?", opts:["Salmonella spp. (Aw 0.95)","Staphylococcus aureus aerobic (Aw 0.86)","Penicillium spp. (Aw 0.82)","Osmotic yeasts (Aw 0.70)"], ans:3, exp:"Osmotic yeasts can grow at the lowest water activity of 0.70, making them capable of spoiling high-sugar foods that other organisms cannot." },
+  { q:"Psychrophilic bacteria:", opts:["Grow best at temperatures above 45°C","Grow between 25°C and 40°C","Can grow down to –10°C and cause cold-storage spoilage","Require oxygen for growth"], ans:2, exp:"Psychrophilic bacteria grow best around 20°C and can grow as low as –10°C in unfrozen media, causing spoilage even in refrigerated conditions." },
+  { q:"Most pathogenic bacteria are classified as:", opts:["Psychrophilic","Mesophilic","Thermophilic","Halophilic"], ans:1, exp:"Most pathogens are mesophilic, with an optimum growth temperature close to 37°C — human body temperature — and cannot grow below 5°C or above 45°C." },
+  { q:"Anaerobic spore-forming bacteria are most dangerous in which type of food product?", opts:["Fresh salads","Canned foods","Raw meat surfaces","High-sugar jams"], ans:1, exp:"Anaerobic spore-formers like Clostridium botulinum thrive in canned foods where oxygen has been removed, and can produce dangerous toxins." },
+  { q:"Foods with low water activity stored in a high humidity environment will:", opts:["Remain stable indefinitely","Lose water and become safer","Absorb moisture, raising their Aw and becoming susceptible to spoilage","Develop a protective salt crust"], ans:2, exp:"Foods with low Aw placed in high-humidity environments absorb atmospheric moisture, raising Aw to levels that permit microbial growth." },
+  { q:"Lysozyme in eggs is an example of:", opts:["An enzyme that promotes microbial growth","An inherent antimicrobial substance","A biological structure preventing microbial entry","A nutrient that supports microbial growth"], ans:1, exp:"Lysozyme is a naturally occurring antimicrobial enzyme in egg white that destroys bacterial cell walls, protecting the egg from microbial infection." },
+  // Preservation
+  { q:"The inhibition principle in food preservation refers to:", opts:["Killing all microorganisms in food","Slowing or stopping microbial growth without necessarily killing organisms","Adding antimicrobial chemicals to food","Irradiating food with gamma rays"], ans:1, exp:"The inhibition principle slows or prevents microbial growth. If the inhibiting influence is removed, spoilage can resume because organisms may not have been killed." },
+  { q:"Which pasteurisation method uses the lowest temperature but the longest time?", opts:["Flash method (80°C for 1–2 sec)","HTST (72°C for 15 sec)","LTLT (63°C for 30 min)","UHT (140°C for 4 sec)"], ans:2, exp:"Low Temperature Long Time (LTLT) pasteurisation uses 63°C for 30 minutes — the mildest heat treatment of the pasteurisation methods." },
+  { q:"The D-value in food microbiology is defined as:", opts:["Degrees of temperature increase to reduce thermal death time 10-fold","Time required to destroy 90% of microbial population at a given temperature","Time required to destroy all microorganisms in food","The minimum temperature needed to kill spores"], ans:1, exp:"The D-value (Decimal Reduction Time) is the time at a specific temperature required to destroy 90% (one log cycle) of the microbial population." },
+  { q:"The Z-value for bacterial spores is typically:", opts:["1°C","5°C","10°C","25°C"], ans:2, exp:"For bacterial spores, the Z-value is 10°C — a 10°C increase in temperature reduces the thermal death time by a factor of 10." },
+  { q:"Monosaccharides such as glucose are more effective than sucrose in food preservation because they:", opts:["Are sweeter, masking spoilage odours","More effectively reduce water activity","Kill microorganisms directly","Support the growth of beneficial bacteria only"], ans:1, exp:"Monosaccharides reduce water activity more effectively than disaccharides like sucrose because they dissolve to produce more particles per unit mass." },
+  // Fermentation
+  { q:"Fermentation is defined as the breakdown of carbohydrates:", opts:["Aerobically into CO₂ and water","Anaerobically into alcohol or lactic acid and CO₂","By enzymes into amino acids","By bacteria into proteins and vitamins"], ans:1, exp:"Fermentation is the anaerobic breakdown of carbohydrates by microorganisms, producing alcohol or lactic acid and carbon dioxide as end products." },
+  { q:"Which yeast species is responsible for alcoholic fermentation in beer and wine?", opts:["Candida albicans","Saccharomyces cerevisiae","Penicillium roqueforti","Aspergillus niger"], ans:1, exp:"Saccharomyces cerevisiae (baker's/brewer's yeast) is responsible for alcoholic fermentation in beer, wine, and bread production." },
+  { q:"In beer production, which temperature range activates amylases to convert starch into fermentable sugars?", opts:["20–30°C","49–55°C","60°C","65–71°C"], ans:3, exp:"Mash rests at 65–71°C (149–160°F) activate amylases that convert starch into fermentable sugars such as maltose." },
+  { q:"In yogurt production, lactic acid causes casein to:", opts:["Dissolve completely into the whey","Coagulate into a semi-solid curd","Become more alkaline","Separate into fat and protein layers"], ans:1, exp:"Lactic acid produced by fermenting bacteria lowers the pH of milk, causing casein (milk protein) to coagulate and form the semi-solid curd characteristic of yogurt." },
+  { q:"Rennin is used in cheese production to:", opts:["Add flavour","Partially hydrolyse casein and cause coagulation into curds","Ferment lactose into lactic acid","Separate cream from skim milk"], ans:1, exp:"Rennin (chymosin) is a proteolytic enzyme that partially hydrolyses casein, causing it to coagulate and form the curds that are the basis of cheese." },
+  // Pathogens
+  { q:"Approximately what percentage of foodborne bacterial illness is caused by just four bacteria?", opts:["25–30%","50–60%","80–90%","100%"], ans:2, exp:"80–90% of foodborne bacterial illness is attributed to just four organisms: Campylobacter, Salmonella, Clostridium perfringens, and Staphylococcus aureus." },
+  { q:"Clostridium botulinum produces a toxin that:", opts:["Causes diarrhoea by stimulating water secretion","Inhibits acetylcholine release from neurons, causing paralysis","Destroys red blood cells","Causes fever and inflammation"], ans:1, exp:"Botulinum toxin is a neurotoxin that blocks the release of acetylcholine at neuromuscular junctions, leading to progressive descending paralysis." },
+  { q:"A key characteristic of Staphylococcus aureus food poisoning is:", opts:["Symptoms appear 24–48 hours after ingestion","Fever is always present","Symptoms appear 1–6 hours after ingestion; no fever","It requires antibiotic treatment"], ans:2, exp:"S. aureus intoxication has a short incubation period (1–6 hours) and typically causes vomiting, diarrhoea, and cramps but no fever. Treatment is supportive only." },
+  { q:"The enterotoxin of Staphylococcus aureus acts as a superantigen, meaning it:", opts:["Kills bacteria in the gut","Non-specifically activates T cells, triggering a massive immune response","Attaches to intestinal cell receptors only","Produces antibiotics that damage gut flora"], ans:1, exp:"Superantigens bypass normal antigen presentation and directly activate large numbers of T cells, causing the intense gastrointestinal symptoms." },
+  { q:"Campylobacter jejuni is classified as a microaerophile, meaning it:", opts:["Requires the complete absence of oxygen","Requires very high oxygen concentrations","Grows best at low oxygen concentrations","Can grow in both the presence and absence of oxygen equally well"], ans:2, exp:"Microaerophiles like C. jejuni require reduced oxygen levels (3–5% O₂) rather than the 21% in normal air. This is why it grows well in vacuum-packed poultry." },
+  { q:"Salmonella enterica is part of the normal flora of:", opts:["Human mouth and throat","Poultry and reptiles","Freshwater fish","Grain and cereals"], ans:1, exp:"Salmonella is commonly found as normal flora in the intestinal tracts of poultry and reptiles, making these animals primary reservoirs for human infection." },
+  { q:"Typhoid fever is caused by:", opts:["Salmonella Paratyphi","Salmonella Typhi","Shigella dysenteriae","Vibrio cholerae"], ans:1, exp:"Salmonella serotype Typhi causes typhoid fever, characterised by high fever, headache, constipation, and potentially internal bleeding." },
+  { q:"Shigella transmission follows 'the five F's' — these are:", opts:["Fats, Fibre, Fluids, Fungi, Food","Food, Fingers, Feces, Flies, Fomites","Fish, Fruit, Fresh food, Frozen food, Fermented food","Fever, Fatigue, Faintness, Flushing, Flatulence"], ans:1, exp:"Shigella is transmitted via Food, Fingers, Feces, Flies, and Fomites (contaminated objects) — reflecting its highly faecal-oral transmission route." },
+  { q:"Vibrio cholerae causes profuse 'rice water' diarrhoea primarily by:", opts:["Invading and destroying intestinal cells","Activating adenylate cyclase → cAMP accumulation → massive electrolyte and water loss","Producing a neurotoxin that paralyses the gut","Destroying the intestinal mucus layer"], ans:1, exp:"Cholera toxin (A-B toxin) locks a G protein in the active state, continuously activating adenylate cyclase and producing cAMP, causing massive loss of water and electrolytes." },
+  { q:"E. coli O157:H7 belongs to which pathotype and can lead to which serious complication?", opts:["ETEC — traveller's diarrhoea","EPEC — neonatal diarrhoea","STEC — haemolytic uraemic syndrome","EIEC — bacillary dysentery"], ans:2, exp:"E. coli O157:H7 is a Shiga toxin-producing E. coli (STEC) that causes bloody diarrhoea and can progress to haemolytic uraemic syndrome (HUS) — a serious kidney complication." },
+  { q:"A unique and dangerous characteristic of Listeria monocytogenes is:", opts:["It produces spores resistant to all cooking temperatures","It can grow at refrigerator temperatures (4°C)","It causes illness only through toxins, not infection","It is only dangerous if food is not cooked"], ans:1, exp:"Listeria monocytogenes grows at refrigeration temperatures (4°C), making it uniquely dangerous because refrigeration — normally a safety measure — does not prevent its growth." },
+  // Prevention and Lab
+  { q:"To which minimum internal temperature should meat, poultry, and eggs be cooked to destroy most pathogens?", opts:["50°C (122°F)","60°C (140°F)","73°C (163°F)","100°C (212°F)"], ans:2, exp:"Cooking to at least 73°C (163°F) is sufficient to kill essentially all bacteria, parasites, and viruses — with the exception of heat-resistant spore-forming bacteria." },
+  { q:"In the standard plate count method for food analysis, plates are incubated at:", opts:["4°C for 7 days","25°C for 24 hours","37°C for 48 hours","55°C for 30 minutes"], ans:2, exp:"In the standard plate count procedure, nutrient agar plates are incubated inverted at 37°C for 48 hours before counting colonies." },
+  { q:"PCR is used in food safety testing primarily because it:", opts:["Kills pathogens in food","Detects and amplifies pathogen DNA with high sensitivity","Counts the total number of bacteria by visual inspection","Measures the pH of food samples"], ans:1, exp:"PCR (Polymerase Chain Reaction) amplifies trace amounts of pathogen-specific DNA, enabling rapid and highly sensitive detection of pathogens in food — far faster than traditional culture." },
+  // Milk Microbiology
+  { q:"The dominant protein group in cow's milk, comprising approximately 80% of total milk protein, is:", opts:["Whey protein","Casein","Albumin","Globulin"], ans:1, exp:"Casein is the dominant protein class in milk, making up approximately 80% of total milk protein (bovine milk contains ~3.5% total protein)." },
+  { q:"The freshly drawn temperature of milk is approximately:", opts:["10°C","20°C","38°C","50°C"], ans:2, exp:"Freshly drawn milk has a temperature of approximately 38°C — the body temperature of the cow — which is ideal for rapid bacterial multiplication." },
+  { q:"HTST pasteurisation of milk uses which time-temperature combination?", opts:["63°C for 30 minutes","72°C for 15 seconds","100°C for 15 minutes","140°C for 4 seconds"], ans:1, exp:"High Temperature Short Time (HTST) pasteurisation heats milk to 72°C for 15 seconds, followed by rapid cooling to below 10°C — the most common method in commercial dairy." },
+  { q:"UHT (Ultra High Temperature) treatment heats milk to approximately:", opts:["72°C for 15 seconds","100°C for 15 minutes","121°C for 3 minutes","140°C for 4 seconds"], ans:3, exp:"UHT treatment applies approximately 140°C for 4 seconds under pressure, producing a virtually sterile product that retains more fresh milk characteristics than conventional sterilisation." },
+  { q:"The somatic cell count in milk is used as an indicator of:", opts:["Antibiotic residue levels","Fat content of the milk","Mastitis infection in the cow","The degree of pasteurisation applied"], ans:2, exp:"Somatic cells are blood cells that fight infection. An elevated somatic cell count indicates the presence of mastitis — an infection of the mammary gland — in the cow." },
+  { q:"Which factor causes the greatest reduction in both fat and solids-not-fat content of milk?", opts:["Extended storage in cold temperatures","The age of the milking equipment","Disease, particularly mastitis","The colour of the barn lighting"], ans:2, exp:"Disease, particularly mastitis, significantly reduces both fat content and solids-not-fat content in milk by disrupting normal mammary gland function." },
+];
+
+const saData = [
+  { q:"Explain the difference between foodborne intoxication and foodborne infection, giving one example of each.", ans:`<strong>Foodborne Intoxication</strong> occurs when bacteria grow in the food <em>before</em> consumption and produce toxins. When the food is eaten, it is the toxin — not the living bacteria — that causes illness. Importantly, reheating the food may kill the bacteria but the heat-stable toxin can remain and still cause illness.<ul><li>Example: <em>Staphylococcus aureus</em> growing on cream-based desserts left at room temperature produces an enterotoxin; or <em>Clostridium botulinum</em> in improperly canned food produces botulinum neurotoxin.</li></ul><strong>Foodborne Infection</strong> occurs when contaminated food is ingested, and the live bacteria then grow within the intestines and produce toxins or cause direct damage inside the body.<ul><li>Example: <em>Salmonella</em> invades intestinal epithelial cells; <em>Campylobacter jejuni</em> colonises the gut and causes inflammation.</li></ul>` },
+  { q:"What is water activity (Aw) and why is it more important than total water content in determining microbial growth in food?", ans:`Water activity (Aw) is defined as the ratio of the vapour pressure of a food substance to that of pure water at the same temperature: <strong>Aw = VP(Food) / VP(Water)</strong>. Pure water has an Aw of 1.0; all foods have Aw values less than 1.0.<br><br>Aw is more important than total water content because it measures the <strong>free, available water</strong> that microorganisms can actually use for their metabolic processes. Bound water (water tightly attached to food molecules such as proteins and carbohydrates) is unavailable to microbes. For example, dried grain may contain some water by weight, but its Aw (~0.80) is below the minimum required by most bacteria (0.95) — so bacteria cannot grow despite the presence of some moisture. Salting and drying both reduce Aw, not just total water content.` },
+  { q:"Name and briefly describe the three temperature groups of bacteria based on growth temperature.", ans:`<ul><li><strong>Psychrophilic bacteria:</strong> Cold-loving organisms that grow best at approximately 20°C and can grow as low as −10°C in unfrozen media. They cause food spoilage in cold storage. Many are found in soil and water environments.</li><li><strong>Mesophilic bacteria:</strong> Grow between 5°C and 45°C with an optimum near 37°C (body temperature). This group includes most pathogenic bacteria — including Salmonella, E. coli, and Staphylococcus aureus. None can grow below 5°C or above 45°C.</li><li><strong>Thermophilic bacteria:</strong> Heat-loving organisms that grow above 45°C, with optima between 50°C and 70°C. They are mainly spore-formers and are of particular concern in processed and canned foods where high temperatures are applied during production.</li></ul>` },
+  { q:"List FIVE intrinsic factors that affect microbial growth in food.", ans:`<ul><li><strong>pH (Hydrogen ion concentration):</strong> Most bacteria grow best at neutral pH (6.8–7.5). Highly acidic or alkaline conditions inhibit or kill most organisms.</li><li><strong>Water activity (Aw/Moisture content):</strong> The amount of free water available; growth stops below each organism's minimum Aw threshold.</li><li><strong>Nutrient content:</strong> Foods rich in proteins, carbohydrates, vitamins, and minerals (e.g. meat, milk, eggs) support vigorous microbial growth.</li><li><strong>Antimicrobial substances:</strong> Natural inhibitors in food such as lysozyme in eggs and lactenin in milk suppress microbial activity.</li><li><strong>Biological structures:</strong> Physical barriers such as the eggshell, fruit skin, and meat fascia prevent microbial penetration into the food.</li></ul>` },
+  { q:"Describe the two general principles employed in food preservation.", ans:`<strong>1. The Inhibition Principle:</strong> Microbial growth is slowed or stopped, but organisms are not necessarily destroyed. Methods include reducing water activity (salting, drying), lowering pH (fermentation, acid addition), using chemical preservatives (sodium benzoate), applying low temperatures (chilling/freezing), and smoking. If the inhibiting condition is removed, spoilage will resume as organisms are still viable.<br><br><strong>2. The Killing Principle:</strong> Spoilage microorganisms are physically destroyed and the food is sealed in an airtight container to prevent recontamination. Methods include heat treatment (pasteurisation or sterilisation), irradiation with gamma rays or ionising radiation (which destroys DNA), and gas treatment with ethylene oxide or ozone (which kills both vegetative cells and spores). In practice, combinations of both principles are commonly used.` },
+  { q:"What is the D-value in food microbiology? Give an example.", ans:`The <strong>D-value (Decimal Reduction Time)</strong> is the time required at a specific temperature to destroy 90% of the microbial population (reducing the count by one log cycle or one order of magnitude). It is numerically equal to the time for the survivor curve to traverse one log cycle on a semi-logarithmic plot.<br><br>The higher the temperature, the shorter the D-value. For example, for <em>Clostridium sporogenes</em>: D-value at 120°C = 1 minute; at 115°C = 4 minutes; at 110°C = 10 minutes. This means that as temperature increases, it takes progressively less time to achieve the same 90% kill. D-value is critical for designing effective heat treatment schedules in the food industry.` },
+  { q:"Describe the key steps in beer production from mashing to packaging.", ans:`<ul><li><strong>Malting:</strong> Grain (barley, rye, wheat) is germinated then kilned, activating α- and β-amylase enzymes.</li><li><strong>Mashing:</strong> Malted grain (grist) is mixed with heated water. A series of temperature rests activate different enzymes — 49–55°C for proteinases, 60°C for β-gluconase, and 65–71°C for amylases that convert starch into fermentable sugars like maltose.</li><li><strong>Wort production:</strong> Spent grain is separated; the liquid wort is transferred to a kettle and boiled with hops for flavour.</li><li><strong>Clarification:</strong> Wort is spun in a whirlpool (similar to a centrifuge) to remove solids and transferred to fermentation tanks.</li><li><strong>Fermentation:</strong> Yeast is added ("pitched"); top-fermenting yeasts produce ales, bottom-fermenting yeasts produce lagers. Fermentation takes 1–3 weeks.</li><li><strong>Conditioning:</strong> Green beer is transferred to conditioning tanks where yeast settles and beer is carbonated.</li><li><strong>Filtration and packaging:</strong> Beer is filtered through diatomaceous earth and disinfected by cold filtration or pasteurisation before packaging.</li></ul>` },
+  { q:"What are the clinical features and associated foods of Campylobacter jejuni infection?", ans:`<strong>General characteristics:</strong> C. jejuni is a Gram-negative curved rod that is microaerophilic (requires low oxygen) and has one or two polar flagella. It is normal flora of poultry and dairy cattle.<br><br><strong>Associated foods:</strong> Undercooked poultry (contaminated at very high levels — up to 10⁹ cells per gram of chicken) and unpasteurised milk are the most common sources. Cross-contamination from raw poultry to other foods via cutting boards is also significant.<br><br><strong>Incubation period:</strong> 2–5 days<br><strong>Symptoms:</strong> Diarrhoea (may be bloody), abdominal pain, high fever (104°F/40°C). Vomiting is not common. Illness typically lasts 2–10 days.<br><br><strong>Complications:</strong> In approximately 0.1% of cases, Guillain-Barré syndrome (a serious neurological disorder) or rheumatoid arthritis can develop weeks after the acute illness.<br><br><strong>Treatment:</strong> Mostly supportive. Antibiotics (erythromycin, quinolones) are used in severe cases.` },
+  { q:"Explain the composition of milk and why it is highly susceptible to microbial spoilage.", ans:`Milk is approximately 87% water, with the remaining 13% consisting of fat (4%), protein primarily as casein (3.4%), lactose (4.8%), and minerals (0.8%). It also contains fat-soluble vitamins (A, D, E, K) and water-soluble vitamins (B complex, C).<br><br>Milk is highly susceptible to microbial spoilage because:<ul><li><strong>High water activity (Aw ~0.99):</strong> Free water is readily available for microbial metabolism.</li><li><strong>Rich nutrient content:</strong> Milk provides proteins, carbohydrates (lactose), fats, vitamins, and minerals — an almost complete growth medium for microorganisms.</li><li><strong>Near-neutral pH (6.3–6.8):</strong> Optimal for growth of most bacteria.</li><li><strong>Warm initial temperature:</strong> Freshly drawn milk is approximately 38°C — ideal for rapid bacterial multiplication.</li></ul>These properties mean that once contaminated, microbial populations in milk increase very rapidly unless cooling is applied promptly.` },
+  { q:"What are the three standard microbial tests performed on milk, and what does each measure?", ans:`<ul><li><strong>1. Total Bacteria Count (TBC):</strong> Measures the total number of bacteria in a sample that can grow on Standard Methods Agar at 32°C for 48 hours. Results are expressed as Colony Forming Units per millilitre (CFU/ml). A high count indicates poor hygiene during milking, inadequate cooling, or contamination during processing.</li><li><strong>2. Coliform Count:</strong> Counts coliform bacteria that grow on Violet Red Bile Agar (VRBA) at 32°C for 24 hours. Coliforms are indicator organisms — their presence indicates faecal or environmental contamination. If found in pasteurised milk, it signals post-pasteurisation contamination.</li><li><strong>3. Somatic Cell Count (SCC):</strong> Somatic cells are blood cells (white blood cells) that occur naturally in milk as part of the immune response. An elevated SCC indicates mastitis — an infection of the mammary gland. It is determined by direct microscopic examination or by electronic cell counters.</li></ul>` },
+  { q:"Why must milk from antibiotic-treated cows not be used for human consumption?", ans:`Cows treated with antibiotics for mastitis infections may have antibiotic residues in their milk during and after the treatment period. The use of such milk in the food supply is prohibited for several important reasons:<ul><li><strong>Food safety:</strong> Antibiotic residues can cause allergic reactions in sensitive individuals, particularly those allergic to penicillin-based antibiotics.</li><li><strong>Antimicrobial resistance:</strong> Regular exposure to sub-therapeutic antibiotic levels through food can contribute to the development and spread of antibiotic-resistant bacteria in the human population.</li><li><strong>Fermentation interference:</strong> Antibiotic residues inhibit the starter cultures used in yogurt and cheese production, disrupting fermentation and product quality.</li></ul>Regulations (e.g. FDA standards) require that milk contain no detectable antibiotics. Milk from treated cows must be discarded or collected separately during and after the withdrawal period.` },
+  { q:"List and explain FOUR factors that affect milk composition.", ans:`<ul><li><strong>Genetics and breed:</strong> Jersey and Guernsey cattle produce higher fat and protein content milk than Friesian or Shorthorn breeds. Milk quality potential is genetically determined, allowing selective breeding to improve composition.</li><li><strong>Stage of lactation:</strong> Solids-not-fat (SNF) is highest in the first 2–3 weeks after calving. Fat content is initially high but declines over 10–12 weeks before rising again toward the end of lactation.</li><li><strong>Feeding regime:</strong> Underfeeding reduces both fat and SNF content. Roughage (fibre) intake particularly influences fat content and fat composition. Energy deficiency reduces SNF content more significantly than protein deficiency.</li><li><strong>Disease (especially mastitis):</strong> Mastitis reduces both fat and SNF content and elevates somatic cell count. The infection disrupts normal secretory activity of the mammary gland, resulting in altered milk composition and reduced quality.</li></ul>` },
+  { q:"Explain why Listeria monocytogenes is considered an especially dangerous food pathogen.", ans:`<em>Listeria monocytogenes</em> is considered particularly dangerous for several reasons:<ul><li><strong>Refrigerator growth:</strong> Unlike most pathogens, L. monocytogenes can grow at refrigeration temperatures (as low as 4°C). This means foods stored in the refrigerator — normally considered safe — can still accumulate dangerous levels of the organism over time.</li><li><strong>High-risk groups:</strong> Pregnant women, newborns, elderly individuals, and immunocompromised people face severe outcomes including miscarriage, stillbirth, neonatal sepsis, and meningitis.</li><li><strong>Ubiquitous nature:</strong> It is found in many ready-to-eat foods that are not cooked before consumption — including soft cheeses, deli meats, hot dogs, and coleslaw.</li><li><strong>Long incubation:</strong> Incubation can range from a few days to several months, making source identification difficult.</li></ul>Prevention includes avoiding high-risk foods for vulnerable groups and reheating refrigerated leftovers thoroughly.` },
+  { q:"What are the five F's of Shigella transmission and what do they mean for preventing shigellosis?", ans:`The five F's of Shigella transmission are: <strong>Food, Fingers, Feces, Flies, and Fomites</strong>.<ul><li><strong>Food:</strong> Contaminated food, especially ready-to-eat items handled without proper hygiene.</li><li><strong>Fingers:</strong> Direct hand-to-mouth transmission from faecally contaminated hands — particularly important among children.</li><li><strong>Feces:</strong> Direct contact with faecal matter from infected individuals.</li><li><strong>Flies:</strong> Flies can carry Shigella from faecal material to food or surfaces.</li><li><strong>Fomites:</strong> Contaminated objects (door handles, nappies, shared toys) that transfer organisms indirectly.</li></ul><strong>Prevention implications:</strong> Because only 10 cells are needed to cause infection, rigorous hand washing with soap after toilet use, safe food handling, proper sanitation, and fly control are all critical. Access to clean water and improved sanitation are the most effective long-term prevention measures.` },
+  { q:"Describe how salting preserves food.", ans:`Salting preserves food primarily by reducing the water activity (Aw) of the food through the process of osmosis. When salt (sodium chloride) is applied to food, water moves out of the food cells by osmosis toward the region of higher solute concentration, effectively reducing the amount of free water available for microbial growth.<br><br>When Aw falls below a microorganism's minimum growth threshold, the organism cannot grow — and at very low Aw values, microbial cells may be plasmolysed (their cytoplasm shrinks away from the cell wall due to water loss).<br><br><strong>Four methods of salting:</strong><ul><li>Dry cure — rubbing salt directly onto meat/fish surface</li><li>Pickling (brining) — immersion in approximately 15% salt solution</li><li>Injection cure — concentrated salt injected directly into muscle tissue</li><li>Direct addition — salt mixed directly into processed meat products</li></ul>Nitrates and nitrites are often added alongside NaCl, providing additional antimicrobial effects and preserving meat colour.` },
+  { q:"What effect does pasteurisation have on the microorganisms in milk?", ans:`Pasteurisation has the following effects on milk microorganisms:<ul><li><strong>Kills all pathogenic bacteria:</strong> The primary public health purpose — including Mycobacterium tuberculosis, Salmonella, Listeria, Campylobacter, and Brucella.</li><li><strong>Kills many fermentative spoilage organisms:</strong> Reducing the total microbial load and extending storage life to approximately 2–3 days under refrigeration.</li><li><strong>Does NOT kill all organisms:</strong> Some heat-resistant, putrefactive organisms survive pasteurisation. These survivors are responsible for the subsequent deterioration of pasteurised milk after 2–3 days — resulting in off-flavours due to protein and fat breakdown rather than the souring caused by fermentative organisms.</li><li><strong>Does NOT kill spores:</strong> Spore-forming bacteria (e.g. Bacillus species) are not destroyed by pasteurisation temperatures.</li></ul>Pasteurisation therefore reduces microbial risk substantially but does not produce a sterile product — cold storage after pasteurisation remains essential.` },
+  { q:"What is the role of pH in controlling microbial growth in food? Give examples of food preservation methods that use pH.", ans:`pH affects microbial growth because it influences enzyme activity, nutrient transport across cell membranes, and the stability of cellular structures. Most bacteria thrive at near-neutral pH (6.8–7.5) and are inhibited or killed at pH extremes. Molds and yeasts are more acid-tolerant, able to grow between pH 1.5–11.0 and 1.5–8.5 respectively.<br><br><strong>Food preservation methods using pH control:</strong><ul><li><strong>Fermentation:</strong> Bacteria (particularly lactic acid bacteria) produce lactic acid as a fermentation end-product, naturally lowering the pH of food. This is how yogurt, cheese, sauerkraut, and pickles are preserved — the low pH inhibits pathogenic bacteria.</li><li><strong>Direct acid addition:</strong> Adding acetic acid (vinegar) or citric acid directly to food lowers pH rapidly and predictably, used in pickled vegetables, condiments, and marinades.</li><li><strong>Combination approaches:</strong> Low pH combined with reduced Aw (e.g. in fermented meats or jams) provides additive preservation effects superior to either factor alone.</li></ul>` },
+  { q:"Describe the health risks associated with Vibrio cholerae and explain how its toxin works.", ans:`<em>Vibrio cholerae</em> is the causative agent of cholera, one of the most feared waterborne diseases. It is a curved, Gram-negative rod that is halotolerant and can survive in saltwater for extended periods.<br><br><strong>Clinical features:</strong> After 12–48 hours incubation, cholera presents with sudden onset of explosive, profuse watery diarrhoea described as "rice water" stools (pale, watery stool with mucus flecks), accompanied by vomiting. The massive fluid loss can cause severe dehydration and death within hours if untreated.<br><br><strong>Mechanism of the cholera toxin (A-B toxin):</strong><ul><li>The B subunit of the toxin attaches to GM₁ ganglioside receptors on the intestinal cell membrane.</li><li>The A subunit enters the cell and permanently locks a G protein in the "active" (GTP-bound) state.</li><li>This continuously activates adenylate cyclase, producing large amounts of cAMP.</li><li>Elevated cAMP activates ion transport channels, causing massive secretion of Cl⁻, K⁺, Na⁺, and HCO₃⁻ out of intestinal cells, followed by water — producing the characteristic profuse watery diarrhoea.</li></ul>Treatment is primarily oral rehydration therapy to replace lost fluids and electrolytes.` },
+  { q:"What is the completeness of milking and why does it affect fat content measurement?", ans:`Completeness of milking refers to how thoroughly the milk is removed from the udder during each milking session. The fat content of milk is not uniform throughout the milking — it changes significantly from start to finish:<ul><li><strong>Foremilk</strong> (the first milk drawn from the udder) is consistently <strong>low in fat</strong>.</li><li><strong>Hindmilk / Strippings</strong> (the last milk drawn) is always <strong>very high in fat</strong>.</li></ul>This gradient occurs because fat globules are less mobile and are retained in the alveoli and small ducts of the udder until milk let-down and the pressure of milking forces them out.<br><br><strong>Implication for sampling:</strong> If a milk sample is taken before the milk from the entire milking is thoroughly mixed, the fat content measurement will not accurately represent the true average fat content of that milking. It is therefore <strong>essential to thoroughly mix all milk from the udder before sampling</strong>. The fat left in the udder at the end of one milking is generally recovered during the next milking, so there is no net loss of fat over time.` },
+  { q:"Explain the role of molds in food spoilage and give two examples of mold spoilage organisms.", ans:`Molds are filamentous fungi that are the predominant spoilage agents in foods with <strong>low water activity</strong> — particularly dry cereals, cereal products, nuts, bread, and dried fruits. Unlike bacteria, molds can grow at Aw as low as 0.80, allowing them to colonise foods that are too dry for bacteria to grow in.<br><br>Molds spoil food by:<ul><li>Producing enzymes (amylases, lipases, proteases) that break down food components, causing textural and flavour changes.</li><li>Producing visible mycelial growth (the fuzzy appearance on spoiled food).</li><li>Some molds produce <strong>mycotoxins</strong> — toxic secondary metabolites that can be carcinogenic or acutely toxic even if the mold itself is dead.</li></ul><strong>Examples of spoilage mold genera:</strong><ul><li><em>Penicillium</em> spp. — causes blue-green mold on bread, citrus fruits, and cheese surfaces. Some species produce mycotoxins.</li><li><em>Aspergillus</em> spp. — grows on stored grains and nuts; <em>A. flavus</em> produces aflatoxins, potent carcinogens linked to liver cancer.</li></ul>` },
+  { q:"Why is cross-contamination a major concern in food safety?", ans:`Cross-contamination is the transfer of harmful microorganisms from one food, surface, or person to another food — typically from raw to cooked or ready-to-eat food. It is a major food safety concern because:<ul><li><strong>Cooking kills pathogens</strong> in the original raw food (e.g. raw chicken), but if the cooked food or a ready-to-eat food then contacts a contaminated surface (cutting board, knife, unwashed hands), it acquires the pathogen without any subsequent kill step.</li><li><strong>Even small numbers of organisms can cause illness</strong> — Shigella, for example, requires as few as 10 cells to cause infection.</li><li><strong>Common scenarios:</strong> Using the same cutting board for raw chicken and salad vegetables without washing; dripping juices from raw meat onto cooked meat below it in the refrigerator; unwashed hands transferring organisms from raw food to utensils.</li></ul><strong>Prevention:</strong> Separate raw and cooked foods entirely; use colour-coded cutting boards and utensils; wash hands, surfaces, and equipment thoroughly between handling raw and cooked products; store raw meat below cooked food in the refrigerator.` },
+  { q:"What is malolactic fermentation and in which beverage is it important?", ans:`Malolactic fermentation (MLF) is a secondary fermentation process in which <strong>lactic acid bacteria</strong> (primarily <em>Oenococcus oeni</em>) convert the sharp-tasting dicarboxylic acid <strong>malic acid</strong> into the softer-tasting monocarboxylic acid <strong>lactic acid</strong>, along with carbon dioxide.<br><br>Chemical summary: L-Malic acid → L-Lactic acid + CO₂<br><br><strong>Importance in winemaking:</strong> MLF is particularly important in <strong>red wine</strong> and some white wine production. It:<ul><li>Reduces the sharp, tart taste associated with high malic acid content.</li><li>Produces a softer, rounder, and more complex flavour profile.</li><li>Increases microbial stability of the wine (as malic acid that could support undesirable fermentation is consumed).</li></ul>MLF typically occurs during the secondary fermentation phase (3–6 months) in stainless steel vessels or oak barrels. In red wines, it is almost universally employed, while in white wines it depends on the desired style.` },
+];
+
+const laData = [
+  { q:"Discuss in detail the causes of food spoilage, the sources of contaminating microorganisms, and the intrinsic factors that influence microbial growth in food. How do these factors interact to determine the shelf life of a food product?", marks:"(20 marks)", ans:`<h4>1. Causes of Food Spoilage</h4><p>Food spoilage results from multiple interacting causes: <strong>(a) Microbial activity</strong> — bacteria, yeasts, and molds produce enzymes (proteases, lipases, amylases) that decompose food components, generating off-odours, off-flavours, and textural changes. Bacteria dominate in high-moisture foods; molds in low-moisture foods. <strong>(b) Endogenous enzyme activity (autolysis)</strong> — after harvest or slaughter, plant and animal enzymes continue breaking down tissue components. <strong>(c) Non-enzymatic chemical reactions</strong> — particularly lipid oxidation (rancidity), Maillard browning, and vitamin degradation. <strong>(d) Vermin</strong> — insects, rodents, and birds consume food, transmit pathogens, and cause aesthetic damage. <strong>(e) Physical damage</strong> — freezing, mechanical injury, drying, and heat can alter food structure without microbial involvement.</p><h4>2. Sources of Contamination</h4><p>Primary sources include: soil and water (which introduce environmental bacteria, molds, and yeasts to crops and during washing); plants and plant products; food handling equipment (cutting boards, knives, processing lines); the intestinal tracts of humans and food animals (e.g. Salmonella from poultry intestines); food handlers with poor hygiene or skin infections; animal hides and skins (contaminating meat during slaughter); and air and dust (carrying mold spores and bacteria into processing environments).</p><h4>3. Intrinsic Factors and Shelf Life</h4><p><strong>pH:</strong> Most bacteria grow between pH 4.0–9.0. Foods below pH 4.5 (most fruits) resist bacterial spoilage but remain susceptible to acid-tolerant yeasts and molds. <strong>Water activity (Aw):</strong> The most important intrinsic factor. Bacterial growth requires Aw ≥ 0.95; most spoilage molds require Aw ≥ 0.80. Salting and drying exploit this by reducing free water. <strong>Nutrient content:</strong> Nutrient-rich foods (meat, milk, eggs) with high Aw and near-neutral pH support the broadest spectrum of spoilage organisms and therefore have the shortest shelf life. <strong>Antimicrobial substances:</strong> Lysozyme (eggs) and lactenin (milk) provide natural protection. <strong>Biological structures:</strong> Intact skin, shell, and fascia physically block microbial entry.</p><h4>4. Interaction and Shelf Life Determination</h4><p>Shelf life is determined by the combined, interacting effect of all these factors — this is known as the "hurdle concept." For example, raw beef at room temperature has a 1–2 day shelf life because it has high Aw (~0.99), near-neutral pH (5.1–6.2), abundant nutrients, and is exposed to contamination sources. In contrast, dried salted fish can last 360+ days because multiple factors (low Aw, high salt, low pH from slight fermentation) work synergistically to prevent microbial growth. Understanding these interactions allows food technologists to design multi-hurdle preservation strategies that are more effective than any single approach.</p>` },
+  { q:"Compare and contrast the inhibition and killing principles of food preservation. For each principle, describe at least THREE specific methods with the scientific basis for their effectiveness.", marks:"(20 marks)", ans:`<h4>The Inhibition Principle</h4><p>The inhibition principle achieves preservation by preventing or retarding microbial growth — organisms are not necessarily destroyed. This means that if the inhibiting condition is removed, spoilage can resume.</p><ul><li><strong>Reduction of water activity (drying and salting):</strong> When Aw falls below a microorganism's minimum growth threshold, enzyme-driven metabolism cannot proceed — water is required for all biochemical reactions. Drying removes water physically; salting reduces free water through osmosis. Below Aw 0.80, most spoilage organisms cannot grow.</li><li><strong>pH reduction (fermentation and acid addition):</strong> Low pH denatures proteins (including microbial enzymes), disrupts membrane transport, and dissipates the proton motive force needed for ATP generation. Foods below pH 4.5 resist most bacterial growth. Lactic acid fermentation is self-sustaining — as bacteria produce acid, they create conditions that selectively favour themselves while eliminating competitors.</li><li><strong>Low temperature storage:</strong> Chilling (0–15°C) reduces the rate of enzymatic reactions proportionally and slows microbial growth. Freezing (0 to −35°C) stops microbial growth entirely by converting free water to ice (reducing Aw) and slowing reaction kinetics, though spores are unaffected and most pathogens survive freezing.</li><li><strong>Chemical preservatives:</strong> Compounds such as sodium benzoate, sorbic acid, and sulfur dioxide interfere with specific microbial metabolic pathways. Benzoate, for example, is effective at low pH as undissociated benzoic acid penetrates cell membranes.</li></ul><h4>The Killing Principle</h4><p>The killing principle destroys microorganisms, after which the food is sealed in airtight containers to prevent recontamination. The product is not dependent on maintaining inhibitory conditions during storage.</p><ul><li><strong>Pasteurisation:</strong> Heat treatment (e.g. 72°C for 15 seconds in HTST) denatures microbial proteins and nucleic acids. The D-value concept governs the design: each D-value increment reduces the population 10-fold. Pasteurisation is calibrated to achieve a defined log reduction in the target pathogen without significantly damaging food quality.</li><li><strong>Sterilisation:</strong> More severe heat treatment (100–140°C) achieves commercial sterility — destruction of all organisms capable of growth under normal storage conditions. UHT (140°C for 4 seconds) achieves this with minimal quality loss due to the very short exposure time.</li><li><strong>Irradiation:</strong> Gamma rays (cobalt-60) or electron beams cause ionisation within microbial cells, directly fragmenting DNA and generating toxic reactive oxygen species. This kills bacteria, spores, and insects alike, without raising food temperature ("cold pasteurisation").</li></ul><h4>Comparison and Practical Application</h4><p>In practice, the two principles are used in combination ("hurdle technology"): pasteurisation of milk (killing) + refrigeration (inhibition); canning (killing) + vacuum sealing (inhibition of aerobic organisms). Combinations are more effective and less damaging to food quality than any single extreme treatment.</p>` },
+  { q:"Describe the pathogenesis, clinical features, associated foods, and prevention measures for FOUR major foodborne pathogens.", marks:"(20 marks)", ans:`<h4>1. Clostridium botulinum</h4><p><strong>Pathogenesis:</strong> A Gram-positive, anaerobic spore-former that produces botulinum neurotoxin — one of the most potent toxins known. The toxin irreversibly inhibits acetylcholine release at neuromuscular junctions, causing flaccid paralysis. This is an intoxication — it is the pre-formed toxin in food, not the bacteria, that causes illness.</p><p><strong>Clinical features:</strong> Incubation 12–36 hours. Vomiting, diarrhoea, then blurred/double vision, drooping eyelids, difficulty swallowing, and descending muscle paralysis. Can cause respiratory failure and death.</p><p><strong>Foods:</strong> Home-canned low-acid vegetables, honey (in infants).</p><p><strong>Prevention:</strong> Proper home canning with sufficient heat to destroy spores; commercial sterilisation processes; never feed honey to infants under 12 months.</p><h4>2. Salmonella enterica</h4><p><strong>Pathogenesis:</strong> A Gram-negative rod that causes foodborne infection. Salmonella uses Type III secretion systems to inject effector proteins into intestinal epithelial cells, triggering membrane ruffling and bacterial uptake. Bacteria multiply inside vesicles and provoke an inflammatory response causing diarrhoea. Some serovars (Typhi) disseminate systemically.</p><p><strong>Clinical features:</strong> Incubation 6–72 hours. Non-typhoidal: diarrhoea, abdominal pain, moderate fever, lasts days. Typhoidal: high fever (104°F), headache, constipation, potentially fatal internal bleeding.</p><p><strong>Foods:</strong> Poultry, eggs, reptile-associated products.</p><p><strong>Prevention:</strong> Thorough cooking; pasteurisation of eggs; preventing cross-contamination; washing hands after handling raw poultry or reptiles.</p><h4>3. Staphylococcus aureus</h4><p><strong>Pathogenesis:</strong> A Gram-positive coccus that produces heat-stable enterotoxins in food (intoxication). The enterotoxin acts as a superantigen — bypassing normal antigen presentation and activating large numbers of T cells non-specifically, triggering intense gastrointestinal symptoms. Reheating kills bacteria but not the toxin.</p><p><strong>Clinical features:</strong> Rapid onset (1–6 hours). Sudden, severe vomiting, diarrhoea, abdominal cramps. No fever. Resolves within 24 hours. Treatment is supportive only.</p><p><strong>Foods:</strong> Cream-based desserts, custards, egg and potato salads handled by infected food workers.</p><p><strong>Prevention:</strong> Food handlers with skin infections must not handle food; temperature control (never leave food at 28°C for more than 2 hours); refrigerate prepared foods promptly.</p><h4>4. Campylobacter jejuni</h4><p><strong>Pathogenesis:</strong> A Gram-negative microaerophilic curved rod that causes foodborne infection. Attaches to intestinal epithelium using flagella and adhesins, then invades cells and produces cytolethal distending toxin (CDT) that damages host DNA. Provokes an intense inflammatory diarrhoea.</p><p><strong>Clinical features:</strong> Incubation 2–5 days. Bloody diarrhoea, severe abdominal pain, high fever (104°F). Duration 2–10 days. Post-infectious complications include Guillain-Barré syndrome in 0.1% of cases.</p><p><strong>Foods:</strong> Undercooked poultry (up to 10⁹ cells/gram), unpasteurised milk.</p><p><strong>Prevention:</strong> Thorough cooking of poultry; pasteurisation of milk; strict prevention of cross-contamination from raw chicken; hand washing.</p>` },
+  { q:"Explain in detail the process of yogurt and cheese production, identifying the microorganisms involved, the biochemical transformations that occur, and the factors that determine the final product characteristics.", marks:"(20 marks)", ans:`<h4>Yogurt Production</h4><p><strong>Organisms:</strong> Primary cultures are <em>Streptococcus salivarius</em> ssp. <em>thermophilus</em> and <em>Lactobacillus delbrueckii</em> ssp. <em>bulgaricus</em>, which are co-cultured in a symbiotic relationship. Additional probiotics (<em>L. acidophilus</em>, <em>L. casei</em>, <em>Bifidobacterium</em> spp.) are often added for health benefits.</p><p><strong>Biochemical process:</strong> The two primary organisms have a mutualistic relationship — S. thermophilus grows first and lowers oxygen content and pH, stimulating L. bulgaricus growth. L. bulgaricus breaks down proteins, releasing amino acids that stimulate S. thermophilus. Together they ferment lactose into L(+) and D(−) lactic acid. As lactic acid accumulates and pH falls toward the isoelectric point of casein (~pH 4.6), the casein micelles destabilise and aggregate, forming the characteristic semi-solid gel (curd).</p><p><strong>Factors affecting product:</strong> Incubation temperature (42–45°C is optimal), starter culture ratio, milk fat content, milk solids content, and heat pre-treatment of milk (which denatures whey proteins and improves texture). The extent of fermentation determines final acidity and tartness.</p><h4>Cheese Production</h4><p><strong>Organisms:</strong> Lactic acid bacteria (various species depending on cheese type) are used as starter cultures. Secondary organisms such as <em>Penicillium roqueforti</em> (blue cheese), <em>P. camemberti</em> (Camembert/Brie surface), <em>Brevibacterium linens</em> (washed-rind cheeses), and various thermophilic bacteria (Emmental, Parmesan) create the diversity of cheese types.</p><p><strong>Biochemical process:</strong></p><ul><li><strong>Acidification:</strong> Starter lactic acid bacteria ferment lactose to lactic acid, lowering pH and beginning casein destabilisation.</li><li><strong>Coagulation (renneting):</strong> Rennin (chymosin) cleaves κ-casein at a specific peptide bond, removing its hydrophilic "tail" and causing casein micelles to aggregate into a gel (curd). This is primarily a proteolytic, not acidification, event.</li><li><strong>Syneresis and curd processing:</strong> The curd is cut, stirred, and heated. This causes the curd to contract and expel whey. Cooking temperature, cutting size, and stirring intensity all affect moisture content and final texture — smaller cuts and higher temperatures produce harder cheeses.</li><li><strong>Salting and pressing:</strong> Salt controls moisture further, adds flavour, inhibits undesirable organisms, and contributes to rind formation.</li><li><strong>Ripening/Affinage:</strong> This is where the greatest biochemical complexity occurs. Proteolysis (protein breakdown) by enzymes from starter bacteria, rennet, and secondary microorganisms produces peptides and amino acids that contribute to flavour, texture softening, and aroma compounds. Lipolysis (fat breakdown) produces free fatty acids, which further react to produce esters, ketones, and aldehydes — the distinctive aromas of aged cheeses.</li></ul><h4>Summary: Key Determinants of Final Product</h4><p>The final cheese or yogurt characteristics are determined by: milk composition, starter culture species and combinations, coagulation conditions (pH, temperature, rennet type), curd processing parameters, salt content, and ripening duration and conditions. Each variable can be manipulated to produce an enormous diversity of dairy products from essentially the same starting material.</p>` },
+  { q:"Write a detailed account of milk composition and explain how pasteurisation, sterilisation, and UHT treatment affect the microbiological and nutritional quality of milk.", marks:"(20 marks)", ans:`<h4>Milk Composition</h4><p>Milk is a complex biological emulsion containing approximately: <strong>Water (87%)</strong> — the continuous phase and solvent for all other components; <strong>Fat (4%)</strong> — present as fat globules surrounded by a phospholipid membrane; approximately 98% is triacylglycerols. Milk fat carries fat-soluble vitamins A, D, E, and K, and contains carotene (responsible for butter's yellow colour); <strong>Protein (3.4%)</strong> — primarily casein (80% of total protein), which exists as large colloidal micelles. Casein is precipitated by acid or rennin and is fundamental to cheese production. Whey proteins make up the remaining 20% and remain in solution after casein coagulation; <strong>Lactose (4.8%)</strong> — the primary carbohydrate and energy source; substrate for fermentation in dairy products; <strong>Minerals (0.8%)</strong> — chlorides, phosphates, and citrates of Na, Ca, and Mg. Despite their small proportion, they critically influence protein stability, coagulation behaviour, and buffering capacity; <strong>Vitamins</strong> — fat-soluble (A, D, E, K) associated with fat fraction; water-soluble (B complex, C) in the aqueous phase.</p><h4>Pasteurisation (72°C / 15 seconds HTST)</h4><p><strong>Microbiological effects:</strong> Destroys all vegetative pathogenic bacteria — Mycobacterium tuberculosis, Salmonella, Listeria, Campylobacter, Brucella, and others. Reduces total bacterial count substantially. Kills most fermentative spoilage organisms. Does NOT kill spore-forming bacteria or their spores. Surviving putrefactive organisms are responsible for subsequent deterioration after 2–3 days. Storage stability of pasteurised milk under refrigeration: approximately 2–3 days.</p><p><strong>Nutritional and quality effects:</strong> The major nutrients (fat, protein, lactose, minerals) are essentially unaffected. Minor reductions in heat-labile vitamins — vitamin C and some B-group vitamins — but these losses are nutritionally insignificant as milk is not a primary dietary source of these vitamins. Slight reduction in cream-layer formation (creaming) because partial denaturation of fat globule membrane proteins reduces fat globule clustering. Fat content is unchanged. Slight cooked flavour detectable at high temperatures.</p><h4>Conventional Sterilisation (100–140°C / 15–40 minutes)</h4><p><strong>Microbiological effects:</strong> Achieves commercial sterility — destruction of all vegetative cells AND most spores. Product can be stored at ambient temperature for months.</p><p><strong>Quality effects:</strong> Significant Maillard browning (lactose-protein reactions) causing a characteristic caramelised/cooked flavour and brown colour. Greater loss of heat-sensitive vitamins. Protein denaturation is more extensive. The product has a noticeably different taste and appearance from fresh milk.</p><h4>UHT Treatment (140°C / 4 seconds)</h4><p><strong>Microbiological effects:</strong> Achieves the same commercial sterility as conventional sterilisation — the extremely high temperature for a very short time is mathematically equivalent in microbicidal effect (same F-value) but with far less quality damage. UHT milk, when aseptically packaged, can be stored at room temperature for several months.</p><p><strong>Quality effects:</strong> The very short exposure time minimises Maillard reactions, vitamin destruction, and protein denaturation. The product retains flavour, colour, and nutritional profile much closer to fresh pasteurised milk than conventionally sterilised milk. Some ultra-heat-induced sulphur compounds cause a subtle "cooked" note that dissipates during storage. Nutritional value is essentially equivalent to pasteurised milk for practical purposes.</p><h4>Summary Comparison</h4><p>The progression from pasteurisation → sterilisation → UHT represents increasing microbiological safety and shelf-life extension at increasing (but with UHT, partially offset) nutritional and quality cost. The choice of method depends on the intended use, available cold chain infrastructure, and product quality requirements.</p>` },
+  { q:"Discuss the factors affecting milk composition in dairy cattle, explaining the practical significance of each for the dairy industry.", marks:"(15 marks)", ans:`<h4>1. Genetic Factors and Breed</h4><p>The genetic make-up of the cow is the primary determinant of milk composition potential. Jersey and Guernsey breeds consistently produce milk with higher fat (5–6%) and protein content compared to Friesian/Holstein breeds, which produce larger volumes of milk with lower fat (~3.5%). Zebu cattle can produce milk with up to 7% fat. The practical significance is enormous: dairy farmers select breeds to match their production goals — high-volume, lower-fat milk for liquid markets versus high-fat milk for cheese and butter production. Selective breeding programmes have successfully shifted average herd composition over generations.</p><h4>2. Stage of Lactation</h4><p>Colostrum (first milk after calving) is nutritionally distinct — very high in immunoglobulins and higher in protein and fat. As lactation establishes, SNF (solids-not-fat) is highest in weeks 2–3 then gradually declines. Fat content follows a U-shaped curve — initially high, declining to a minimum around 10–12 weeks, then rising again toward the end of lactation. This means milk composition varies predictably throughout the year in seasonal-calving herds, which affects product standardisation in processing factories.</p><h4>3. Milking Interval</h4><p>Unequal milking intervals (most farms milk twice daily with longer overnight gaps) cause fat content to be lower in morning milk (following the shorter interval) than in evening milk. SNF content is less affected. In practice, processors receive a blend of morning and evening milk, moderating the variation. Farms that test compositional payment milk must ensure representative sampling by thorough mixing.</p><h4>4. Age</h4><p>Fat content declines by approximately 0.02 percentage units per lactation as cows age, and SNF declines more substantially. This means older cows, while often producing more volume due to metabolic adaptation, produce progressively lower-composition milk. This must be factored into herd replacement decisions and compositional payment calculations.</p><h4>5. Feeding Regime</h4><p>Underfeeding — particularly energy deficiency — reduces both fat and SNF content. Fat composition is particularly sensitive to roughage (fibre) intake: insufficient dietary fibre leads to low rumen pH, suppressing acetate production and reducing milk fat synthesis (known as milk fat depression). This is practically significant when high-concentrate diets are fed. Protein deficiency only substantially affects SNF if deficiency is severe.</p><h4>6. Disease (Mastitis)</h4><p>Mastitis is the most economically significant disease in dairy cattle. The infection causes direct tissue damage to secretory cells in the mammary gland, reducing both fat and SNF output. Elevated somatic cell count (SCC) is the primary indicator. High SCC milk has reduced cheesemaking efficiency (impaired coagulation properties), shorter shelf life, and lower payment under quality-based pricing schemes. Prevention through good milking hygiene and appropriate antibiotic treatment is essential.</p><h4>7. Completeness of Milking</h4><p>Incomplete milking results in fat-rich hindmilk being left in the udder, artificially deflating measured fat content. This residual fat is generally recovered in the next milking. The practical significance is that composite milk samples must be taken from thoroughly mixed milk to ensure accurate compositional analysis for payment and quality monitoring.</p>` },
+  { q:"Explain the concept of water activity (Aw) in food science and discuss how manipulating water activity is used as a food preservation strategy. Include specific examples and the scientific basis for each method.", marks:"(15 marks)", ans:`<h4>Concept of Water Activity</h4><p>Water activity (Aw) is a thermodynamic property defined as the ratio of the vapour pressure of water in a food system to the vapour pressure of pure water at the same temperature: Aw = VP(food)/VP(water). Pure water has an Aw of exactly 1.0. Aw differs fundamentally from total moisture content because it measures only the <strong>free, unbound water</strong> available for microbial metabolic processes, enzymatic reactions, and chemical reactions.</p><p>Even if a food contains significant total moisture, water tightly bound to proteins, carbohydrates, and salts (through hydrogen bonding and ionic interactions) is unavailable to microorganisms. This explains why a high-moisture food can have a relatively low Aw — e.g., a sugar-saturated fruit preserve may contain 30–35% water by weight yet have an Aw below 0.85.</p><h4>Why Aw Controls Microbial Growth</h4><p>Microorganisms require free water for: enzymatic reactions within cells; nutrient transport across membranes; maintaining turgor pressure; and synthesis of macromolecules. When the external Aw is lower than a cell's internal water activity, water is drawn out of the cell by osmosis (plasmolysis), inhibiting metabolism. Each species has a minimum Aw below which growth is impossible. Bacteria generally require Aw ≥ 0.95; most yeasts ≥ 0.88; most molds ≥ 0.80.</p><h4>Food Preservation Methods Based on Aw Reduction</h4><p><strong>1. Salting (NaCl addition):</strong> Sodium chloride dissolves in the water phase of food, reducing free water thermodynamically. The osmotic pressure differential draws water out of both food cells and microbial cells. At high salt concentrations (15–20%), Aw is reduced below 0.90, which is below the minimum for most food pathogens including Clostridium botulinum (minimum Aw 0.95) and most Salmonella strains. Fish and meat preserved by dry-salting or brining can achieve storage lives of over a year at ambient temperatures. Nitrates are added alongside salt in meat curing, providing additional antimicrobial activity specifically against Clostridium.</p><p><strong>2. Sugar addition:</strong> Similar osmotic mechanism to salting. Monosaccharides (glucose, fructose) are more effective than disaccharides (sucrose) per unit mass because they dissolve to produce twice the number of solute particles, more effectively depressing the vapour pressure of water. Jam and confectionery products with >65% total sugar content have Aw values in the range 0.75–0.85. Only osmophilic yeasts (minimum Aw 0.70) can grow at these levels, and they grow slowly.</p><p><strong>3. Drying:</strong> Physically removes water from food by evaporation (sun/air drying, hot-air tunnel drying) or sublimation (freeze-drying). Sun-dried fish, dried fruits, dried pulses, and cereals can reach Aw values of 0.60–0.80. Freeze-drying (lyophilisation) removes water at low temperature by sublimation, preserving product structure, flavour, and nutrition better than heat drying, while achieving similar low Aw values. Products dried below Aw 0.60 are virtually microbiologically stable indefinitely (spoilage at these levels is only from osmophilic yeasts and xerophilic molds).</p><h4>Interactions with Other Preservation Factors</h4><p>Aw reduction is rarely used in isolation. It interacts synergistically with pH, temperature, and preservatives — the "hurdle concept." Dried, salted meat (biltong/jerky) combines low Aw with slight acid pH (from marinating), low temperature storage, and sometimes smoke compounds, creating multiple simultaneous hurdles to microbial growth. This multi-hurdle approach achieves preservation with less extreme application of any single factor, better preserving sensory quality.</p>` },
+  { q:"Give a detailed account of foodborne illnesses caused by Escherichia coli, describing the different pathogenic types, their mechanisms of pathogenicity, and the populations most at risk.", marks:"(15 marks)", ans:`<h4>Introduction</h4><p>Escherichia coli is a Gram-negative, facultatively anaerobic rod that is part of the normal intestinal flora of warm-blooded animals. However, specific pathogenic variants (pathotypes) have acquired virulence factors — through horizontal gene transfer via plasmids, bacteriophages, and pathogenicity islands — that enable them to cause a range of intestinal and extraintestinal diseases. Six major diarrhoeagenic pathotypes are recognised:</p><h4>1. Enterotoxigenic E. coli (ETEC)</h4><p><strong>Mechanism:</strong> Produces two plasmid-encoded enterotoxins — heat-labile toxin (LT, similar to cholera toxin, activates adenylate cyclase → ↑cAMP) and heat-stable toxin (ST, activates guanylate cyclase → ↑cGMP). Both increase electrolyte and water secretion into the intestinal lumen without causing cell death. Pili (colonisation factor antigens) mediate attachment to small intestinal epithelium. No invasion occurs.</p><p><strong>Clinical features:</strong> Profuse watery diarrhoea without blood or mucus; self-limiting (3–5 days).</p><p><strong>At-risk populations:</strong> Travellers to developing countries (responsible for "traveller's diarrhoea"); children in endemic regions.</p><h4>2. Enteropathogenic E. coli (EPEC)</h4><p><strong>Mechanism:</strong> Causes Attaching and Effacing (A/E) lesions in the small intestine. Uses a Type III secretion system to inject the effector protein Tir into the host cell membrane, to which the bacterial outer-membrane protein intimin binds, enabling intimate attachment. Destroys microvilli (brush border), reducing absorptive surface area and causing osmotic diarrhoea.</p><p><strong>At-risk populations:</strong> Infants in developing countries (accounts for ~20% of diarrhoea in bottle-fed infants); can be severe and fatal in malnourished children.</p><h4>3. Shiga Toxin-Producing E. coli (STEC)</h4><p><strong>Mechanism:</strong> Produces one or both Shiga toxins (Stx1, Stx2) encoded by lysogenic bacteriophages. Shiga toxins inhibit ribosomal protein synthesis (targeting the 28S rRNA) and cause cell death — particularly in vascular endothelium of the colon and kidney. Also causes A/E lesions (like EPEC) in the colon using the same Tir-intimin mechanism. Causes haemorrhagic colitis.</p><p><strong>Serious complication:</strong> Haemolytic Uraemic Syndrome (HUS) — the Shiga toxin is absorbed into the bloodstream and damages renal microvasculature, causing haemolytic anaemia, thrombocytopenia, and acute renal failure. HUS occurs in ~5–10% of STEC O157:H7 infections and is the most common cause of acute kidney failure in children.</p><p><strong>Sources:</strong> Undercooked ground beef, unpasteurised milk and juice, leafy vegetables contaminated with cattle faeces, person-to-person spread.</p><p><strong>At-risk populations:</strong> Children under 5 and the elderly are at highest risk of HUS. Infectious dose is very low (as few as 10–100 cells).</p><h4>4. Enteroinvasive E. coli (EIEC)</h4><p><strong>Mechanism:</strong> Invades the colonic mucosal epithelium (using mechanisms essentially identical to Shigella, acquired through horizontal gene transfer). After initial invasion, bacteria escape the endosome, replicate in the cytoplasm, and spread to adjacent cells. Causes intense inflammation and ulceration of the colonic mucosa.</p><p><strong>Clinical features:</strong> Dysentery — bloody, mucousy diarrhoea with fever and tenesmus. Clinically indistinguishable from Shigella infection.</p><h4>5. Enteroaggregative E. coli (EAEC)</h4><p><strong>Mechanism:</strong> Uses aggregative adherence fimbriae to attach in a characteristic "stacked brick" pattern on intestinal epithelium, forming a biofilm. Produces secreted autotransporter toxin (Sat), EAST1 enterotoxin, and haemolysin, which damage the epithelium, increase mucus production, and reduce absorptive capacity.</p><p><strong>At-risk populations:</strong> Associated with persistent diarrhoea (>14 days) in children in developing countries; also causes diarrhoea in HIV-positive individuals and has been implicated in large outbreaks including the 2011 STEC/EAEC hybrid outbreak in Germany.</p><h4>6. Diffusely Adhering E. coli (DAEC)</h4><p><strong>Mechanism:</strong> Adheres diffusely over the enterocyte surface (distinct from the aggregative pattern of EAEC) using Dr adhesins. Causes elongation of cell surface projections (finger-like protrusions) that "embrace" bacteria, and disrupts the brush border. The precise pathogenic mechanism is less fully characterised than other pathotypes.</p><h4>Public Health Significance</h4><p>Collectively, diarrhoeagenic E. coli pathotypes cause enormous global disease burden — hundreds of millions of cases annually. STEC O157:H7 in particular has prompted major food safety reforms including the classification of E. coli O157:H7 as an adulterant in ground beef in the United States and stricter hygiene controls throughout the food chain.</p>` },
+  { q:"Discuss the role of fermentation in food preservation and food production, describing the biochemical processes involved and giving detailed examples of at least FOUR fermented food or beverage products.", marks:"(20 marks)", ans:`<h4>Introduction to Fermentation</h4><p>Fermentation is the metabolic process by which microorganisms — primarily bacteria, yeasts, and molds — convert carbohydrates (and sometimes proteins and fats) into simpler organic compounds under predominantly anaerobic conditions. In the context of food, fermentation serves dual purposes: <strong>preservation</strong> (by acidification, alcohol production, and competitive exclusion of pathogens) and <strong>production</strong> (creating new foods with distinct flavours, textures, and nutritional profiles).</p><p>The biochemical mechanism of fermentation bypasses the complete aerobic oxidation of glucose. Instead of producing CO₂ and water via the TCA cycle and electron transport chain, sugars are partially oxidised: under homolactic fermentation, glucose → 2 lactic acid (by lactic acid bacteria); under heterolactic fermentation, glucose → lactic acid + ethanol + CO₂; alcoholic fermentation (yeasts): glucose → 2 ethanol + 2 CO₂.</p><h4>1. Beer</h4><p>Beer is produced by alcoholic fermentation of malted grain (barley, rye, wheat). The process begins with malting — grain germination activates amylase enzymes — followed by mashing (65–71°C activates amylases to convert starch to maltose and other fermentable sugars). The wort (sugar-rich liquid) is boiled with hops (providing bitterness and antimicrobial compounds), clarified, then inoculated with <em>Saccharomyces cerevisiae</em>. Top-fermenting strains produce ales (at 15–24°C); bottom-fermenting strains produce lagers (at 5–13°C). Yeast converts maltose → ethanol + CO₂ over 1–3 weeks. Secondary fermentation and conditioning clarify the product and develop carbonation. <strong>Preservation role:</strong> Alcohol (4–7% v/v), low pH, CO₂, and hops' antimicrobial compounds all collectively prevent pathogen growth.</p><h4>2. Wine</h4><p>Wine is produced from grape must by alcoholic fermentation. <em>Saccharomyces cerevisiae</em> (natural or commercial strains) converts grape sugars (glucose and fructose) to ethanol (9–14% v/v) and CO₂. For red wines, grape skins remain in contact during fermentation, extracting anthocyanins (colour) and tannins. Malolactic fermentation, carried out by lactic acid bacteria (e.g. <em>Oenococcus oeni</em>), converts sharp malic acid to softer lactic acid — reducing acidity and adding complexity. Ageing in oak barrels allows controlled oxidation and extraction of wood-derived compounds (vanillin, tannins). <strong>Preservation:</strong> Alcohol, low pH (~3.0–3.8), SO₂ (added as a preservative), and low Aw create a combination of hurdles that prevent pathogen survival.</p><h4>3. Yogurt</h4><p>Yogurt results from the lactic acid fermentation of milk by a symbiotic culture of <em>Streptococcus thermophilus</em> and <em>Lactobacillus delbrueckii</em> ssp. <em>bulgaricus</em>, typically at 42–45°C for 4–6 hours. The organisms are mutualistic: S. thermophilus lowers oxygen tension and produces formate that stimulates L. bulgaricus; L. bulgaricus produces proteolysis products (amino acids, peptides) that stimulate S. thermophilus. Together they produce lactic acid (reducing pH from ~6.7 to ~4.5), at which point casein coagulates to form the characteristic gel. Additional probiotic organisms (L. acidophilus, Bifidobacterium spp.) may be added. Flavour compounds including acetaldehyde (characteristic yogurt aroma) are produced. <strong>Preservation:</strong> Low pH inhibits most pathogens; the dense starter culture competitively excludes contaminating organisms.</p><h4>4. Cheese</h4><p>Cheese production involves complex sequential microbial activities. Starter lactic acid bacteria ferment lactose to lactic acid (acidification). Rennin (chymosin) cleaves κ-casein, destabilising casein micelles and causing coagulation into curds. After curd cutting, heating, pressing, and salting to control moisture, the cheese undergoes <strong>ripening</strong> — a multi-month process driven by residual enzymes from starter bacteria, rennet, and secondary cultures. Proteolysis generates peptides and amino acids; lipolysis generates free fatty acids; these undergo further reactions to produce hundreds of volatile flavour compounds. The specific secondary microflora determines cheese character: <em>Penicillium roqueforti</em> (blue cheese — produces methyl ketones); <em>P. camemberti</em> (Camembert — surface mold producing proteases); <em>Brevibacterium linens</em> (washed-rind cheeses — produces sulfur compounds and orange pigment). <strong>Preservation:</strong> Low pH, reduced Aw (from salt), controlled temperature, and the competitive activity of starter cultures all contribute to preservation.</p><h4>Significance of Fermentation</h4><p>Fermentation has shaped human civilisation for millennia. Beyond preservation and production, it increases nutritional value (B vitamins, increased bioavailability of minerals), improves digestibility (protein hydrolysis, lactose reduction), and creates probiotic products that support gut and systemic health. Modern food science continues to exploit fermentation in new applications including functional foods, biopreservatives, and novel protein sources.</p>` },
+  { q:"Compare and contrast pasteurisation and sterilisation of milk, discussing the scientific principles, methods used, effects on milk quality and microbiology, and the practical applications of each treatment in the dairy industry.", marks:"(20 marks)", ans:`<h4>Scientific Principles Governing Heat Treatment</h4><p>Both pasteurisation and sterilisation rely on the application of thermal energy to denature microbial proteins and nucleic acids, destroying cell function and viability. The relationship between temperature, time, and microbial destruction is governed by: the <strong>D-value</strong> (time at a given temperature to achieve 90% population reduction — one log cycle), the <strong>Z-value</strong> (temperature increase required to reduce D-value 10-fold; for most vegetative cells ~5–7°C; for spores ~10°C), and the <strong>F-value</strong> (cumulative lethal heat exposure expressed as equivalent minutes at 121°C).</p><p>The key principle is that the same lethality can be achieved at lower temperatures with longer times OR at higher temperatures with much shorter times — this forms the basis for the progression from LTLT pasteurisation to UHT sterilisation.</p><h4>Pasteurisation</h4><p><strong>Definition:</strong> Heat treatment calibrated to destroy pathogenic vegetative bacteria without significantly damaging the nutritional or sensory quality of milk.</p><p><strong>Methods:</strong></p><ul><li>LTLT (Low Temperature Long Time): 63°C for 30 minutes — batch process, suitable for smaller operations.</li><li>HTST (High Temperature Short Time): 72°C for 15 seconds — the industry standard; continuous plate heat-exchanger process, allows large throughputs. Milk passes through the holding tube, then is rapidly cooled to below 10°C.</li><li>Flash method: 80°C for 1–2 seconds — used for certain products.</li></ul><p><strong>Microbiological effects:</strong> Destroys all vegetative pathogenic bacteria (Mycobacterium tuberculosis, Salmonella, Listeria, Campylobacter, Brucella). Reduces total viable count substantially. Does NOT kill spore-forming bacteria (Bacillus spp.) or their spores. Surviving putrefactive bacteria cause subsequent quality deterioration.</p><p><strong>Quality effects:</strong> Minimal — the design objective of pasteurisation is maximum microbial safety with minimal quality damage. Fat content and major nutrients are unchanged. Slight loss of heat-labile vitamins (C, some B vitamins) is nutritionally insignificant. Slight reduction in creaming tendency. Very slight cooked flavour at the upper temperature range. Storage life: 2–3 days under refrigeration (4°C).</p><h4>Conventional Sterilisation</h4><p><strong>Definition:</strong> Severe heat treatment that achieves commercial sterility — destruction of all organisms capable of growth under normal storage conditions, including most spores.</p><p><strong>Method:</strong> In-container sterilisation — milk is filled into sealed glass or tinplate containers, then subjected to 100–140°C for 15–40 minutes in retorts (pressure vessels that allow temperatures above 100°C).</p><p><strong>Microbiological effects:</strong> Achieves commercial sterility. Spores of most bacteria are destroyed, though some extremely heat-resistant spores may survive in a dormant state. No viable organisms capable of causing spoilage under normal conditions.</p><p><strong>Quality effects:</strong> Significant. Prolonged exposure to high temperature causes extensive Maillard browning (reaction between lactose and proteins) — producing a characteristic caramelised flavour and brownish colour. Greater vitamin destruction. Substantial protein denaturation altering texture and digestibility. The product is organoleptically distinct from fresh milk. Storage life: months at ambient temperature in sealed containers.</p><h4>UHT (Ultra High Temperature) Treatment</h4><p><strong>Definition:</strong> Indirect or direct heating of milk to ~140°C for 4 seconds — achieving the same commercial sterility as conventional sterilisation but with dramatically less quality damage due to the very short exposure time.</p><p><strong>Scientific basis (Rationale):</strong> Microbial destruction and chemical reactions (Maillard browning, vitamin destruction) have different temperature-time relationships. Microbial death follows a Z-value of 10°C (very steep temperature-response curve), meaning a 10°C increase reduces time needed for the same kill by 10-fold. Chemical reactions have a lower Z-value (~25–30°C) — less steep. Therefore, at very high temperatures and very short times, microbial destruction proceeds far ahead of quality-damaging chemical reactions. This is the fundamental thermodynamic advantage of UHT.</p><p><strong>Microbiological effects:</strong> Equivalent commercial sterility to conventional sterilisation.</p><p><strong>Quality effects:</strong> Substantially better than conventional sterilisation. Much less Maillard browning; colour and flavour much closer to fresh pasteurised milk. Some ultra-heat-induced sulphur compounds (from whey protein denaturation) produce a mild "cooked" note that dissipates during storage. Nutritional profile essentially equivalent to pasteurised milk. Storage life: 6–9 months at ambient temperature when aseptically packaged.</p><h4>Practical Applications and Industry Context</h4><p>Pasteurised milk dominates markets with excellent cold-chain infrastructure (supermarkets with refrigeration, home refrigerators). Its fresh taste and familiar character make it preferred by consumers in developed markets. Sterilised and UHT milk serve markets where cold chains are unreliable or expensive — including large parts of Africa, Asia, and Southern Europe. UHT has largely replaced conventional sterilisation because of its superior quality. In the dairy processing context, pasteurisation is also used as a pre-treatment for cheesemaking milk and cream for butter production, while UHT is applied to cream, flavoured milk products, and extended shelf-life fluid milk.</p>` },
+];
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let correctCount = 0, wrongCount = 0;
+let mcqAnswered = 0, saRevealed = 0, laRevealed = 0;
+
+// ══════════════════════════════════════════════════════
+// RENDER MCQ
+// ══════════════════════════════════════════════════════
+function renderMCQ() {
+  const container = document.getElementById('mcq-container');
+  container.innerHTML = '';
+  mcqData.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'mcq-' + i;
+
+    const letters = ['A','B','C','D'];
+    const opts = item.opts.map((opt, j) =>
+      `<button class="option-btn" id="opt-${i}-${j}" onclick="selectOption(${i},${j})">
+        <span class="opt-letter">${letters[j]}</span>${opt}
+      </button>`
+    ).join('');
+
+    card.innerHTML = `
+      <div class="q-header">
+        <div class="q-num">${i+1}</div>
+        <div class="q-text">${item.q}</div>
+      </div>
+      <div class="options-grid">${opts}</div>
+      <div class="feedback-row" id="fb-${i}">
+        <span class="feedback-icon" id="fb-icon-${i}"></span>
+        <div id="fb-text-${i}"></div>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function selectOption(qi, oi) {
+  const card = document.getElementById('mcq-' + qi);
+  if (card.dataset.answered) return;
+  card.dataset.answered = '1';
+
+  const isCorrect = oi === mcqData[qi].ans;
+  const letters = ['A','B','C','D'];
+
+  // disable all options, style correct/wrong
+  mcqData[qi].opts.forEach((_, j) => {
+    const btn = document.getElementById(`opt-${qi}-${j}`);
+    btn.disabled = true;
+    if (j === mcqData[qi].ans) btn.classList.add('correct');
+    if (j === oi && !isCorrect) btn.classList.add('wrong');
+  });
+
+  // feedback
+  const fb = document.getElementById(`fb-${qi}`);
+  fb.className = 'feedback-row show ' + (isCorrect ? 'correct' : 'wrong');
+  document.getElementById(`fb-icon-${qi}`).textContent = isCorrect ? '✓' : '✗';
+  document.getElementById(`fb-text-${qi}`).innerHTML =
+    isCorrect
+      ? `<strong>Correct!</strong> ${mcqData[qi].exp}`
+      : `<strong>Incorrect.</strong> The correct answer is <strong>${letters[mcqData[qi].ans]}: ${mcqData[qi].opts[mcqData[qi].ans]}</strong>. ${mcqData[qi].exp}`;
+
+  // card border
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+  // update scores
+  if (isCorrect) { correctCount++; } else { wrongCount++; }
+  document.getElementById('correct-count').textContent = correctCount;
+  document.getElementById('wrong-count').textContent = wrongCount;
+
+  mcqAnswered++;
+  updateMCQProgress();
+
+  if (mcqAnswered === mcqData.length) showResults();
+}
+
+function updateMCQProgress() {
+  const pct = (mcqAnswered / mcqData.length) * 100;
+  document.getElementById('mcq-prog').style.width = pct + '%';
+}
+
+function showResults() {
+  const panel = document.getElementById('results-panel');
+  panel.classList.add('show');
+  const pct = Math.round((correctCount / mcqData.length) * 100);
+  document.getElementById('r-correct').textContent = correctCount;
+  document.getElementById('r-wrong').textContent = wrongCount;
+  document.getElementById('r-pct').textContent = pct + '%';
+  const icons = ['😓','📚','👍','🎯','🏆'];
+  const idx = Math.min(Math.floor(pct / 20), 4);
+  document.getElementById('results-icon').textContent = icons[idx];
+  const titles = ['Keep Studying!','Good Effort!','Well Done!','Great Score!','Perfect Score!'];
+  document.getElementById('results-title').textContent = titles[idx];
+  document.getElementById('results-sub').textContent =
+    `You scored ${correctCount} out of ${mcqData.length} on the MCQ section (${pct}%).`;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function resetMCQ() {
+  correctCount = 0; wrongCount = 0; mcqAnswered = 0;
+  document.getElementById('correct-count').textContent = 0;
+  document.getElementById('wrong-count').textContent = 0;
+  document.getElementById('results-panel').classList.remove('show');
+  document.getElementById('mcq-prog').style.width = '0%';
+  renderMCQ();
+  window.scrollTo({ top: document.querySelector('.section-head').offsetTop - 80, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER SHORT ANSWER
+// ══════════════════════════════════════════════════════
+function renderSA() {
+  const container = document.getElementById('sa-container');
+  saData.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'sa-card';
+    card.innerHTML = `
+      <div class="sa-header">
+        <div class="sa-num">S${i+1}</div>
+        <div class="sa-text">Q${i+1}. ${item.q}</div>
+      </div>
+      <div class="sa-body">
+        <textarea class="sa-textarea" placeholder="Write your answer here…" id="sa-ta-${i}"></textarea>
+        <div class="sa-actions">
+          <button class="reveal-btn" onclick="revealSA(${i})">📖 Reveal Model Answer</button>
+        </div>
+        <div class="model-answer" id="sa-ans-${i}">${item.ans}</div>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function revealSA(i) {
+  const el = document.getElementById(`sa-ans-${i}`);
+  if (!el.classList.contains('show')) {
+    el.classList.add('show');
+    saRevealed++;
+    const pct = (saRevealed / saData.length) * 100;
+    document.getElementById('sa-prog').style.width = pct + '%';
+  } else {
+    el.classList.remove('show');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER LONG ANSWER
+// ══════════════════════════════════════════════════════
+function renderLA() {
+  const container = document.getElementById('la-container');
+  laData.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'la-card';
+    card.innerHTML = `
+      <div class="la-header">
+        <div class="la-num">L${i+1}</div>
+        <div class="la-text">Q${i+1}. ${item.q}</div>
+      </div>
+      <div class="la-body">
+        <div class="la-marks">${item.marks} — Write a comprehensive essay-style answer below.</div>
+        <textarea class="la-textarea" placeholder="Write your detailed answer here…" id="la-ta-${i}"></textarea>
+        <button class="la-reveal-btn" onclick="revealLA(${i})">📝 Reveal Model Answer</button>
+        <div class="la-model" id="la-ans-${i}">${item.ans}</div>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function revealLA(i) {
+  const el = document.getElementById(`la-ans-${i}`);
+  if (!el.classList.contains('show')) {
+    el.classList.add('show');
+    laRevealed++;
+    const pct = (laRevealed / laData.length) * 100;
+    document.getElementById('la-prog').style.width = pct + '%';
+  } else {
+    el.classList.remove('show');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+renderMCQ();
+renderSA();
+renderLA();
+</script>
+</body>
+</html>
