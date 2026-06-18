@@ -3,1491 +3,1747 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Microbiology Analysis – Study Guide</title>
+<title>Food & Water Microbiology — Study Guide</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
   :root {
-    --bg: #0f1117;
-    --surface: #181c27;
-    --surface2: #1e2332;
-    --border: #2a3046;
-    --accent: #4ade80;
-    --accent2: #60a5fa;
-    --accent3: #f472b6;
-    --accent4: #facc15;
-    --text: #e8eaf0;
-    --text-muted: #8892aa;
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #21262d;
+    --accent: #2ea8a0;
+    --accent2: #1f7a74;
+    --accent-glow: rgba(46,168,160,0.15);
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #6e7681;
+    --heading: #cae8ff;
+    --tag-bg: #1f3a52;
+    --tag-text: #79c0ff;
+    --warning: #d29922;
+    --warning-bg: #272115;
+    --green: #3fb950;
+    --green-bg: #122117;
+    --red: #f85149;
+    --red-bg: #2c1313;
     --sidebar-w: 280px;
-    --header-h: 60px;
   }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background: var(--bg);
     color: var(--text);
-    font-size: 15px;
     line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ── HEADER ── */
-  #topbar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-    height: var(--header-h);
-    background: rgba(15,17,23,0.96);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 16px;
-    padding: 0 20px;
-    backdrop-filter: blur(8px);
-  }
-  #topbar .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.2rem;
-    color: var(--accent);
-    white-space: nowrap;
-    letter-spacing: 0.02em;
-  }
-  #topbar .logo span { color: var(--text-muted); font-size: 0.75rem; font-family: 'Inter', sans-serif; font-weight: 400; margin-left: 6px; }
-  #menu-toggle {
-    display: none;
-    background: none; border: 1px solid var(--border);
-    color: var(--text); padding: 6px 10px; border-radius: 6px;
-    cursor: pointer; font-size: 18px; margin-left: auto;
-  }
-  #search-bar {
-    flex: 1; max-width: 360px; margin-left: auto;
-    display: flex; align-items: center; gap: 8px;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 0 12px; height: 36px;
-  }
-  #search-bar input {
-    background: none; border: none; outline: none;
-    color: var(--text); font-size: 13px; width: 100%;
-    font-family: 'Inter', sans-serif;
-  }
-  #search-bar input::placeholder { color: var(--text-muted); }
-  #search-bar svg { color: var(--text-muted); flex-shrink: 0; }
-
-  /* ── LAYOUT ── */
-  #layout {
     display: flex;
-    padding-top: var(--header-h);
     min-height: 100vh;
   }
 
   /* ── SIDEBAR ── */
   #sidebar {
-    position: fixed;
-    top: var(--header-h); left: 0; bottom: 0;
     width: var(--sidebar-w);
     background: var(--surface);
     border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
     overflow-y: auto;
-    padding: 20px 0 40px;
     z-index: 100;
+    display: flex;
+    flex-direction: column;
     transition: transform 0.3s ease;
   }
   #sidebar::-webkit-scrollbar { width: 4px; }
-  #sidebar::-webkit-scrollbar-track { background: transparent; }
-  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-  .sidebar-section { margin-bottom: 8px; }
-  .sidebar-unit-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--text-muted);
-    padding: 12px 20px 6px;
-    display: flex; align-items: center; gap: 6px;
+  .sidebar-header {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
-  .sidebar-unit-label .unit-dot {
-    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  .sidebar-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
-  .u1 { background: var(--accent); }
-  .u2 { background: var(--accent2); }
+  .sidebar-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
 
-  .sidebar-link {
-    display: flex; align-items: center; gap: 10px;
-    padding: 7px 20px 7px 28px;
-    color: var(--text-muted); font-size: 12.5px;
-    text-decoration: none; border-left: 2px solid transparent;
-    transition: all 0.18s; cursor: pointer; border-radius: 0;
+  .sidebar-progress {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
   }
-  .sidebar-link:hover { color: var(--text); background: var(--surface2); border-left-color: var(--border); }
-  .sidebar-link.active { color: var(--accent); background: rgba(74,222,128,0.07); border-left-color: var(--accent); font-weight: 500; }
+  .progress-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
 
-  .sidebar-cta {
-    margin: 16px 16px 4px;
-    padding: 12px 14px;
-    background: linear-gradient(135deg, rgba(74,222,128,0.12), rgba(96,165,250,0.12));
-    border: 1px solid rgba(74,222,128,0.3);
-    border-radius: 10px;
+  nav { padding: 8px 0; flex: 1; }
+
+  .nav-section {
+    padding: 8px 18px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .nav-item:hover { color: var(--text); background: var(--surface2); }
+  .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-glow); }
+  .nav-item.completed { color: var(--green); }
+  .nav-item .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .nav-item.active .dot { background: var(--accent); }
+  .nav-item.completed .dot { background: var(--green); }
+
+  .sidebar-footer {
+    padding: 12px 18px;
+    border-top: 1px solid var(--border);
+  }
+  .quiz-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
     text-align: center;
+    text-decoration: none;
+    transition: background 0.2s;
   }
-  .sidebar-cta a {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    color: var(--accent); font-size: 12.5px; font-weight: 600;
-    text-decoration: none; letter-spacing: 0.02em;
-  }
-  .sidebar-cta a:hover { color: #86efac; }
-  .sidebar-cta p { font-size: 10.5px; color: var(--text-muted); margin-top: 4px; }
-
-  /* progress tracker */
-  .progress-box {
-    margin: 0 16px 16px;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 10px; padding: 12px;
-  }
-  .progress-box h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 8px; }
-  .prog-bar { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 6px; }
-  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 0.4s; }
-  .prog-label { font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; }
+  .quiz-btn:hover { background: var(--accent2); }
 
   /* ── MAIN ── */
   #main {
     margin-left: var(--sidebar-w);
     flex: 1;
     min-width: 0;
-    padding: 40px 48px 80px;
-    max-width: 900px;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 50;
+  }
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .breadcrumb span { color: var(--text-muted); }
+
+  #hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  /* ── CONTENT ── */
+  .content-wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
   }
 
   /* ── HERO ── */
   .hero {
-    background: linear-gradient(135deg, var(--surface2) 0%, #111827 100%);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 48px 40px;
+    padding: 56px 40px 40px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--heading);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 600px;
+    line-height: 1.6;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+  .hero-stat .lbl {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
     margin-bottom: 48px;
+    scroll-margin-top: 60px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 36px; height: 36px;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .section-header .badge {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 3px 8px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 28px 0 10px;
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 20px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  p { font-size: 14.5px; color: var(--text); margin-bottom: 12px; }
+  ul, ol { padding-left: 20px; margin-bottom: 12px; }
+  li { font-size: 14.5px; color: var(--text); margin-bottom: 5px; line-height: 1.6; }
+  li::marker { color: var(--accent); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon { font-size: 18px; }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    border-left: 3px solid;
+    font-size: 14px;
+  }
+  .callout-key {
+    background: var(--accent-glow);
+    border-color: var(--accent);
+  }
+  .callout-key strong { color: var(--accent); }
+  .callout-warn {
+    background: var(--warning-bg);
+    border-color: var(--warning);
+  }
+  .callout-warn strong { color: var(--warning); }
+  .callout-good {
+    background: var(--green-bg);
+    border-color: var(--green);
+  }
+  .callout-good strong { color: var(--green); }
+  .callout-bad {
+    background: var(--red-bg);
+    border-color: var(--red);
+  }
+  .callout-bad strong { color: var(--red); }
+
+  /* ── PATHOGEN TABLE ── */
+  .ptable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-bottom: 16px;
+  }
+  .ptable th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .ptable td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  .ptable tr:last-child td { border-bottom: none; }
+  .ptable tr:hover td { background: var(--surface2); }
+  .ptable .cat { color: var(--accent); font-weight: 600; }
+  .ptable .org { color: var(--text-muted); font-style: italic; }
+
+  /* ── COMPARE TABLE ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 16px 0;
+  }
+  .compare-table th {
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .compare-table th:first-child { color: var(--text-muted); }
+  .compare-table th:nth-child(2) { color: var(--warning); background: rgba(210,153,34,0.07); }
+  .compare-table th:nth-child(3) { color: var(--accent); background: var(--accent-glow); }
+  .compare-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare-table td:nth-child(2) { background: rgba(210,153,34,0.04); color: var(--text-muted); }
+  .compare-table td:nth-child(3) { background: rgba(46,168,160,0.04); color: var(--text); }
+  .compare-table .feature { color: var(--text-dim); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .compare-table .win { color: var(--green); font-weight: 600; }
+  .compare-table .lose { color: var(--red-bg); }
+
+  /* ── INDICATOR CARDS ── */
+  .indicator-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 12px;
     position: relative;
     overflow: hidden;
   }
-  .hero::before {
+  .indicator-card::before {
     content: '';
-    position: absolute; top: -40px; right: -40px;
-    width: 260px; height: 260px;
-    background: radial-gradient(circle, rgba(74,222,128,0.1) 0%, transparent 70%);
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .ind-1::before { background: #79c0ff; }
+  .ind-2::before { background: var(--accent); }
+  .ind-3::before { background: var(--green); }
+  .ind-4::before { background: var(--warning); }
+  .indicator-card h3 { margin: 0 0 10px; font-size: 15px; }
+  .ind-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+  }
+  .ind-1 .ind-tag { background: rgba(121,192,255,0.15); color: #79c0ff; }
+  .ind-2 .ind-tag { background: var(--accent-glow); color: var(--accent); }
+  .ind-3 .ind-tag { background: var(--green-bg); color: var(--green); }
+  .ind-4 .ind-tag { background: var(--warning-bg); color: var(--warning); }
+  .ind-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .ind-spec {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 9px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .ind-spec strong { color: var(--text); }
+
+  /* ── TEST STEPS ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--accent2);
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-size: 14px; font-weight: 700; color: var(--heading); margin-bottom: 4px; }
+  .step-body { font-size: 13.5px; color: var(--text-muted); }
+
+  /* ── METHOD CARDS ── */
+  .method-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .method-header {
+    padding: 14px 18px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .method-num {
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 12px;
+    font-weight: 800;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .method-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .method-body { padding: 16px 18px; }
+
+  /* ── MEDIA CHIPS ── */
+  .media-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .media-chip h4 { margin: 0 0 8px; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .flow-title {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .flow-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--text);
+    text-align: center;
+  }
+  .flow-box.accent { border-color: var(--accent2); background: var(--accent-glow); color: var(--accent); font-weight: 700; }
+  .flow-box.good { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+  .flow-box.bad { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+  .flow-arrow { color: var(--text-dim); font-size: 16px; }
+  .flow-label { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  /* ── KEY CONCEPT PILLS ── */
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .pill {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* ── SCROLLSPY ── */
+  .read-marker {
+    width: 100%;
+    height: 1px;
     pointer-events: none;
   }
-  .hero-eyebrow {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
-  }
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2.6rem; line-height: 1.2; font-weight: 400;
-    color: var(--text); margin-bottom: 16px;
-  }
-  .hero h1 em { color: var(--accent); font-style: normal; }
-  .hero p { color: var(--text-muted); font-size: 15px; max-width: 560px; margin-bottom: 28px; }
-  .hero-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .hero-card {
-    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-    border-radius: 10px; padding: 14px;
-  }
-  .hero-card .hc-icon { font-size: 22px; margin-bottom: 6px; }
-  .hero-card h3 { font-size: 12px; font-weight: 600; color: var(--text); }
-  .hero-card p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
-  /* ── SECTIONS ── */
-  .content-section {
-    margin-bottom: 60px;
-    scroll-margin-top: calc(var(--header-h) + 24px);
-  }
-  .section-eyebrow {
-    font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-  .section-eyebrow .tag-u1 { color: var(--accent); }
-  .section-eyebrow .tag-u2 { color: var(--accent2); }
-
-  h2.section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.85rem; font-weight: 400;
-    color: var(--text); margin-bottom: 8px; line-height: 1.25;
-  }
-  .section-intro { color: var(--text-muted); margin-bottom: 28px; font-size: 14.5px; }
-
-  h3.sub-heading {
-    font-size: 15px; font-weight: 600; color: var(--accent2);
-    margin: 28px 0 10px; display: flex; align-items: center; gap: 8px;
-  }
-  h3.sub-heading::before { content: ''; width: 3px; height: 16px; background: var(--accent2); border-radius: 2px; }
-
-  h4.mini-heading {
-    font-size: 13px; font-weight: 600; color: var(--text);
-    margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.06em;
-  }
-
-  p { margin-bottom: 14px; color: var(--text); }
-
-  /* ── CARDS / CALLOUTS ── */
-  .card {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 12px; padding: 20px 22px; margin-bottom: 16px;
-  }
-  .card.accent-green { border-left: 3px solid var(--accent); }
-  .card.accent-blue { border-left: 3px solid var(--accent2); }
-  .card.accent-pink { border-left: 3px solid var(--accent3); }
-  .card.accent-yellow { border-left: 3px solid var(--accent4); }
-
-  .callout {
-    border-radius: 10px; padding: 16px 18px; margin: 20px 0;
-    font-size: 13.5px; display: flex; gap: 12px; align-items: flex-start;
-  }
-  .callout.info { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.2); }
-  .callout.warn { background: rgba(250,204,21,0.08); border: 1px solid rgba(250,204,21,0.2); }
-  .callout.danger { background: rgba(244,114,182,0.08); border: 1px solid rgba(244,114,182,0.2); }
-  .callout.success { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); }
-  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-  .callout-body strong { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-
-  /* ── GRID CARDS ── */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
-
-  .mini-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 14px 16px;
-  }
-  .mini-card h5 { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .mini-card p { font-size: 12.5px; color: var(--text-muted); margin: 0; }
-
-  /* ── TABLES ── */
-  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: 10px; border: 1px solid var(--border); }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead { background: var(--surface2); }
-  thead th { padding: 10px 14px; text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); border-bottom: 1px solid var(--border); }
-  tbody tr { border-bottom: 1px solid rgba(42,48,70,0.6); transition: background 0.15s; }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: rgba(255,255,255,0.02); }
-  tbody td { padding: 9px 14px; color: var(--text); }
-  .badge {
-    display: inline-block; padding: 2px 8px; border-radius: 99px;
-    font-size: 11px; font-weight: 600;
-  }
-  .badge-green { background: rgba(74,222,128,0.15); color: var(--accent); }
-  .badge-blue { background: rgba(96,165,250,0.15); color: var(--accent2); }
-  .badge-red { background: rgba(244,114,182,0.15); color: var(--accent3); }
-
-  /* ── LISTS ── */
-  .styled-list { list-style: none; padding: 0; margin: 12px 0; }
-  .styled-list li {
-    padding: 7px 0 7px 22px; position: relative;
-    font-size: 14px; color: var(--text); border-bottom: 1px solid rgba(42,48,70,0.4);
-  }
-  .styled-list li:last-child { border-bottom: none; }
-  .styled-list li::before {
-    content: '▸'; position: absolute; left: 0;
-    color: var(--accent); font-size: 11px; top: 10px;
-  }
-
-  .num-list { list-style: none; padding: 0; counter-reset: nl; margin: 12px 0; }
-  .num-list li {
-    counter-increment: nl; padding: 10px 0 10px 42px;
-    position: relative; border-bottom: 1px solid rgba(42,48,70,0.4);
-    font-size: 14px;
-  }
-  .num-list li:last-child { border-bottom: none; }
-  .num-list li::before {
-    content: counter(nl);
-    position: absolute; left: 0; top: 8px;
-    width: 26px; height: 26px; border-radius: 6px;
-    background: var(--surface2); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; color: var(--accent2);
-    line-height: 26px; text-align: center;
-  }
-
-  /* ── PROCESS FLOW ── */
-  .flow {
-    display: flex; flex-direction: column; gap: 0; margin: 16px 0;
-    position: relative;
-  }
-  .flow-step {
-    display: flex; gap: 16px; align-items: flex-start;
-    padding: 14px 0;
-  }
-  .flow-num {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--surface2); border: 2px solid var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: var(--accent);
-    flex-shrink: 0; position: relative; z-index: 1;
-  }
-  .flow-content h5 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
-  .flow-content p { font-size: 12.5px; color: var(--text-muted); margin: 0; }
-  .flow-line {
-    width: 2px; background: var(--border); margin-left: 15px;
-    height: 20px; border-radius: 1px;
-  }
-
-  /* ── PATHOGEN CARDS ── */
-  .pathogen-card {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 12px; overflow: hidden; margin-bottom: 14px;
-  }
-  .pathogen-header {
-    padding: 14px 18px; display: flex; align-items: center; gap: 12px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(255,255,255,0.02);
-  }
-  .pathogen-icon { font-size: 22px; }
-  .pathogen-name { font-weight: 700; font-size: 14px; font-family: 'JetBrains Mono', monospace; color: var(--accent3); }
-  .pathogen-type { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .pathogen-body { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
-  .pb-item {
-    padding: 12px 16px; border-right: 1px solid var(--border);
-  }
-  .pb-item:last-child { border-right: none; }
-  .pb-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 4px; }
-  .pb-value { font-size: 12.5px; color: var(--text); }
-
-  /* ── CODE / FORMULA BLOCKS ── */
-  .formula {
-    font-family: 'JetBrains Mono', monospace;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 14px 18px;
-    font-size: 13.5px; color: var(--accent4); margin: 12px 0;
-  }
-
-  /* ── DIVIDER ── */
-  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
-
-  /* ── BACK TO TOP ── */
-  #btt {
-    position: fixed; bottom: 24px; right: 24px; z-index: 300;
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--surface2); border: 1px solid var(--border);
-    color: var(--text-muted); font-size: 18px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s; opacity: 0; pointer-events: none;
-  }
-  #btt.visible { opacity: 1; pointer-events: all; }
-  #btt:hover { background: var(--surface); color: var(--accent); border-color: var(--accent); }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    #sidebar { transform: translateX(-100%); }
-    #sidebar.open { transform: translateX(0); }
-    #main { margin-left: 0; padding: 24px 20px 60px; }
-    #menu-toggle { display: block; }
-    .hero { padding: 28px 22px; }
-    .hero h1 { font-size: 1.8rem; }
-    .hero-cards { grid-template-columns: 1fr 1fr; }
-    .grid-2, .grid-3, .pathogen-body { grid-template-columns: 1fr; }
-    .pb-item { border-right: none; border-bottom: 1px solid var(--border); }
-    .pb-item:last-child { border-bottom: none; }
-    #search-bar { max-width: 180px; }
-  }
-  @media (max-width: 500px) {
-    .hero-cards { grid-template-columns: 1fr; }
-    #search-bar { display: none; }
+  @media (max-width: 768px) {
+    #sidebar {
+      transform: translateX(-100%);
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #main { margin-left: 0; }
+    .topbar { padding: 12px 16px; }
+    .content-wrapper { padding: 0 16px 60px; }
+    .hero { padding: 32px 16px 24px; }
+    .hero h1 { font-size: 26px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    #hamburger { display: block; }
+    .compare-table { font-size: 12px; }
   }
 
-  /* Overlay for mobile */
+  /* ── OVERLAY ── */
   #overlay {
-    display: none; position: fixed; inset: 0; z-index: 99;
-    background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 90;
   }
   #overlay.show { display: block; }
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
-<header id="topbar">
-  <div class="logo">MicroBio Study <span>Analysis Guide</span></div>
-  <button id="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">☰</button>
-  <div id="search-bar">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="search-input" placeholder="Search topics…" oninput="filterSidebar(this.value)" />
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">🔬 Microbiology</div>
+    <div class="sidebar-sub">Food & Water Analysis</div>
   </div>
-</header>
-
-<div id="overlay" onclick="toggleSidebar()"></div>
-
-<!-- LAYOUT -->
-<div id="layout">
-
-  <!-- SIDEBAR -->
-  <nav id="sidebar">
-
-    <div class="progress-box">
-      <h4>📊 Study Progress</h4>
-      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-      <div class="prog-label"><span id="prog-text">0 / 0 topics viewed</span><span id="prog-pct">0%</span></div>
+  <div class="sidebar-progress">
+    <div class="progress-label">
+      <span>Reading progress</span>
+      <span id="pct">0%</span>
     </div>
+    <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+  </div>
 
-    <div class="sidebar-cta">
-      <a href="testquestions.html" target="_blank">
-        🧪 Test Your Knowledge
-      </a>
-      <p>Quiz on all topics in this guide</p>
-    </div>
+  <nav>
+    <div class="nav-section">Unit 1 — Water Microbiology</div>
+    <a class="nav-item" href="#intro" onclick="closeSidebarMobile()"><span class="dot"></span>Introduction & Overview</a>
+    <a class="nav-item" href="#pathogens" onclick="closeSidebarMobile()"><span class="dot"></span>Waterborne Pathogens</a>
+    <a class="nav-item" href="#why-ecoli" onclick="closeSidebarMobile()"><span class="dot"></span>Why We Test for E. coli</a>
+    <a class="nav-item" href="#indicators" onclick="closeSidebarMobile()"><span class="dot"></span>Indicator Organisms</a>
+    <a class="nav-item" href="#standard-tests" onclick="closeSidebarMobile()"><span class="dot"></span>Standard Water Tests</a>
+    <a class="nav-item" href="#methods" onclick="closeSidebarMobile()"><span class="dot"></span>Laboratory Methods</a>
+    <a class="nav-item" href="#comparison" onclick="closeSidebarMobile()"><span class="dot"></span>Method Comparison</a>
+    <a class="nav-item" href="#media" onclick="closeSidebarMobile()"><span class="dot"></span>Culture Media</a>
 
-    <div class="sidebar-section">
-      <div class="sidebar-unit-label"><span class="unit-dot u1"></span>Unit 1 — Food Microbiology</div>
-      <a class="sidebar-link" href="#intro" onclick="setActive(this)">Introduction</a>
-      <a class="sidebar-link" href="#probiotics" onclick="setActive(this)">Probiotics & Beneficial Microbes</a>
-      <a class="sidebar-link" href="#spoilage" onclick="setActive(this)">Food Spoilage</a>
-      <a class="sidebar-link" href="#sources" onclick="setActive(this)">Sources of Microorganisms</a>
-      <a class="sidebar-link" href="#intrinsic" onclick="setActive(this)">Intrinsic Factors</a>
-      <a class="sidebar-link" href="#extrinsic" onclick="setActive(this)">Extrinsic Factors</a>
-      <a class="sidebar-link" href="#preservation" onclick="setActive(this)">Food Preservation</a>
-      <a class="sidebar-link" href="#fermented" onclick="setActive(this)">Fermented Foods</a>
-      <a class="sidebar-link" href="#pathogens" onclick="setActive(this)">Foodborne Pathogens</a>
-      <a class="sidebar-link" href="#illness" onclick="setActive(this)">Illness Mechanisms</a>
-      <a class="sidebar-link" href="#specific-pathogens" onclick="setActive(this)">Pathogen Profiles</a>
-      <a class="sidebar-link" href="#prevention" onclick="setActive(this)">Prevention of Illness</a>
-      <a class="sidebar-link" href="#lab" onclick="setActive(this)">Laboratory Analysis</a>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-unit-label"><span class="unit-dot u2"></span>Unit 2 — Milk Microbiology</div>
-      <a class="sidebar-link" href="#milk-composition" onclick="setActive(this)">Milk Composition</a>
-      <a class="sidebar-link" href="#milk-proteins" onclick="setActive(this)">Milk Proteins</a>
-      <a class="sidebar-link" href="#milk-micro" onclick="setActive(this)">Milk Microbiology</a>
-      <a class="sidebar-link" href="#pasteurisation" onclick="setActive(this)">Pasteurisation</a>
-      <a class="sidebar-link" href="#sterilisation" onclick="setActive(this)">Sterilisation & UHT</a>
-      <a class="sidebar-link" href="#milk-tests" onclick="setActive(this)">Microbial Tests for Milk</a>
-      <a class="sidebar-link" href="#antibiotics" onclick="setActive(this)">Antibiotics in Milk</a>
-      <a class="sidebar-link" href="#milk-factors" onclick="setActive(this)">Factors Affecting Milk Composition</a>
-    </div>
-
+    <div class="nav-section" style="margin-top:8px">Quick Tools</div>
+    <a class="nav-item" href="#glossary" onclick="closeSidebarMobile()"><span class="dot"></span>Key Terms Glossary</a>
+    <a class="nav-item" href="#summary" onclick="closeSidebarMobile()"><span class="dot"></span>Revision Summary</a>
   </nav>
 
-  <!-- MAIN CONTENT -->
-  <main id="main">
+  <div class="sidebar-footer">
+    <a href="questions.html" class="quiz-btn">🧪 Test Your Knowledge →</a>
+  </div>
+</aside>
 
-    <!-- HERO -->
-    <div class="hero">
-      <div class="hero-eyebrow">Comprehensive Study Guide</div>
-      <h1>Bacteriological Analysis of <em>Food & Milk</em></h1>
-      <p>A complete, easy-to-understand guide covering food microbiology, spoilage, preservation, fermentation, foodborne pathogens, and milk microbiology — from fundamentals to laboratory methods.</p>
-      <div class="hero-cards">
-        <div class="hero-card">
-          <div class="hc-icon">🦠</div>
-          <h3>Food Microbiology</h3>
-          <p>Spoilage, preservation & fermented foods</p>
+<!-- MAIN -->
+<div id="main">
+  <div class="topbar">
+    <button id="hamburger" onclick="toggleSidebar()">☰</button>
+    <div class="breadcrumb">Food & Water Microbiology &nbsp;/&nbsp; <span id="current-section">Introduction</span></div>
+    <div style="font-size:12px; color:var(--text-dim);">Unit 1</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">📚 Study Guide · Unit 1</div>
+    <h1>Bacteriological Analysis<br>of Food & Water</h1>
+    <p>A comprehensive guide covering waterborne pathogen detection, indicator organisms, standard laboratory testing procedures, and the methods used to ensure microbiological safety of water and food supplies.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num">7</span><span class="lbl">Pathogen Groups</span></div>
+      <div class="hero-stat"><span class="num">4</span><span class="lbl">Indicator Organisms</span></div>
+      <div class="hero-stat"><span class="num">3</span><span class="lbl">Standard Tests</span></div>
+      <div class="hero-stat"><span class="num">5</span><span class="lbl">Lab Methods</span></div>
+      <div class="hero-stat"><span class="num">4</span><span class="lbl">Culture Media</span></div>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION 1: INTRODUCTION -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="intro">
+      <div class="section-header">
+        <div class="section-icon">💧</div>
+        <h2>Introduction to Bacteriological Water Analysis</h2>
+        <span class="badge">Foundations</span>
+      </div>
+
+      <p>Bacteriological water analysis is the scientific process of examining water samples to estimate <strong>the number (concentration) and type of bacteria present</strong>. It represents one critical aspect of overall water quality assessment.</p>
+
+      <p>Microbial quality is one of the <strong>primary indicators</strong> of drinking water safety. Bacteriological examination is performed routinely to ensure safe water for drinking, bathing, swimming, and domestic and industrial uses.</p>
+
+      <div class="callout callout-key">
+        <strong>Why It Matters:</strong> Water acts as a vehicle for transmitting infectious diseases. Unlike chemical contaminants, microbial pathogens can be present at very low concentrations yet still cause serious illness — making systematic testing essential.
+      </div>
+
+      <h3>The Core Challenge</h3>
+      <p>Testing water for microbial safety presents several fundamental difficulties:</p>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><span class="icon">🔢</span>Low Numbers</div>
+          <p>Individual pathogen numbers may be too low to detect in a reasonably sized water sample, even when the water poses a real health risk.</p>
         </div>
-        <div class="hero-card">
-          <div class="hc-icon">⚠️</div>
-          <h3>Foodborne Pathogens</h3>
-          <p>12+ pathogens, mechanisms & prevention</p>
+        <div class="card">
+          <div class="card-title"><span class="icon">⏱️</span>Detection Time</div>
+          <p>Isolating and identifying some pathogens can take days, weeks, or even months — far too slow for routine safety monitoring.</p>
         </div>
-        <div class="hero-card">
-          <div class="hc-icon">🥛</div>
-          <h3>Milk Microbiology</h3>
-          <p>Composition, tests & pasteurisation</p>
+        <div class="card">
+          <div class="card-title"><span class="icon">🦠</span>Diversity</div>
+          <p>Human faecal pathogens vary enormously in type — viruses, bacteria, protozoa — making it impossible to test each sample for every possible pathogen.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">🚫</span>No Certainty</div>
+          <p>The absence of one particular pathogen does not rule out the presence of another. Testing must be comprehensive.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <strong>The Solution:</strong> Instead of testing for every pathogen, microbiologists test for <strong>indicator organisms</strong> — non-pathogenic intestinal bacteria (mainly <em>E. coli</em>) whose presence signals faecal contamination and therefore probable danger.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION 2: PATHOGENS -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="pathogens">
+      <div class="section-header">
+        <div class="section-icon">🦠</div>
+        <h2>Waterborne Microbial Pathogens</h2>
+        <span class="badge">Pathogen Classification</span>
+      </div>
+
+      <p>Water can carry a broad range of pathogenic microorganisms. These are classified into seven main groups:</p>
+
+      <div class="pill-row">
+        <span class="pill">🦠 Bacteria</span>
+        <span class="pill">🔬 Viruses</span>
+        <span class="pill">🧫 Protozoa</span>
+        <span class="pill">🪱 Helminths</span>
+        <span class="pill">🌀 Spirochetes</span>
+        <span class="pill">🔴 Rickettsia</span>
+        <span class="pill">🌿 Algae</span>
+      </div>
+
+      <h3>Bacteria</h3>
+      <table class="ptable">
+        <thead>
+          <tr>
+            <th>Disease Category</th>
+            <th>Causative Organisms</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cat">Enteritis, Diarrhoea & Dysentery</td>
+            <td class="org">Campylobacter, Vibrio cholerae (Cholera), E. coli O157:H7, Salmonella, Shigella</td>
+          </tr>
+          <tr>
+            <td class="cat">Enteric Fever</td>
+            <td class="org">Salmonella typhi (Typhoid), Salmonella paratyphi (Paratyphoid)</td>
+          </tr>
+          <tr>
+            <td class="cat">Paralysis</td>
+            <td class="org">Clostridium botulinum (Botulism)</td>
+          </tr>
+          <tr>
+            <td class="cat">Eye, Ear & Skin Infections</td>
+            <td class="org">Miscellaneous bacteria</td>
+          </tr>
+          <tr>
+            <td class="cat">Urinary Tract Infections</td>
+            <td class="org">Escherichia coli, others</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Viruses</h3>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><span class="icon">🤢</span>Gastrointestinal Disease</div>
+          <p><strong>Rotavirus</strong> and <strong>Norwalk virus</strong> — major causes of waterborne diarrhoea and dysentery worldwide.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">🫀</span>Liver Damage</div>
+          <p><strong>Hepatitis A</strong> and <strong>Hepatitis E</strong> — cause flu-like illness with significant liver damage; spread through contaminated water.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">🦿</span>Paralysis</div>
+          <p><strong>Poliovirus</strong> — a waterborne enteric virus capable of causing permanent paralysis through contaminated drinking water.</p>
+        </div>
+      </div>
+
+      <h3>Protozoa</h3>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">Giardia</div>
+          <p>Causes giardiasis; resistant to chlorine at standard doses.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Cryptosporidia</div>
+          <p>Highly chlorine-resistant; a major threat in treated water supplies.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Amoeba</div>
+          <p>Can cause severe dysentery and, in some species, fatal brain infections.</p>
+        </div>
+      </div>
+
+      <h3>Helminths (Parasitic Worms)</h3>
+      <p>Worm eggs and larvae can survive in water sources. The main waterborne helminths include:</p>
+      <ul>
+        <li><strong>Round worm</strong> (<em>Ascaris lumbricoides</em>) — enters via ingestion of eggs</li>
+        <li><strong>Tape worm</strong> (<em>Taenia</em> spp.) — ingested through contaminated food/water</li>
+        <li><strong>Hook worm</strong> — larvae penetrate skin during water contact</li>
+        <li><strong>Whip worm</strong> (<em>Trichuris trichiura</em>) — transmitted faecal-orally</li>
+      </ul>
+
+      <h3>Other Waterborne Pathogens & Water-Related Diseases</h3>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title"><span class="icon">🌿</span>Algae</div>
+          <p><strong>Microcystis</strong> (cyanobacteria) produces powerful toxins. <strong>Dinoflagellates</strong> can produce shellfish poisoning toxins. Neither are bacteria but both contaminate water supplies.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="icon">🦟</span>Water-Related Diseases</div>
+          <p>Transmitted by organisms that breed in water: <strong>Malaria</strong> (Anopheles mosquito), <strong>Dengue fever</strong>, <strong>Yellow fever</strong>, and <strong>Schistosomiasis</strong>.</p>
         </div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════ -->
-    <!-- UNIT 1: FOOD MICROBIOLOGY -->
-    <!-- ══════════════════════════════════════ -->
-
-    <section class="content-section" id="intro">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Food Microbiology</div>
-      <h2 class="section-title">What is Food Microbiology?</h2>
-      <p class="section-intro">Food microbiology is the scientific study of microorganisms that live in, create, or contaminate food. Understanding these organisms is critical for food safety, production, and preservation.</p>
-
-      <div class="callout info">
-        <span class="callout-icon">ℹ️</span>
-        <div class="callout-body"><strong>Core Definition</strong>Food microbiology covers microorganisms that cause spoilage, pathogens that cause disease if food is improperly handled, and organisms used to produce fermented foods like cheese, yogurt, bread, beer, and wine.</div>
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION 3: WHY E. COLI -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="why-ecoli">
+      <div class="section-header">
+        <div class="section-icon">🎯</div>
+        <h2>Why We Test for E. coli & Coliforms</h2>
+        <span class="badge">Indicator Logic</span>
       </div>
 
-      <h3 class="sub-heading">The Dual Nature of Microorganisms in Food</h3>
-      <p>Microorganisms play two opposing roles in food — they can be either incredibly useful or dangerously harmful:</p>
-
-      <div class="grid-2">
-        <div class="card accent-green">
-          <h4 class="mini-heading">✅ Beneficial Roles</h4>
-          <ul class="styled-list">
-            <li>Production of cheese, yogurt, and sausages</li>
-            <li>Fermentation of beer, wine, and bread</li>
-            <li>Pickling and sauerkraut preparation</li>
-            <li>Probiotics that improve gut health</li>
-          </ul>
-        </div>
-        <div class="card accent-pink">
-          <h4 class="mini-heading">❌ Harmful Roles</h4>
-          <ul class="styled-list">
-            <li>Causing food spoilage (bad smell, taste, appearance)</li>
-            <li>Producing dangerous toxins in food</li>
-            <li>Causing serious and fatal food poisoning</li>
-            <li>Contaminating raw and processed foods</li>
-          </ul>
-        </div>
+      <div class="callout callout-key">
+        <strong>The Key Principle:</strong> Since it is impossible to test for every possible pathogen in every water sample, we instead test for harmless gut bacteria that always accompany faecal contamination. Their presence signals danger — even if we never detect the actual pathogen causing illness.
       </div>
 
-      <h3 class="sub-heading">Why Study Food Microbiology?</h3>
-      <div class="grid-3">
-        <div class="mini-card">
-          <h5>🛡️ Prevent Spoilage</h5>
-          <p>Understand how and why food decays so it can be prevented through proper storage and handling.</p>
-        </div>
-        <div class="mini-card">
-          <h5>🏥 Prevent Illness</h5>
-          <p>Identify pathogenic microorganisms that contaminate food and cause disease in humans.</p>
-        </div>
-        <div class="mini-card">
-          <h5>🏭 Production</h5>
-          <p>Harness beneficial microbes for food production, preservation, and improving nutritional value.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- PROBIOTICS -->
-    <section class="content-section" id="probiotics">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Beneficial Microorganisms</div>
-      <h2 class="section-title">Probiotics & Beneficial Microbes</h2>
-      <p class="section-intro">Not all microorganisms are harmful. Many are essential to human health and the production of common foods.</p>
-
-      <div class="callout success">
-        <span class="callout-icon">✅</span>
-        <div class="callout-body"><strong>Probiotics Defined</strong>Probiotics are living microorganisms that, when consumed in adequate amounts, confer health benefits beyond their basic nutritional value. There is growing evidence for their role in gastrointestinal infections, irritable bowel syndrome (IBS), and inflammatory bowel disease (IBD).</div>
-      </div>
-
-      <h3 class="sub-heading">Lactobacillus Species</h3>
-      <p><em>Lactobacillus</em> species are among the most widely used beneficial bacteria. They are used in the production of yogurt, cheese, beer, wine, cider, and chocolate. In recent years, there has been great interest in their use as probiotics for disease prevention in both humans and animals.</p>
-
-      <h3 class="sub-heading">Bifidobacteria</h3>
-      <p><em>Bifidobacteria</em> are considered highly important probiotics used in the food industry to relieve and treat many intestinal disorders. They exert a wide range of beneficial health effects:</p>
-
-      <ol class="num-list">
-        <li><strong>Regulation of intestinal microbial homeostasis</strong> — maintaining a healthy balance of gut bacteria.</li>
-        <li><strong>Inhibition of harmful pathogens</strong> — preventing harmful bacteria from colonising or infecting the gut lining.</li>
-        <li><strong>Modulation of immune responses</strong> — influencing both local (gut) and systemic (whole-body) immune activity.</li>
-        <li><strong>Suppression of cancer-promoting enzymes</strong> — reducing procarcinogenic enzymatic activity within the gut microbiota.</li>
-        <li><strong>Production of vitamins</strong> — synthesising important vitamins directly in the gut.</li>
-        <li><strong>Bioconversion of dietary compounds</strong> — converting dietary substances into bioactive, health-promoting molecules.</li>
-      </ol>
-
-      <h3 class="sub-heading">Microbial Biopolymers in Food</h3>
-      <p>Microorganisms naturally produce a variety of biopolymers — large biological molecules — including polysaccharides, polyesters, and polyamides. Several of these microbially produced polymers are used as functional ingredients and additives in the food industry.</p>
-    </section>
-
-    <!-- SPOILAGE -->
-    <section class="content-section" id="spoilage">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Food Spoilage</div>
-      <h2 class="section-title">Understanding Food Spoilage</h2>
-      <p class="section-intro">Food spoilage is damage or deterioration that makes food unsuitable for human consumption. It is not always visible — food can look perfectly normal yet be dangerously contaminated.</p>
-
-      <div class="callout warn">
-        <span class="callout-icon">⚠️</span>
-        <div class="callout-body"><strong>Important Note</strong>Food must be considered spoiled if it is contaminated with pathogenic microorganisms or poisonous agents such as pesticides or heavy metals — even if it looks, smells, and tastes perfectly fine. Always verify through proper bacteriological and toxicological testing.</div>
-      </div>
-
-      <h3 class="sub-heading">Storage Life of Common Foods</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Food Product</th><th>Storage Life at 21°C</th><th>Risk Level</th></tr></thead>
-          <tbody>
-            <tr><td>Raw beef, mutton, fish, poultry</td><td>1–2 days</td><td><span class="badge badge-red">High</span></td></tr>
-            <tr><td>Fresh fruits</td><td>1–7 days</td><td><span class="badge badge-red">High</span></td></tr>
-            <tr><td>Leafy vegetables</td><td>1–2 days</td><td><span class="badge badge-red">High</span></td></tr>
-            <tr><td>Root crops</td><td>1–20 days</td><td><span class="badge badge-blue">Medium</span></td></tr>
-            <tr><td>Dried, salted or smoked meat &amp; fish</td><td>360+ days</td><td><span class="badge badge-green">Low</span></td></tr>
-            <tr><td>Dried fruits</td><td>360+ days</td><td><span class="badge badge-green">Low</span></td></tr>
-            <tr><td>Dried seeds</td><td>360+ days</td><td><span class="badge badge-green">Low</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 class="sub-heading">Causes of Food Spoilage</h3>
-
-      <div class="card accent-blue">
-        <h4 class="mini-heading">a) Microbial Activity</h4>
-        <p>Bacteria, yeasts, and molds produce enzymes that decompose food components. Bacteria are the most significant spoilage agents in high-moisture foods like milk and meat. Molds are the primary spoilage agents in low-moisture foods like dry cereals.</p>
-      </div>
-      <div class="card accent-green">
-        <h4 class="mini-heading">b) Enzyme Activity (Autolysis)</h4>
-        <p>After the death of a plant or animal, enzymes naturally present in tissues continue working, breaking down food components in a process called autolysis. This is why even clean, uncontaminated meat will deteriorate over time.</p>
-      </div>
-      <div class="card accent-yellow">
-        <h4 class="mini-heading">c) Chemical Reactions</h4>
-        <p>Non-enzymatic chemical reactions also cause spoilage. The most common example is oxidative rancidity — the oxidation of fats in food — which produces unpleasant off-flavours without any microbial involvement.</p>
-      </div>
-      <div class="card accent-pink">
-        <h4 class="mini-heading">d) Vermin</h4>
-        <p>Insects (weevils, ants, cockroaches, fly larvae), rodents (rats, mice), and birds cause spoilage through physical consumption of food, contamination with pathogens they carry, and the aesthetic damage their presence causes.</p>
-      </div>
+      <h3>The Coliform Group — What Are They?</h3>
+      <p>Coliforms are defined as:</p>
       <div class="card">
-        <h4 class="mini-heading">e) Physical Changes</h4>
-        <p>Freezing, burning, drying, mechanical pressure, and other physical forces can alter food structure and quality, rendering it unacceptable even without microbial involvement.</p>
+        <ul>
+          <li>Gram-negative (do not retain crystal violet stain)</li>
+          <li>Non-spore-forming rods</li>
+          <li>Aerobic to facultatively anaerobic (can grow with or without oxygen)</li>
+          <li>Ferment lactose to produce both <strong>acid</strong> and <strong>gas</strong></li>
+        </ul>
       </div>
-    </section>
-
-    <!-- SOURCES -->
-    <section class="content-section" id="sources">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Contamination</div>
-      <h2 class="section-title">Sources of Microorganisms in Food</h2>
-      <p class="section-intro">Microorganisms can enter food from a wide variety of environmental and biological sources throughout growing, processing, and handling.</p>
 
       <div class="grid-2">
-        <div class="mini-card"><h5>🌱 Soil & Water</h5><p>Primary reservoir of bacteria, molds, and yeasts. Irrigation water and soil contact introduce organisms to crops.</p></div>
-        <div class="mini-card"><h5>🌿 Plants & Plant Products</h5><p>Fruits, vegetables, and grains carry surface microorganisms from growing environments.</p></div>
-        <div class="mini-card"><h5>🍽️ Food Utensils</h5><p>Improperly cleaned cutting boards, knives, and processing equipment transfer microbes between foods.</p></div>
-        <div class="mini-card"><h5>🦠 Intestinal Tract</h5><p>Intestines of humans and animals harbour pathogens like Salmonella and E. coli that can contaminate meat during slaughter.</p></div>
-        <div class="mini-card"><h5>👤 Food Handlers</h5><p>Workers with poor hygiene, skin infections, or illness are a major contamination source, especially for Staphylococcus aureus.</p></div>
-        <div class="mini-card"><h5>🐄 Animal Hides & Skins</h5><p>External surfaces of animals carry environmental microorganisms that can contaminate meat during processing.</p></div>
-      </div>
-
-      <div class="callout warn">
-        <span class="callout-icon">💨</span>
-        <div class="callout-body"><strong>Air & Dust</strong>Airborne particles and dust carry mold spores and bacteria, which can settle on food during processing, packaging, or storage — particularly relevant in bakeries and open food facilities.</div>
-      </div>
-    </section>
-
-    <!-- INTRINSIC FACTORS -->
-    <section class="content-section" id="intrinsic">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Growth Factors</div>
-      <h2 class="section-title">Intrinsic Factors Affecting Microbial Growth</h2>
-      <p class="section-intro">Intrinsic factors are properties that are inherent to the food itself. They determine how hospitable a food environment is for microbial growth.</p>
-
-      <h3 class="sub-heading">1. pH (Acidity/Alkalinity)</h3>
-      <p>Most bacteria thrive at neutral to slightly alkaline pH (6.8–7.5). However, different organisms have different pH tolerances:</p>
-
-      <div class="grid-2">
-        <div class="card accent-green">
-          <h4 class="mini-heading">pH Tolerance Ranges</h4>
-          <ul class="styled-list">
-            <li><strong>Most bacteria:</strong> pH 4.0 – 9.0</li>
-            <li><strong>Salmonella:</strong> pH 4.5 – 8.8</li>
-            <li><strong>E. coli:</strong> pH 4.4 – 9.0</li>
-            <li><strong>Molds:</strong> pH 1.5 – 11.0 (widest range)</li>
-            <li><strong>Yeasts:</strong> pH 1.5 – 8.5</li>
-          </ul>
+        <div class="card">
+          <div class="card-title"><span class="icon">🦠</span>E. coli</div>
+          <p>The <strong>only true faecal coliform</strong>. Found exclusively in the intestinal tract of warm-blooded animals. Its presence in water is definitive proof of recent faecal contamination. <em>Not normally found in fresh water or soil.</em></p>
         </div>
-        <div class="card accent-blue">
-          <h4 class="mini-heading">pH of Common Foods</h4>
-          <ul class="styled-list">
-            <li><strong>Beef:</strong> 5.1 – 6.2</li>
-            <li><strong>Chicken:</strong> 6.2 – 6.4</li>
-            <li><strong>Milk:</strong> 6.3 – 6.8</li>
-            <li><strong>Cheese:</strong> 4.9 – 5.9</li>
-            <li><strong>Fruits:</strong> mostly below 3.5</li>
-            <li><strong>Vegetables:</strong> 3.0 – 6.1</li>
-          </ul>
+        <div class="card">
+          <div class="card-title"><span class="icon">🌱</span>Enterobacter aerogenes</div>
+          <p>Also a coliform, but <strong>widely distributed in nature</strong> — found in soil, on plants, and in the environment. Its presence alone does NOT indicate faecal contamination.</p>
         </div>
       </div>
 
-      <div class="callout info">
-        <span class="callout-icon">🔬</span>
-        <div class="callout-body"><strong>Acidophilic Organisms</strong>Microorganisms that can grow in highly acidic environments (around pH 2.0) are called <em>acidophilic</em>. Yeasts and molds generally fall into this category. In contrast, Vibrio cholerae is acid-sensitive and prefers alkaline conditions. Most bacteria are killed in strongly acidic or alkaline environments — with the notable exception of Mycobacteria, which are unusually acid-resistant.</div>
+      <h3>The Indicator Organism Principle</h3>
+      <p>Indicator organisms are highly abundant gut bacteria used as proxies for faecal contamination. The reasoning is straightforward:</p>
+
+      <div class="callout callout-good">
+        <strong>Why indicators work:</strong> Even when a person is infected with a pathogen, they excrete <em>many millions of times more</em> indicator organisms (like <em>E. coli</em>) than actual pathogens. Indicators are therefore far easier to detect, even when pathogen levels are below the threshold of detection.
       </div>
 
-      <h3 class="sub-heading">2. Water Activity (Moisture Content)</h3>
-      <p>The relevant property isn't just the amount of water, but the <strong>water activity (Aw)</strong> — a measure of the free, available water in food. It is defined as the ratio of the vapour pressure of the food to that of pure water at the same temperature:</p>
-
-      <div class="formula">Aw = VP<sub>Food</sub> / VP<sub>Water</sub></div>
-
-      <p>Pure water has an Aw of 1.0. All food products have Aw values less than 1.0. When Aw drops below a microorganism's minimum requirement, growth stops entirely.</p>
-
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Microorganism</th><th>Minimum Aw for Growth</th></tr></thead>
-          <tbody>
-            <tr><td>Clostridium botulinum, Bacillus cereus, Pseudomonas aeruginosa, Salmonella spp.</td><td>0.95</td></tr>
-            <tr><td>Staphylococcus aureus (anaerobic), Candida spp., Saccharomyces</td><td>0.90</td></tr>
-            <tr><td>Staphylococcus aureus (aerobic)</td><td>0.86</td></tr>
-            <tr><td>Most spoilage yeasts</td><td>0.88</td></tr>
-            <tr><td>Penicillium spp.</td><td>0.82</td></tr>
-            <tr><td>Most spoilage molds</td><td>0.80</td></tr>
-            <tr><td>Osmotic yeasts</td><td>0.70</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Food Product</th><th>Water Activity (Aw)</th></tr></thead>
-          <tbody>
-            <tr><td>Raw meat and milk</td><td>0.99 – 1.0</td></tr>
-            <tr><td>Luncheon meat</td><td>0.95</td></tr>
-            <tr><td>Boiled ham, sliced bacon</td><td>0.90</td></tr>
-            <tr><td>Dried grains</td><td>0.80</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 class="sub-heading">3. Nutrient Content</h3>
-      <p>Microorganisms require proteins, carbohydrates, lipids, water, energy, nitrogen, sulfur, phosphorus, vitamins, and minerals for growth. Foods rich in these nutrients — such as milk, meat, and eggs — are highly susceptible to microbial spoilage because they provide an ideal growth medium.</p>
-
-      <h3 class="sub-heading">4. Naturally Occurring Antimicrobial Substances</h3>
-      <p>Many foods contain built-in chemical defences against microbial attack. Examples include:</p>
-      <ul class="styled-list">
-        <li><strong>Lactenin & anti-coliform factors</strong> — naturally present in fresh milk</li>
-        <li><strong>Lysozyme</strong> — an enzyme in egg white that destroys bacterial cell walls</li>
+      <p>Common indicator organisms include:</p>
+      <ul>
+        <li><strong><em>Escherichia coli</em></strong> — gold standard faecal indicator</li>
+        <li><strong>Non-specific coliforms</strong> — broad screening</li>
+        <li><strong><em>Pseudomonas aeruginosa</em></strong> — commonly found in gut, indicates sewage</li>
       </ul>
+    </div>
 
-      <h3 class="sub-heading">5. Biological Structures</h3>
-      <p>Physical structures in food act as barriers to microbial entry:</p>
-      <ul class="styled-list">
-        <li><strong>Meat:</strong> fascia (connective tissue), skin, and membranes prevent microbes from penetrating deeper tissue</li>
-        <li><strong>Eggs:</strong> the shell and inner membranes protect the yolk and albumen from infection</li>
-        <li><strong>Fruits:</strong> peel and skin provide a physical barrier</li>
-      </ul>
-    </section>
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION 4: INDICATOR ORGANISMS -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="indicators">
+      <div class="section-header">
+        <div class="section-icon">📊</div>
+        <h2>The Four Indicator Organism Groups</h2>
+        <span class="badge">Microbiological Indicators</span>
+      </div>
 
-    <!-- EXTRINSIC FACTORS -->
-    <section class="content-section" id="extrinsic">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Growth Factors</div>
-      <h2 class="section-title">Extrinsic Factors Affecting Microbial Growth</h2>
-      <p class="section-intro">Extrinsic factors are conditions external to the food that determine whether microorganisms can grow and thrive in a given environment.</p>
+      <p>Four groups of organisms are used as indicators of water quality, each with distinct characteristics, advantages, and laboratory detection methods.</p>
 
-      <h3 class="sub-heading">1. Temperature</h3>
-      <p>Temperature is one of the most important determinants of microbial growth. Bacteria are classified into three groups based on their optimal temperature range:</p>
+      <!-- INDICATOR 1 -->
+      <div class="indicator-card ind-1">
+        <div class="ind-tag">Group 1</div>
+        <h3>Total Coliforms</h3>
+        <p>Total coliforms refers to a large group of Gram-negative, rod-shaped bacteria sharing several characteristics. The group includes thermotolerant coliforms, faecal bacteria, and some organisms from environmental (non-faecal) sources.</p>
 
-      <div class="grid-3">
-        <div class="card accent-blue">
-          <h4 class="mini-heading">❄️ Psychrophilic</h4>
-          <p><strong>Growth:</strong> −10°C to 20°C<br><strong>Optimum:</strong> ~20°C</p>
-          <p style="margin-top:8px;font-size:12.5px;color:var(--text-muted)">Found in soil and water. Can cause food spoilage even in cold storage. Many belong to the Pseudomonas genus.</p>
+        <div class="callout callout-warn" style="margin: 10px 0;">
+          <strong>Important Limitation:</strong> The presence of total coliforms may or may not indicate faecal contamination. A high total coliform count with zero thermotolerant coliforms could be caused by soil entry or organic matter — not faecal contamination.
         </div>
-        <div class="card accent-green">
-          <h4 class="mini-heading">🌡️ Mesophilic</h4>
-          <p><strong>Growth:</strong> 5°C to 45°C<br><strong>Optimum:</strong> ~37°C</p>
-          <p style="margin-top:8px;font-size:12.5px;color:var(--text-muted)">Most pathogens are mesophilic. Grow best at body temperature. None can grow below 5°C or above 45°C.</p>
-        </div>
-        <div class="card accent-yellow">
-          <h4 class="mini-heading">🔥 Thermophilic</h4>
-          <p><strong>Growth:</strong> Above 45°C<br><strong>Optimum:</strong> 50°C–70°C</p>
-          <p style="margin-top:8px;font-size:12.5px;color:var(--text-muted)">Mainly spore-formers. Significant in processed and canned foods where high temperatures are applied.</p>
+
+        <div class="ind-specs">
+          <div class="ind-spec">Growth temp: <strong>35–37°C</strong></div>
+          <div class="ind-spec">Medium: <strong>Lactose-containing</strong></div>
+          <div class="ind-spec">Identification: <strong>Acid + gas production</strong></div>
+          <div class="ind-spec">Specificity: <strong>Low (non-specific)</strong></div>
         </div>
       </div>
 
-      <div class="callout info">
-        <span class="callout-icon">💡</span>
-        <div class="callout-body"><strong>Temperature Interactions</strong>The effect of temperature on microbial growth is not independent — it also depends on the pH of the food, the water activity, and the availability of growth factors in the nutrient medium. A combination of unfavourable conditions provides greater protection than any single factor alone.</div>
-      </div>
+      <!-- INDICATOR 2 -->
+      <div class="indicator-card ind-2">
+        <div class="ind-tag">Group 2</div>
+        <h3>Thermotolerant (Faecal) Coliforms</h3>
+        <p>These are coliforms that can grow and ferment lactose at the elevated temperature of <strong>44–44.5°C</strong>. This higher temperature tolerance distinguishes true faecal organisms from environmental coliforms.</p>
 
-      <h3 class="sub-heading">2. Gaseous Environment</h3>
-      <p>The presence and concentration of oxygen in the food environment determines which microorganisms can grow:</p>
+        <p><strong>More than 95%</strong> of thermotolerant coliforms isolated from water are <em>E. coli</em> — making their presence near-definitive proof of faecal contamination. Confirmation of specific <em>E. coli</em> is therefore often unnecessary.</p>
 
-      <div class="grid-2">
-        <div class="mini-card"><h5>🌬️ Aerobes</h5><p>Require high oxygen. Grow on the surface of raw meat and in insufficiently dried or salted products (especially molds).</p></div>
-        <div class="mini-card"><h5>🚫 Anaerobes</h5><p>Grow without oxygen. Thrive in canned foods — most dangerous is Clostridium botulinum producing botulism toxin.</p></div>
-        <div class="mini-card"><h5>🔄 Facultative Anaerobes</h5><p>Can grow in either the presence or absence of oxygen. Examples include Salmonella and E. coli — very versatile and dangerous.</p></div>
-        <div class="mini-card"><h5>📦 Microaerophiles</h5><p>Require low oxygen. Most likely to grow in vacuum-packed foods. Campylobacter jejuni is a key example.</p></div>
-      </div>
-
-      <h3 class="sub-heading">3. Relative Humidity</h3>
-      <p>Relative humidity refers to the amount of moisture in the storage atmosphere. Foods with low water activity placed in a high-humidity environment will absorb moisture from the air, raising their Aw to levels that support microbial growth. A classic example: dry grains stored in humid conditions will take up water and subsequently undergo mold spoilage.</p>
-    </section>
-
-    <!-- FOOD PRESERVATION -->
-    <section class="content-section" id="preservation">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Preservation</div>
-      <h2 class="section-title">Food Preservation Methods</h2>
-      <p class="section-intro">Food preservation uses physical and/or chemical agents to prevent microbial spoilage and extend the storage life of food. Two fundamental principles guide all preservation strategies.</p>
-
-      <div class="grid-2">
-        <div class="card accent-blue">
-          <h4 class="mini-heading">Principle 1: Inhibition</h4>
-          <p>Growth and multiplication of microorganisms is <em>slowed or stopped</em>, but organisms may not be killed. If the inhibiting influence is removed, spoilage can resume.</p>
-          <ul class="styled-list" style="margin-top:10px">
-            <li>Reducing water activity (drying, salting)</li>
-            <li>Reducing pH (fermentation, adding acids)</li>
-            <li>Using chemical preservatives (e.g. sodium benzoate)</li>
-            <li>Low temperature storage (chilling or freezing)</li>
-            <li>Smoking (combined drying and preservative effect)</li>
-          </ul>
+        <div class="callout callout-warn" style="margin: 10px 0;">
+          <strong>Caution:</strong> In nutrient-rich environments, some non-<em>E. coli</em> thermotolerant coliforms may grow. If an unexpectedly high count is found in seemingly clean water, seek specialist laboratory confirmation of <em>E. coli</em>.
         </div>
-        <div class="card accent-pink">
-          <h4 class="mini-heading">Principle 2: Killing</h4>
-          <p>Spoilage microorganisms are <em>destroyed</em>, and the food is then protected against recontamination by sealing in airtight containers.</p>
-          <ul class="styled-list" style="margin-top:10px">
-            <li>Heat treatment (pasteurisation or sterilisation)</li>
-            <li>Irradiation (gamma rays, cobalt-60) — destroys DNA</li>
-            <li>Gas treatment (ethylene oxide or ozone) — kills vegetative cells and spores</li>
-          </ul>
+
+        <div class="ind-specs">
+          <div class="ind-spec">Growth temp: <strong>44–44.5°C</strong></div>
+          <div class="ind-spec">Medium: <strong>Lactose-containing</strong></div>
+          <div class="ind-spec">Identification: <strong>Acid + gas at 44°C</strong></div>
+          <div class="ind-spec">Specificity: <strong>High (faecal indicator)</strong></div>
+          <div class="ind-spec">95%+ are: <strong>E. coli</strong></div>
         </div>
       </div>
 
-      <h3 class="sub-heading">Preservation by Lowering pH</h3>
-      <p>Reducing pH to below 4.5 prevents growth of most spoilage and pathogenic bacteria. This is achieved by:</p>
-      <ul class="styled-list">
-        <li><strong>Fermentation:</strong> microorganisms break down carbohydrates anaerobically into alcohol or lactic acid and CO₂, naturally acidifying the food.</li>
-        <li><strong>Addition of acids:</strong> direct addition of acetic acid (vinegar) or citric acid lowers pH rapidly.</li>
-      </ul>
+      <!-- INDICATOR 3 -->
+      <div class="indicator-card ind-3">
+        <div class="ind-tag">Group 3</div>
+        <h3>Faecal Streptococci</h3>
+        <p>These Gram-positive, chain-forming cocci include <em>Streptococcus faecalis</em>, <em>S. faecium</em>, and <em>S. bovis</em>. They possess Lancefield Group D antigens and grow in the presence of bile salts, sodium azide, and at 45°C.</p>
 
-      <h3 class="sub-heading">Preservation by Lowering Water Activity</h3>
-      <p>The Aw of a food can be reduced through these methods:</p>
-      <div class="grid-2">
-        <div class="mini-card"><h5>🧂 Salting</h5><p>Sodium chloride (and sometimes nitrates/nitrites) draws water out of food through osmosis. Dry cure, brine pickling, injection cure, or direct addition methods are used.</p></div>
-        <div class="mini-card"><h5>🍬 Adding Sugar</h5><p>Monosaccharides (glucose, fructose) are more effective than disaccharides like sucrose. Note: osmophilic yeasts can tolerate very high sugar concentrations and may still cause spoilage.</p></div>
-        <div class="mini-card"><h5>☀️ Drying</h5><p>Sun/air drying, electrical (convection) drying, or freeze-drying all reduce available water to levels that prevent microbial growth.</p></div>
-      </div>
+        <p><strong>Unique advantage:</strong> Faecal streptococci persist much longer in the environment and are highly resistant to drying. They may be detected even when thermotolerant coliforms are absent — useful when contamination occurred some time ago or far from the sampling point.</p>
 
-      <h3 class="sub-heading">Preservation by Low Temperature</h3>
-      <div class="grid-2">
-        <div class="card accent-blue">
-          <h4 class="mini-heading">Chilling (Cold Storage)</h4>
-          <p>Keeping food between 0°C and 15°C (most commonly at 4–5°C). Slows microbial growth but does not stop it entirely. Spores are unaffected by chilling.</p>
+        <div class="callout callout-warn" style="margin: 10px 0;">
+          <strong>Note:</strong> Routine detection methods may produce false positives. Additional confirmatory tests (dye reduction using tetrazolium compounds or aesculin hydrolysis) are often required.
         </div>
-        <div class="card accent-green">
-          <h4 class="mini-heading">Freezing</h4>
-          <p>Keeping food at 0°C to −35°C. Stops most microbial growth completely. Spores are not killed by freezing. However, most <em>parasites</em> are killed by freezing.</p>
+
+        <div class="ind-specs">
+          <div class="ind-spec">Gram stain: <strong>Positive</strong></div>
+          <div class="ind-spec">Morphology: <strong>Cocci in chains</strong></div>
+          <div class="ind-spec">Growth temp: <strong>37–44°C</strong></div>
+          <div class="ind-spec">Medium: <strong>Sodium azide-containing</strong></div>
+          <div class="ind-spec">Antigen: <strong>Lancefield Group D</strong></div>
+          <div class="ind-spec">Detection: <strong>Tetrazolium reduction</strong></div>
         </div>
       </div>
 
-      <h3 class="sub-heading">Heat Treatment — Key Terminology</h3>
+      <!-- INDICATOR 4 -->
+      <div class="indicator-card ind-4">
+        <div class="ind-tag">Group 4</div>
+        <h3>Sulphite-Reducing Clostridia & Clostridium perfringens</h3>
+        <p>These are <strong>Gram-positive, anaerobic, spore-forming rods</strong>. The spores are extraordinarily resistant — they survive far longer in the environment than vegetative cells of other indicators and are much more resistant to chlorination.</p>
 
-      <div class="callout info">
-        <span class="callout-icon">🔥</span>
-        <div class="callout-body"><strong>D-Value (Decimal Reduction Time)</strong>The time required at a given temperature to destroy 90% of the microorganism population. The higher the temperature, the shorter the D-value. Example: <em>Clostridium sporogenes</em> at 120°C has a D-value of 1 minute; at 110°C it is 10 minutes.</div>
+        <p><strong>Specialised use:</strong> Because of their long persistence, they are the best choice for water supplies sampled only occasionally or those with intermittent contamination (e.g. shallow wells, springs). Also used in marine sediment studies to detect the extent of sewage outfall contamination — detectable up to <strong>10+ km</strong> from the source.</p>
+
+        <div class="ind-specs">
+          <div class="ind-spec">Gram stain: <strong>Positive</strong></div>
+          <div class="ind-spec">Growth: <strong>Anaerobic</strong></div>
+          <div class="ind-spec">Spore-forming: <strong>Yes</strong></div>
+          <div class="ind-spec">Chlorine resistance: <strong>Very high</strong></div>
+          <div class="ind-spec">Best for: <strong>Intermittent/distant pollution</strong></div>
+          <div class="ind-spec">Marine range: <strong>&gt;10 km from outfall</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION 5: STANDARD TESTS -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="standard-tests">
+      <div class="section-header">
+        <div class="section-icon">🧪</div>
+        <h2>Standard Water Analysis — The Three-Test System</h2>
+        <span class="badge">Laboratory Protocol</span>
       </div>
 
-      <div class="callout info">
-        <span class="callout-icon">🌡️</span>
-        <div class="callout-body"><strong>Z-Value</strong>The number of degrees Celsius the temperature must be raised to reduce the thermal death time by a factor of 10. For bacterial spores, the Z-value is typically 10°C. Example: if 1 min at 120°C kills 90% of spores, then 10 min at 110°C achieves the same effect.</div>
-      </div>
+      <p>Standard bacteriological water analysis uses a sequential three-test protocol. Each test builds on the previous one, progressively confirming the presence of coliforms with increasing certainty.</p>
 
-      <div class="callout info">
-        <span class="callout-icon">⏱️</span>
-        <div class="callout-body"><strong>F-Value</strong>Expresses the total heat treatment applied to food, equivalent to minutes at 121°C. F = 1 means 1 minute at 121°C. The same F-value can be achieved at lower temperatures with longer times: F=2 at 121°C = 20 minutes at 111°C.</div>
-      </div>
-
-      <h3 class="sub-heading">Pasteurisation Methods</h3>
-      <p>Pasteurisation destroys pathogenic microorganisms without significantly affecting the nutritional quality of food.</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Method</th><th>Temperature</th><th>Time</th><th>Application</th></tr></thead>
-          <tbody>
-            <tr><td>Low Temperature Long Time (LTLT)</td><td>63°C</td><td>30 minutes</td><td>Batch pasteurisation of milk</td></tr>
-            <tr><td>High Temperature Short Time (HTST)</td><td>72°C</td><td>15 seconds</td><td>Continuous milk pasteurisation</td></tr>
-            <tr><td>Flash Method</td><td>80°C</td><td>1–2 seconds</td><td>Rapid commercial processing</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- FERMENTED FOODS -->
-    <section class="content-section" id="fermented">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Fermentation</div>
-      <h2 class="section-title">Fermented Foods</h2>
-      <p class="section-intro">Fermentation is the breakdown of carbohydrates under anaerobic conditions into alcohol or lactic acid and carbon dioxide. It is one of humanity's oldest food preservation methods and produces some of the world's most loved foods and beverages.</p>
-
-      <h3 class="sub-heading">🍺 Beer Production</h3>
-      <p>Beer is produced by the fermentation of malted grain. Malting involves germinating grain (barley, rye, or wheat) and then drying it in a kiln, which activates α- and β-amylase enzymes needed for fermentation.</p>
       <div class="flow">
-        <div class="flow-step"><div class="flow-num">1</div><div class="flow-content"><h5>Mashing</h5><p>Malted grain (grist) is mixed with heated water. A series of temperature rests activates different enzymes: proteinases (49–55°C), β-gluconase (60°C), and amylases that convert starch to fermentable sugars like maltose (65–71°C).</p></div></div>
-        <div class="flow-line"></div>
-        <div class="flow-step"><div class="flow-num">2</div><div class="flow-content"><h5>Wort Preparation</h5><p>Spent grain is separated. The liquid (wort) is boiled in a large kettle with hops and other flavourings, then spun in a whirlpool to clarify.</p></div></div>
-        <div class="flow-line"></div>
-        <div class="flow-step"><div class="flow-num">3</div><div class="flow-content"><h5>Fermentation</h5><p>Yeast is added ("pitched") to the fermentation tank. Top-fermenting yeasts produce ales; bottom-fermenting yeasts produce lagers. Fermentation takes 1–3 weeks to produce "green beer."</p></div></div>
-        <div class="flow-line"></div>
-        <div class="flow-step"><div class="flow-num">4</div><div class="flow-content"><h5>Conditioning & Packaging</h5><p>Green beer is transferred to conditioning tanks where yeast settles and beer is carbonated. Most beers are filtered through diatomaceous earth and disinfected by cold filtration (0.45 μm filter) or pasteurisation before packaging.</p></div></div>
+        <div class="flow-title">Overall Flow of Standard Water Analysis</div>
+        <div class="flow-row">
+          <div class="flow-box accent">Water Sample</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box accent">Presumptive Test</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box">Gas production?</div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-box bad">No gas → Negative</div>
+          <div class="flow-arrow">&nbsp;&nbsp;&nbsp;</div>
+          <div class="flow-box good">Gas produced → Confirmed Test (EMB)</div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-box bad">Only E. aerogenes → Negative</div>
+          <div class="flow-arrow">&nbsp;&nbsp;&nbsp;</div>
+          <div class="flow-box good">E. coli (green sheen) → Completed Test</div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-box good">Gram-negative rod + gas → ✅ Coliforms Confirmed</div>
+        </div>
       </div>
 
-      <h3 class="sub-heading">🍷 Wine Production</h3>
-      <p>Wine is produced from the fermentation of fruit juice, most commonly grapes. Grapes are crushed to form "must".</p>
+      <!-- TEST 1 -->
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-num">1</div>
+          <div class="method-name">The Presumptive Test</div>
+        </div>
+        <div class="method-body">
+          <p><strong>Purpose:</strong> To screen for possible coliform presence by detecting lactose fermentation and gas production.</p>
+
+          <h4>Principle</h4>
+          <p>Water samples are inoculated into lactose broth tubes. Coliforms ferment lactose to produce acid and gas, which is captured in small inverted Durham tubes inside each broth tube. Gas production in any tube is <em>presumptive</em> evidence of coliforms — hence the name.</p>
+
+          <h4>Procedure</h4>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Prepare nine tubes of double-strength lactose broth</div>
+                <div class="step-body">Divide into three sets of three tubes.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Inoculate with three volumes</div>
+                <div class="step-body">Add <strong>10 ml</strong> to the first set, <strong>1.0 ml</strong> to the second set, and <strong>0.1 ml</strong> to the third set.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Incubate at 37°C for 24–48 hours</div>
+                <div class="step-body">Read results at 24 hours. Re-incubate and read again at 48 hours if needed.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Count positive tubes and determine MPN</div>
+                <div class="step-body">The <strong>Most Probable Number (MPN)</strong> of coliforms per 100 ml is estimated from the number of gas-positive tubes using statistical tables. More tubes = more sensitive test.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-warn">
+            <strong>Limitation:</strong> Gas production alone doesn't confirm coliforms — other non-coliform bacteria can also produce gas from lactose. The test is only presumptive; further confirmation is needed.
+          </div>
+        </div>
+      </div>
+
+      <!-- TEST 2 -->
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-num">2</div>
+          <div class="method-name">The Confirmed Test</div>
+        </div>
+        <div class="method-body">
+          <p><strong>Purpose:</strong> To confirm that gas production in the presumptive test was indeed caused by coliforms, and to distinguish <em>E. coli</em> from <em>E. aerogenes</em>.</p>
+
+          <h4>Medium: Eosin Methylene Blue (EMB) Agar</h4>
+          <p>EMB agar is a selective and differential medium. The methylene blue dye <strong>inhibits Gram-positive organisms</strong>, allowing only Gram-negative coliforms to grow.</p>
+
+          <h4>Reading Results</h4>
+          <div class="grid-2">
+            <div class="card" style="border-color: var(--green);">
+              <div class="card-title" style="color:var(--green)">✅ E. coli (Positive)</div>
+              <p><strong>Small colonies</strong> with a distinctive <strong>green metallic sheen</strong>. This is diagnostic for <em>E. coli</em> on EMB agar. Confirms faecal contamination.</p>
+            </div>
+            <div class="card" style="border-color: var(--warning);">
+              <div class="card-title" style="color:var(--warning)">⚠️ E. aerogenes (Negative)</div>
+              <p><strong>Large, pinkish colonies</strong> without metallic sheen. Since <em>E. aerogenes</em> is naturally widespread in soil and environment, its presence alone does NOT indicate faecal contamination.</p>
+            </div>
+          </div>
+
+          <div class="callout callout-key">
+            <strong>Interpretation Rule:</strong>
+            <ul style="margin-top:8px">
+              <li>Only <em>E. coli</em> present → <strong>POSITIVE</strong> (faecal contamination confirmed)</li>
+              <li>Both <em>E. coli</em> and <em>E. aerogenes</em> present → <strong>POSITIVE</strong></li>
+              <li>Only <em>E. aerogenes</em> present → <strong>NEGATIVE</strong> (no faecal contamination)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEST 3 -->
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-num">3</div>
+          <div class="method-name">The Completed Test</div>
+        </div>
+        <div class="method-body">
+          <p><strong>Purpose:</strong> To definitively confirm that the organisms producing gas are Gram-negative, non-spore-forming rods — i.e., true coliforms.</p>
+
+          <h4>Procedure</h4>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Subculture from EMB plate</div>
+                <div class="step-body">Take organisms from the confirmed test EMB plate and use them to inoculate <strong>both</strong> a nutrient agar slant and a lactose broth tube.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Incubate at 37°C for 24 hours</div>
+                <div class="step-body">Allow organisms to grow and ferment.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Check the lactose broth tube</div>
+                <div class="step-body">Look for gas production — confirms lactose fermentation.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Perform Gram stain from nutrient agar slant</div>
+                <div class="step-body">Examine microscopically to verify Gram-negative, non-spore-forming rod morphology.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-good">
+            <strong>Positive Completed Test:</strong> Organism is Gram-negative + non-spore-forming + rod-shaped + gas in lactose broth → <strong>Coliforms definitively confirmed</strong> in water sample.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION 6: METHODS -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="methods">
+      <div class="section-header">
+        <div class="section-icon">🔭</div>
+        <h2>Laboratory Methods for Coliform Analysis</h2>
+        <span class="badge">Analytical Methods</span>
+      </div>
+
+      <div class="callout callout-key">
+        <strong>Key Principle:</strong> Because analysis is always based on a small sample from a large water volume, all methods rely on <strong>statistical principles</strong>. Results are expressed as colony-forming units (cfu) per 100 ml or as a Most Probable Number (MPN).
+      </div>
+
+      <div class="callout callout-key">
+        <strong>Most Reliable Methods:</strong> The <strong>direct plate count</strong> (using VRBA agar) and the <strong>membrane filtration method</strong> (using mEndo agar) are considered most reliable.
+      </div>
+
+      <!-- METHOD 1 -->
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-num">1</div>
+          <div class="method-name">Multiple Tube Method (Multiple Fermentation Tube Technique)</div>
+        </div>
+        <div class="method-body">
+          <p>One of the <strong>oldest and most widely applicable</strong> methods. It uses serial dilution of the sample followed by incubation of multiple tubes at each dilution.</p>
+
+          <h4>How It Works</h4>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Serial dilution</div>
+                <div class="step-body">A 10 ml sub-sample is diluted with 100 ml sterile growth medium. Aliquots of 10 ml are then placed into each of ten tubes. The remaining is diluted again. After 5 dilutions, this produces <strong>50 tubes</strong> covering dilutions from 1:10 to 1:10,000.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Standard procedure</div>
+                <div class="step-body">The most common approach processes <strong>five aliquots</strong> from each of three consecutive 10-fold dilutions (e.g. 1:1, 1:10, 1:100). Each aliquot can be 1 ml into 10 ml single-strength medium, or 10 ml into 10 ml double-strength medium.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Incubation and reading</div>
+                <div class="step-body">Incubate at a preset temperature for a set time. Coliforms are indicated by <strong>turbidity</strong>, a <strong>pH change</strong>, and/or the presence of <strong>gas</strong> (caught in inverted Durham tubes). Gas produced at 37°C strongly indicates <em>E. coli</em>.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">MPN calculation</div>
+                <div class="step-body">Count positive tubes at each dilution. Compare the pattern of positives to <strong>statistical MPN tables</strong> to estimate concentration. Result expressed as <strong>MPN per 100 ml</strong>.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-key">
+            <strong>Enhancement Tip:</strong> Using indicator medium (changes colour when acid is present) and Durham tubes (capture gas) makes results easier to read and interpret.
+          </div>
+        </div>
+      </div>
+
+      <!-- METHOD 2 -->
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-num">2</div>
+          <div class="method-name">Membrane Filtration Method</div>
+        </div>
+        <div class="method-body">
+          <p>The preferred method in most modern laboratories. Faster, more precise, and directly quantitative.</p>
+
+          <h4>Principle</h4>
+          <p>A measured volume of water is filtered under vacuum through a <strong>cellulose acetate membrane</strong> with a uniform pore diameter of <strong>0.45 µm</strong>. Bacteria are retained on the membrane surface, which is then placed onto a selective culture medium and incubated. Characteristic colonies form and are counted directly.</p>
+
+          <h4>Step-by-Step</h4>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Filter the sample</div>
+                <div class="step-body">Pass the water under vacuum through a 0.45 µm membrane filter. All bacteria are retained on the surface.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Transfer membrane to growth medium</div>
+                <div class="step-body">Place the membrane onto a suitable selective medium in a sterile container. Incubate at the appropriate temperature.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Count colonies</div>
+                <div class="step-body">The membrane has a printed millimetre grid for counting colonies under a binocular microscope. Aim for <strong>20–80 colonies per membrane</strong> (optimum counting range).</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="callout callout-good" style="margin:0">
+              <strong>Advantages:</strong> Direct colony count (high precision). Results in ~18 hours. Less labour and glassware. Portable and field-adaptable.
+            </div>
+            <div class="callout callout-bad" style="margin:0">
+              <strong>Limitations:</strong> Cannot be used for turbid water (sediment, sludge clogs filter). Less sensitive than tube method. Consumables costly in some countries.
+            </div>
+          </div>
+
+          <h4>Results Expressed As</h4>
+          <div class="card">
+            <p>Each bacterium, clump, or particle with bacteria = one <strong>Colony Forming Unit (cfu)</strong>.</p>
+            <p>Result reported as: <strong>Thermotolerant coliforms [Number] cfu per 100 ml</strong></p>
+          </div>
+
+          <div class="callout callout-warn">
+            <strong>Turbid Water Handling:</strong> If the water quality is unknown, test two or more volumes. For very turbid samples, dilute in sterile diluent first. Samples can be split across two or more membranes, then counts added together.
+          </div>
+        </div>
+      </div>
+
+      <!-- METHOD 3 -->
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-num">3</div>
+          <div class="method-name">ATP (Adenosine Triphosphate) Testing</div>
+        </div>
+        <div class="method-body">
+          <p>A rapid, modern method for detecting living microorganisms based on the universal energy molecule present in all living cells.</p>
+
+          <h4>Principle</h4>
+          <p>ATP is found <strong>only in and around living cells</strong>. Its detection gives a direct measure of biological concentration and microbial activity. ATP is detected by reacting with the enzyme <strong>firefly luciferase</strong> — the same reaction fireflies use to produce their bioluminescent glow.</p>
+
+          <p>The light emitted is proportional to the amount of ATP (and therefore living microorganisms) present. A <strong>luminometer</strong> measures the light output precisely.</p>
+
+          <div class="card">
+            <div class="card-title"><span class="icon">💡</span>The Luciferase Reaction</div>
+            <p style="font-family: monospace; background: var(--surface2); padding: 10px; border-radius: 6px; font-size: 13px;">
+              ATP + Luciferin + O₂ → <strong>Light (bioluminescence)</strong><br>
+              More ATP → More light → More living bacteria
+            </p>
+            <p>The amount of light produced is <strong>directly proportional</strong> to the amount of biological energy (ATP) in the sample.</p>
+          </div>
+
+          <div class="callout callout-key">
+            <strong>Second Generation ATP Tests</strong> are specifically designed for water, wastewater, and industrial applications where sample components could interfere with the basic ATP assay. They use purified reagents to eliminate background interference.
+          </div>
+        </div>
+      </div>
+
+      <!-- METHOD 4 -->
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-num">4</div>
+          <div class="method-name">Plate Count Method</div>
+        </div>
+        <div class="method-body">
+          <p>A direct counting method in which bacteria grow into visible colonies on solid culture medium. Widely used for evaluating the effectiveness of water treatment.</p>
+
+          <h4>Optimal Colony Range</h4>
+          <div class="grid-2">
+            <div class="callout callout-bad" style="margin:0">
+              <strong>Too few (&lt;30 colonies):</strong> Statistically unreliable — cannot draw valid conclusions from too few data points.
+            </div>
+            <div class="callout callout-bad" style="margin:0">
+              <strong>Too many (&gt;300 colonies):</strong> Colonies overlap and merge, making accurate counting impossible.
+            </div>
+          </div>
+          <div class="callout callout-good" style="margin-top:10px">
+            <strong>Target range: 30–300 colonies per plate</strong> — statistically valid and practically countable.
+          </div>
+
+          <h4>Procedure</h4>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Serial dilutions</div>
+                <div class="step-body">Make dilutions of 1:10, 1:100, 1:1000, etc. in sterile water to hit the optimal colony range.</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Plate on nutrient agar</div>
+                <div class="step-body">Culture dilutions on plate count agar (general) or MacConkey agar (Gram-negative, e.g. <em>E. coli</em> specifically).</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Dual-temperature incubation</div>
+                <div class="step-body">One set of plates at <strong>22°C for 24 hours</strong> (environmental organisms); a second set at <strong>37°C for 24 hours</strong> (faecal/gut organisms).</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Count colonies by eye</div>
+                <div class="step-body">Colonies are typically a few mm across — no microscope needed. Some modern methods use fluorescent agents to allow automated counting.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- METHOD 5 -->
+      <div class="method-card">
+        <div class="method-header">
+          <div class="method-num">5</div>
+          <div class="method-name">Pour Plate Method</div>
+        </div>
+        <div class="method-body">
+          <p>A variant of the plate count method specifically designed for <strong>anaerobic or microaerophilic bacteria</strong> that grow poorly in air.</p>
+
+          <h4>Principle</h4>
+          <p>Serial dilutions of the sample are mixed into <strong>liquid (molten) nutrient agar</strong>. The mixture is poured into bottles which are sealed and laid on their sides to produce a sloping agar surface. This creates semi-anaerobic conditions inside the agar body. Colonies that develop throughout the medium (not just on the surface) are counted after incubation.</p>
+
+          <h4>Key Measurement: Total Viable Count (TVC)</h4>
+          <div class="card">
+            <p><strong>Total Viable Count (TVC)</strong> = total number of living bacteria in the sample.</p>
+            <p>Unit: <strong>cfu/ml</strong> (colony forming units per millilitre)</p>
+            <p>Formula: <strong>TVC = Colony count × Dilution factor</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION 7: COMPARISON -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="comparison">
+      <div class="section-header">
+        <div class="section-icon">⚖️</div>
+        <h2>Comparison: Multiple Tube vs Membrane Filtration</h2>
+        <span class="badge">Method Comparison</span>
+      </div>
+
+      <p>These two methods are the most commonly used in routine water testing. Each has distinct advantages and limitations that determine when to use each.</p>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Multiple Tube (MFT)</th>
+            <th>Membrane Filtration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="feature">Speed</td>
+            <td>Slower — 48 hrs for confirmed positive</td>
+            <td class="win">Faster — results in ~18 hours</td>
+          </tr>
+          <tr>
+            <td class="feature">Labour</td>
+            <td>More labour-intensive</td>
+            <td class="win">Less labour-intensive</td>
+          </tr>
+          <tr>
+            <td class="feature">Precision</td>
+            <td>Indirect / statistical (lower precision)</td>
+            <td class="win">Direct colony count (higher precision)</td>
+          </tr>
+          <tr>
+            <td class="feature">Sensitivity</td>
+            <td class="win">More sensitive</td>
+            <td>Less sensitive</td>
+          </tr>
+          <tr>
+            <td class="feature">Water Types</td>
+            <td class="win">Applicable to ALL water types</td>
+            <td>NOT suitable for turbid water</td>
+          </tr>
+          <tr>
+            <td class="feature">Field Use</td>
+            <td>Not readily field-adaptable</td>
+            <td class="win">Readily adapted for field use</td>
+          </tr>
+          <tr>
+            <td class="feature">Glassware</td>
+            <td>Requires more glassware</td>
+            <td class="win">Requires less glassware</td>
+          </tr>
+          <tr>
+            <td class="feature">Culture Medium</td>
+            <td>Requires more medium</td>
+            <td class="win">Requires less medium</td>
+          </tr>
+          <tr>
+            <td class="feature">Consumables</td>
+            <td class="win">Widely available, lower cost</td>
+            <td>Higher cost, less available</td>
+          </tr>
+          <tr>
+            <td class="feature">Result Type</td>
+            <td>MPN (estimated)</td>
+            <td class="win">cfu/100 ml (direct)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-key">
+        <strong>When to Choose Which:</strong><br>
+        Use <strong>Membrane Filtration</strong> for clear, treated water where speed and precision matter.<br>
+        Use <strong>Multiple Tube</strong> for turbid, highly contaminated, or difficult samples, or when working in low-resource settings.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION 8: MEDIA -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="media">
+      <div class="section-header">
+        <div class="section-icon">🍽️</div>
+        <h2>Culture Media Used in Water Bacteriology</h2>
+        <span class="badge">Laboratory Media</span>
+      </div>
+
+      <p>Selecting the right culture medium is critical — each medium is designed to either encourage specific organisms (<em>selective</em>), reveal specific characteristics through colour change (<em>differential</em>), or both.</p>
+
+      <div class="media-chip">
+        <h4>1. MacConkey Agar</h4>
+        <p><strong>Purpose:</strong> Selective and differential medium for Gram-negative bacteria, primarily for detecting lactose fermenters like <em>E. coli</em>.</p>
+        <p><strong>Key components and their roles:</strong></p>
+        <ul>
+          <li><strong>Bile salts</strong> — inhibit most Gram-positive bacteria</li>
+          <li><strong>Crystal violet dye</strong> — additional inhibition of Gram-positive organisms</li>
+          <li><strong>Neutral red dye</strong> — stains lactose-fermenting colonies red/pink</li>
+          <li><strong>Lactose</strong> — fermented by target organisms; fermenters become coloured, non-fermenters remain colourless</li>
+          <li><strong>Peptone</strong> — nitrogen and carbon source for growth</li>
+        </ul>
+      </div>
+
+      <div class="media-chip">
+        <h4>2. Endo Agar (mEndo Agar)</h4>
+        <p><strong>Purpose:</strong> Originally developed for isolating <em>Salmonella typhi</em>; now standard in membrane filtration for total coliform detection.</p>
+        <p><strong>Key components:</strong> Peptone, lactose, dipotassium phosphate, agar, sodium sulfite, basic fuchsin.</p>
+        <p><strong>Results:</strong></p>
+        <ul>
+          <li>Coliform organisms ferment lactose → colonies turn <strong>red</strong></li>
+          <li>Non-lactose-fermenting organisms → <strong>clear, colourless colonies</strong> against a faint pink background</li>
+        </ul>
+      </div>
+
+      <div class="media-chip">
+        <h4>3. mFC (Membrane Faecal Coliform) Medium</h4>
+        <p><strong>Purpose:</strong> Specifically used in membrane filtration for detecting <strong>faecal coliforms</strong>. Contains both selective and differential agents.</p>
+        <p><strong>Key components and roles:</strong></p>
+        <ul>
+          <li><strong>Rosolic acid</strong> — inhibits most bacteria except faecal coliforms</li>
+          <li><strong>Bile salts</strong> — inhibit non-enteric bacteria</li>
+          <li><strong>Aniline blue</strong> — acts as a pH indicator; faecal coliforms fermenting lactose produce acid, causing a colour change</li>
+        </ul>
+      </div>
+
+      <div class="media-chip">
+        <h4>4. VRBA (Violet Red Bile Agar)</h4>
+        <p><strong>Purpose:</strong> Used in the <strong>direct plate count method</strong> for coliform detection. Contains bile salts that promote growth of Gram-negative bacteria while partially inhibiting Gram-positive organisms (though not completely).</p>
+        <p>Contains lactose — lactose-fermenting bacteria produce coloured colonies; non-fermenters produce colourless ones.</p>
+      </div>
+
+      <div class="media-chip">
+        <h4>5. TYEA (Tryptone Yeast Extract Agar)</h4>
+        <p><strong>Purpose:</strong> A <strong>non-selective</strong> general-purpose medium used to determine the overall level of contamination (also known as a colony count / standard plate count).</p>
+        <p><strong>Composition:</strong> Tryptone, yeast extract, common salt, L-arabinose in glass distilled water.</p>
+        <p><strong>Incubation:</strong> Cultivated at two temperatures simultaneously — <strong>22°C</strong> (environmental organisms) and <strong>36°C</strong> (gut/faecal organisms) — to capture a full spectrum of bacterial contamination.</p>
+      </div>
+
+      <div class="media-chip">
+        <h4>6. EMB (Eosin Methylene Blue) Agar</h4>
+        <p><strong>Purpose:</strong> Selective and differential medium used in the <strong>Confirmed Test</strong> of standard water analysis.</p>
+        <p><strong>Mechanism:</strong> Methylene blue inhibits Gram-positive organisms. Coliforms that ferment lactose produce dark-centered colonies. <em>E. coli</em> specifically produces a characteristic <strong>green metallic sheen</strong> — a hallmark diagnostic feature.</p>
+      </div>
+
+      <div class="callout callout-key">
+        <strong>Lactose Fermentation — The Core Principle Behind All These Media:</strong> Most selective media for coliform detection rely on the fact that coliforms ferment lactose to produce acid and sometimes gas. Coloured indicators (neutral red, aniline blue, basic fuchsin) change colour in response to this acid production, making coliform colonies visually distinct from non-coliform colonies.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- GLOSSARY -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="glossary">
+      <div class="section-header">
+        <div class="section-icon">📖</div>
+        <h2>Key Terms Glossary</h2>
+        <span class="badge">Reference</span>
+      </div>
+
       <div class="grid-2">
-        <div class="mini-card"><h5>White Wine</h5><p>White grapes are used. Skins are removed (pressing) before fermentation begins.</p></div>
-        <div class="mini-card"><h5>Red Wine</h5><p>Red/black grapes are used. Skins remain during fermentation, providing colour and tannins.</p></div>
-        <div class="mini-card"><h5>Rosé Wine</h5><p>Red grapes are used, but juice is only kept in contact with the skins briefly to develop a pink colour.</p></div>
-        <div class="mini-card"><h5>Secondary Fermentation</h5><p>Takes 3–6 months in stainless steel vessels or oak barrels. Malolactic fermentation converts sharp malic acid to softer lactic acid.</p></div>
-      </div>
-
-      <h3 class="sub-heading">🥖 Bread</h3>
-      <p>Bread leavening involves the growth of <em>Saccharomyces cerevisiae</em> (baker's yeast) under aerobic conditions, maximising CO₂ production which causes the dough to rise. Sourdough breads use different microbial communities for distinct flavours. Spoilage can occur through <em>Bacillus</em> species that produce a condition called ropiness in bread.</p>
-
-      <h3 class="sub-heading">🥛 Yogurt</h3>
-      <p>Yogurt is made by fermenting milk with a mixture of <em>Streptococcus salivarius</em> ssp. <em>thermophilus</em> and <em>Lactobacillus delbrueckii</em> ssp. <em>bulgaricus</em>. The lactic acid produced causes milk protein (casein) to coagulate into a semi-solid curd. Additional probiotics like <em>L. acidophilus</em>, <em>L. casei</em>, and <em>Bifidobacterium</em> species are often co-cultured for health benefits.</p>
-
-      <h3 class="sub-heading">🧀 Cheese</h3>
-      <p>Cheese production begins with treating milk with lactic acid bacteria and rennin (an enzyme that partially hydrolyses casein, causing it to coagulate into curds). The liquid whey is separated from the curds, which are then aged (ripened). Different microorganisms active during early and late ripening stages create the vast diversity of cheese types and flavours we know today.</p>
-    </section>
-
-    <!-- PATHOGENS OVERVIEW -->
-    <section class="content-section" id="pathogens">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Food Safety</div>
-      <h2 class="section-title">Common Foodborne Pathogens</h2>
-      <p class="section-intro">Foodborne illness is caused by consuming food contaminated with bacteria, viruses, or parasites. 80–90% of foodborne bacterial illness is caused by just four bacteria.</p>
-
-      <div class="callout danger">
-        <span class="callout-icon">🚨</span>
-        <div class="callout-body"><strong>The Big Four</strong> — Campylobacter, Salmonella, Clostridium perfringens, and Staphylococcus aureus account for the vast majority of bacterial foodborne illness cases worldwide.</div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Pathogen</th><th>Estimated Cases/Year</th><th>Deaths/Year</th><th>Type</th></tr></thead>
-          <tbody>
-            <tr><td><em>Campylobacter jejuni</em></td><td>4,000,000</td><td>200–1,000</td><td><span class="badge badge-blue">Bacteria</span></td></tr>
-            <tr><td><em>Salmonella</em> spp.</td><td>2,000,000</td><td>500–2,000</td><td><span class="badge badge-blue">Bacteria</span></td></tr>
-            <tr><td><em>Staphylococcus aureus</em></td><td>1,500,000</td><td>1,200</td><td><span class="badge badge-blue">Bacteria</span></td></tr>
-            <tr><td><em>E. coli</em> O157:H7</td><td>725,000</td><td>100–200</td><td><span class="badge badge-blue">Bacteria</span></td></tr>
-            <tr><td><em>Clostridium</em> spp.</td><td>10,000</td><td>100</td><td><span class="badge badge-blue">Bacteria</span></td></tr>
-            <tr><td><em>Listeria monocytogenes</em></td><td>1,500</td><td>250–500</td><td><span class="badge badge-blue">Bacteria</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ILLNESS MECHANISMS -->
-    <section class="content-section" id="illness">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Food Safety</div>
-      <h2 class="section-title">How Pathogens Cause Illness</h2>
-      <p class="section-intro">Foodborne pathogens cause illness through two distinct mechanisms. Understanding the difference is critical for correct treatment and prevention.</p>
-
-      <div class="grid-2">
-        <div class="card accent-yellow">
-          <h4 class="mini-heading">🧫 Foodborne Intoxication</h4>
-          <p>Bacteria grow in the food <em>before</em> it is eaten and produce toxins. When the food is consumed, it is the <strong>toxin</strong> — not the bacteria — that causes illness.</p>
-          <p style="margin-top:8px;font-size:12.5px;color:var(--accent4)">⚠️ Even if you kill the bacteria by reheating, the toxin can remain and still cause illness.</p>
-          <p style="font-size:12.5px;margin-top:6px;color:var(--text-muted)"><strong>Examples:</strong> Clostridium botulinum, Staphylococcus aureus</p>
+        <div class="card">
+          <div class="card-title">Coliform</div>
+          <p>Gram-negative, non-spore-forming, facultatively anaerobic rod that ferments lactose to acid and gas. Used as an indicator of faecal contamination.</p>
         </div>
-        <div class="card accent-pink">
-          <h4 class="mini-heading">🦠 Foodborne Infection</h4>
-          <p>Bacteria enter the food, the contaminated food is ingested, and bacteria then grow within the intestines and produce toxins <em>inside the body</em>.</p>
-          <p style="font-size:12.5px;margin-top:10px;color:var(--text-muted)"><strong>Examples:</strong> Campylobacter, Salmonella, E. coli, Listeria, Shigella, Vibrio</p>
+        <div class="card">
+          <div class="card-title">MPN (Most Probable Number)</div>
+          <p>A statistical estimate of the number of viable organisms per unit volume, derived from the number of positive tubes in a multiple tube test.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">cfu (Colony Forming Unit)</div>
+          <p>One bacterium, clump of bacteria, or particle with bacteria that gives rise to a single visible colony on culture medium. The unit of measurement in plate-based methods.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Thermotolerant Coliform</div>
+          <p>A coliform that grows and ferments lactose at 44–44.5°C. Strongly indicates faecal origin. Over 95% are <em>E. coli</em>.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Durham Tube</div>
+          <p>A small inverted tube placed inside a broth tube. Captures gas produced during fermentation, providing a visible indicator of positive growth.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Indicator Organism</div>
+          <p>A harmless microorganism whose presence signals likely contamination with pathogenic organisms. Present in far greater numbers than pathogens, making them easier to detect.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">TVC (Total Viable Count)</div>
+          <p>The total number of live bacteria detectable in a sample, measured by the pour plate method. Expressed as cfu/ml.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Selective Medium</div>
+          <p>A culture medium containing agents that inhibit certain organisms while permitting target organisms to grow.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Differential Medium</div>
+          <p>A culture medium that produces visually distinct colonies (e.g. different colours) for different organisms, allowing identification without further tests.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Luciferase</div>
+          <p>The enzyme used in ATP testing to produce bioluminescence. Catalyses the reaction between ATP and luciferin, producing light proportional to the amount of ATP present.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">EMB Agar</div>
+          <p>Eosin Methylene Blue agar — used in the Confirmed Test. Inhibits Gram-positives; produces a green metallic sheen on <em>E. coli</em> colonies.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Faecal Streptococci</div>
+          <p>Gram-positive chain-forming cocci (e.g. <em>S. faecalis</em>) used as indicators of faecal contamination. More environmentally persistent than coliforms.</p>
         </div>
       </div>
+    </div>
 
-      <h3 class="sub-heading">Mechanisms of Pathogenesis</h3>
-      <ul class="styled-list">
-        <li><strong>Attachment:</strong> using pili or adhesin proteins to bind to the intestinal wall</li>
-        <li><strong>Toxin production — Type 1:</strong> toxins that increase secretion of water and electrolytes (causing watery diarrhoea)</li>
-        <li><strong>Toxin production — Type 2:</strong> toxins that directly kill host cells (causing bloody diarrhoea)</li>
-        <li><strong>Alterations in host cells:</strong> injecting effector proteins that change cell behaviour (A/E lesions)</li>
-        <li><strong>Cell invasion:</strong> actually invading and living inside intestinal cells (e.g. Salmonella, Shigella)</li>
-      </ul>
-    </section>
-
-    <!-- SPECIFIC PATHOGEN PROFILES -->
-    <section class="content-section" id="specific-pathogens">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Pathogen Profiles</div>
-      <h2 class="section-title">Individual Pathogen Profiles</h2>
-      <p class="section-intro">Detailed profiles of the most important foodborne pathogens — their characteristics, associated foods, symptoms, and treatment.</p>
-
-      <!-- Clostridium botulinum -->
-      <div class="pathogen-card">
-        <div class="pathogen-header">
-          <span class="pathogen-icon">⚗️</span>
-          <div><div class="pathogen-name">Clostridium botulinum</div><div class="pathogen-type">Gram-positive rod | Anaerobe | Spore-former → Botulism</div></div>
-        </div>
-        <div class="pathogen-body">
-          <div class="pb-item"><div class="pb-label">Associated Foods</div><div class="pb-value">Home-canned low-acid vegetables, honey</div></div>
-          <div class="pb-item"><div class="pb-label">Symptoms (12–36 hrs)</div><div class="pb-value">Vomiting, diarrhoea, blurred/double vision, difficulty swallowing, descending muscle weakness</div></div>
-          <div class="pb-item"><div class="pb-label">Treatment</div><div class="pb-value">Antitoxin (not antibiotics — bacteria are not the problem, the toxin is)</div></div>
-        </div>
-      </div>
-      <div class="callout danger" style="margin-top:-6px;margin-bottom:20px">
-        <span class="callout-icon">☠️</span>
-        <div class="callout-body"><strong>Botulinum Toxin</strong>This neurotoxin inhibits the release of acetylcholine from nerve endings, causing progressive paralysis. It is heat-sensitive but extraordinarily potent — one gram can theoretically kill over one million people. The toxin itself is destroyed by heating to 80°C for 10 minutes.</div>
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SUMMARY -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="section" id="summary">
+      <div class="section-header">
+        <div class="section-icon">📋</div>
+        <h2>Revision Summary</h2>
+        <span class="badge">Study Essentials</span>
       </div>
 
-      <!-- Staphylococcus aureus -->
-      <div class="pathogen-card">
-        <div class="pathogen-header">
-          <span class="pathogen-icon">🍳</span>
-          <div><div class="pathogen-name">Staphylococcus aureus</div><div class="pathogen-type">Gram-positive coccus (clusters) | Facultative anaerobe | Normal skin flora</div></div>
-        </div>
-        <div class="pathogen-body">
-          <div class="pb-item"><div class="pb-label">Associated Foods</div><div class="pb-value">Cream-based desserts, custards, potato salad, egg salad — especially when handled by infected food workers</div></div>
-          <div class="pb-item"><div class="pb-label">Symptoms (1–6 hrs)</div><div class="pb-value">Sudden vomiting, diarrhoea, intense abdominal cramps. Usually no fever. Lasts ~24 hours.</div></div>
-          <div class="pb-item"><div class="pb-label">Treatment</div><div class="pb-value">None specific — supportive care only. Toxin is heat-stable: cooking kills bacteria but toxin remains.</div></div>
-        </div>
-      </div>
-      <div class="callout warn" style="margin-top:-6px;margin-bottom:20px">
-        <span class="callout-icon">⚠️</span>
-        <div class="callout-body"><strong>Key Mechanism</strong>The enterotoxin produced acts as a <em>superantigen</em> — it activates T cells non-specifically, triggering a massive immune response. Food left at 28°C for 2–4 hours with S. aureus present will accumulate enough toxin to cause illness. This is why temperature control during handling is critical.</div>
+      <div class="card">
+        <div class="card-title">🔑 The Big Picture</div>
+        <p>Bacteriological water analysis cannot test for every possible pathogen. Instead, it uses <strong>indicator organisms</strong> — primarily <em>E. coli</em> — as proof of faecal contamination. Where there is faecal contamination, dangerous pathogens may also be present.</p>
       </div>
 
-      <!-- Campylobacter jejuni -->
-      <div class="pathogen-card">
-        <div class="pathogen-header">
-          <span class="pathogen-icon">🐔</span>
-          <div><div class="pathogen-name">Campylobacter jejuni</div><div class="pathogen-type">Gram-negative curved rod | Microaerophile | Most common foodborne pathogen</div></div>
-        </div>
-        <div class="pathogen-body">
-          <div class="pb-item"><div class="pb-label">Associated Foods</div><div class="pb-value">Undercooked poultry (up to 10⁹ cells/gram of chicken), unpasteurised milk</div></div>
-          <div class="pb-item"><div class="pb-label">Symptoms (2–5 days)</div><div class="pb-value">Bloody diarrhoea, abdominal pain, fever (104°F). Duration: 2–10 days. Rare: Guillain-Barré syndrome, rheumatoid arthritis</div></div>
-          <div class="pb-item"><div class="pb-label">Treatment</div><div class="pb-value">Mostly supportive. Antibiotics (erythromycin, quinolones) for severe cases</div></div>
-        </div>
-      </div>
-
-      <!-- Salmonella -->
-      <div class="pathogen-card">
-        <div class="pathogen-header">
-          <span class="pathogen-icon">🥚</span>
-          <div><div class="pathogen-name">Salmonella enterica</div><div class="pathogen-type">Gram-negative rod | Facultative anaerobe | 2000+ serovars</div></div>
-        </div>
-        <div class="pathogen-body">
-          <div class="pb-item"><div class="pb-label">Associated Foods</div><div class="pb-value">Poultry, eggs, reptile-associated products, and cross-contaminated foods</div></div>
-          <div class="pb-item"><div class="pb-label">Symptoms (6–72 hrs)</div><div class="pb-value">Diarrhoea, abdominal pain, moderate fever. Full recovery in days but can shed organism for 6 months</div></div>
-          <div class="pb-item"><div class="pb-label">Special Note</div><div class="pb-value">Serotype Typhi causes typhoid fever (fever 104°F, headache, internal bleeding). Serotype Paratyphi causes paratyphoid fever</div></div>
-        </div>
-      </div>
-
-      <!-- Shigella -->
-      <div class="pathogen-card">
-        <div class="pathogen-header">
-          <span class="pathogen-icon">💧</span>
-          <div><div class="pathogen-name">Shigella spp.</div><div class="pathogen-type">Gram-negative rod | Facultative anaerobe | Non-motile</div></div>
-        </div>
-        <div class="pathogen-body">
-          <div class="pb-item"><div class="pb-label">Transmission (The 5 F's)</div><div class="pb-value">Food, Fingers, Feces, Flies, and Fomites</div></div>
-          <div class="pb-item"><div class="pb-label">Symptoms (3–4 days)</div><div class="pb-value">Fever, abdominal pain, bloody and mucousy diarrhoea (dysentery). Passage of up to 20 small bloody stools per day</div></div>
-          <div class="pb-item"><div class="pb-label">Virulence</div><div class="pb-value">Only 10 cells needed to cause infection. S. dysenteriae (developing countries) produces Shiga toxin</div></div>
-        </div>
-      </div>
-
-      <!-- Vibrio cholerae -->
-      <div class="pathogen-card">
-        <div class="pathogen-header">
-          <span class="pathogen-icon">🌊</span>
-          <div><div class="pathogen-name">Vibrio cholerae</div><div class="pathogen-type">Curved gram-negative rod | Facultative anaerobe | Halotolerant | Causes Cholera</div></div>
-        </div>
-        <div class="pathogen-body">
-          <div class="pb-item"><div class="pb-label">Incubation</div><div class="pb-value">12–48 hours</div></div>
-          <div class="pb-item"><div class="pb-label">Symptoms</div><div class="pb-value">"Rice water" stools — sudden explosive watery diarrhoea and vomiting. Can cause severe dehydration and death</div></div>
-          <div class="pb-item"><div class="pb-label">Mechanism</div><div class="pb-value">A-B toxin activates adenylate cyclase → cAMP accumulation → massive electrolyte and water loss from intestinal cells</div></div>
-        </div>
-      </div>
-
-      <!-- E. coli types -->
-      <h3 class="sub-heading">E. coli — Multiple Pathogenic Types</h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Type</th><th>Mechanism</th><th>Key Feature</th></tr></thead>
-          <tbody>
-            <tr><td><strong>ETEC</strong> (Enterotoxigenic)</td><td>Toxin increases Cl⁻ secretion, similar to cholera toxin</td><td>Traveller's diarrhoea; no invasion; uses pili for attachment</td></tr>
-            <tr><td><strong>EPEC</strong> (Enteropathogenic)</td><td>Injects effector proteins causing A/E lesions in small intestine</td><td>20% of diarrhoea in bottle-fed infants in developing countries</td></tr>
-            <tr><td><strong>STEC</strong> (Shiga toxin-producing)</td><td>Produces Shiga toxins; A/E lesions in colon</td><td>O157:H7 causes bloody diarrhoea → haemolytic uraemic syndrome</td></tr>
-            <tr><td><strong>EIEC</strong> (Enteroinvasive)</td><td>Invades intestinal lining</td><td>Clinically similar to Shigella dysentery</td></tr>
-            <tr><td><strong>EAEC</strong> (Enteroaggregative)</td><td>Biofilm formation; produces cytotoxins and enterotoxins</td><td>Uses pili to aggregate on intestinal epithelium</td></tr>
-            <tr><td><strong>DAEC</strong> (Diffusely adhering)</td><td>Similar to EAEC but grows in a diffuse layer</td><td>Less well characterised; associated with diarrhoea in children</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Listeria -->
-      <div class="pathogen-card">
-        <div class="pathogen-header">
-          <span class="pathogen-icon">🧀</span>
-          <div><div class="pathogen-name">Listeria monocytogenes</div><div class="pathogen-type">Gram-positive rod | Facultative anaerobe | Grows at refrigeration temperatures (4°C)</div></div>
-        </div>
-        <div class="pathogen-body">
-          <div class="pb-item"><div class="pb-label">High-Risk Foods</div><div class="pb-value">Soft/unpasteurised cheeses, coleslaw, hot dogs, refrigerated leftovers</div></div>
-          <div class="pb-item"><div class="pb-label">Symptoms</div><div class="pb-value">Fever, muscle aches, nausea, diarrhoea. In pregnant women: miscarriage, stillbirth</div></div>
-          <div class="pb-item"><div class="pb-label">Unique Danger</div><div class="pb-value">Grows at refrigerator temperatures — a major risk as food is assumed "safe" when cold</div></div>
-        </div>
-      </div>
-
-      <!-- Clostridium perfringens -->
-      <div class="pathogen-card">
-        <div class="pathogen-header">
-          <span class="pathogen-icon">🍖</span>
-          <div><div class="pathogen-name">Clostridium perfringens</div><div class="pathogen-type">Spore-forming anaerobe | Associated with poorly prepared meats</div></div>
-        </div>
-        <div class="pathogen-body">
-          <div class="pb-item"><div class="pb-label">Associated Foods</div><div class="pb-value">Poorly prepared meats, poultry, and large buffet-style meals left at warm temperatures</div></div>
-          <div class="pb-item"><div class="pb-label">Symptoms (8–16 hrs)</div><div class="pb-value">Intense abdominal cramping and diarrhoea. Duration ~24 hours. Mediated by enterotoxin.</div></div>
-          <div class="pb-item"><div class="pb-label">Prevention</div><div class="pb-value">Rapid cooling of cooked meats; avoid leaving cooked food in the temperature danger zone</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PREVENTION -->
-    <section class="content-section" id="prevention">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Food Safety</div>
-      <h2 class="section-title">Prevention of Foodborne Illness</h2>
-      <p class="section-intro">Most foodborne illnesses are preventable through five core principles of food safety, commonly summarised as the food safety fundamentals.</p>
-
-      <ol class="num-list">
-        <li>
-          <strong>Cook</strong> — Cook all meat, poultry, and eggs to at least 73°C (163°F). At this temperature, almost all bacteria, parasites, and viruses are destroyed. Note: spore-forming bacteria like Clostridium are resistant to cooking temperatures.
-        </li>
-        <li>
-          <strong>Avoid Cross-Contamination</strong> — Keep raw and cooked foods completely separated. Use separate utensils, cutting boards, and surfaces for raw and cooked products. Constantly think about how microorganisms could transfer from raw to cooked foods.
-        </li>
-        <li>
-          <strong>Chill Foods Rapidly</strong> — After cooking, chill food as quickly as possible. Cooking destroys most bacteria, but spore-formers (which survive cooking) can become very active and multiply rapidly if food cools slowly.
-        </li>
-        <li>
-          <strong>Clean Everything</strong> — Wash fruits, vegetables, and all foods possible. Continuously clean work surfaces and equipment. Use only treated or tested water for food preparation.
-        </li>
-        <li>
-          <strong>Personal Hygiene</strong> — Food handlers must wash hands regularly, wear hairnets and gloves, and must not handle food if they have open sores, boils, or feel unwell. Many outbreaks are directly traced to infected food workers.
-        </li>
-      </ol>
-    </section>
-
-    <!-- LAB ANALYSIS -->
-    <section class="content-section" id="lab">
-      <div class="section-eyebrow"><span class="tag-u1">Unit 1</span> Laboratory Methods</div>
-      <h2 class="section-title">Laboratory Analysis of Food</h2>
-      <p class="section-intro">Bacteriological analysis of food involves quantifying the total microbial load and identifying specific pathogens through culture methods and molecular techniques.</p>
-
-      <h3 class="sub-heading">Standard Plate Count Procedure</h3>
-
-      <div class="card accent-blue">
-        <h4 class="mini-heading">Period 1 — Sample Preparation</h4>
-        <ol class="num-list">
-          <li>Weigh 10 g of the food sample and add to a sterile blending jar with 90 ml of sterile saline. Blend at high speed for 1–3 minutes to make a uniform slurry. This is the 10⁻¹ dilution.</li>
-          <li>Prepare serial dilutions (10⁻², 10⁻³, 10⁻⁴, 10⁻⁵) by transferring 1.0 ml at each step into 9 ml of sterile saline. Mix thoroughly before each transfer.</li>
-          <li>Transfer 0.1 ml from each dilution onto a separate nutrient agar plate using a glass spreader.</li>
-          <li>Incubate all plates <em>inverted</em> for 2 days at 37°C.</li>
+      <div class="card">
+        <div class="card-title">🦠 The 4 Indicator Groups to Know</div>
+        <ol>
+          <li><strong>Total Coliforms</strong> — broad screen; may not mean faecal origin</li>
+          <li><strong>Thermotolerant Coliforms</strong> — grow at 44°C; near-definitive faecal indicator; 95% are <em>E. coli</em></li>
+          <li><strong>Faecal Streptococci</strong> — persist longer; use when contamination is old or distant</li>
+          <li><strong>Sulphite-reducing Clostridia</strong> — spore-forming; chlorine-resistant; best for intermittent/marine contamination</li>
         </ol>
       </div>
 
-      <div class="card accent-green">
-        <h4 class="mini-heading">Period 2 — Colony Counting</h4>
-        <p>Count the number of colonies on each plate using a colony counter. Record counts. Only plates with 30–300 colonies are considered countable (within the valid range). Calculate the total viable count (TVC) using:</p>
-        <div class="formula">TVC (CFU/g) = Colony count × (1 / Volume plated) × Dilution factor</div>
-      </div>
-
-      <h3 class="sub-heading">Molecular Methods — PCR</h3>
-      <p>Polymerase Chain Reaction (PCR) is used to detect pathogenic organisms in food products. Commercial kits are available for nucleic acid extraction, PCR detection, and differentiation of specific pathogens. PCR amplifies trace amounts of pathogen DNA to detectable levels, making it far more sensitive than traditional culture methods. It is widely used in modern food safety testing to prevent foodborne illness outbreaks before they occur.</p>
-
-      <div class="callout success">
-        <span class="callout-icon">🧬</span>
-        <div class="callout-body"><strong>Why PCR Matters</strong>Traditional culture methods can take 24–72 hours. PCR can deliver results in a few hours, allowing contaminated food to be identified and removed from supply chains much faster.</div>
-      </div>
-    </section>
-
-    <hr class="divider">
-
-    <!-- ══════════════════════════════════════ -->
-    <!-- UNIT 2: MILK MICROBIOLOGY -->
-    <!-- ══════════════════════════════════════ -->
-
-    <section class="content-section" id="milk-composition">
-      <div class="section-eyebrow"><span class="tag-u2">Unit 2</span> Milk Microbiology</div>
-      <h2 class="section-title">Milk Composition</h2>
-      <p class="section-intro">Milk is a complex biological fluid produced by mammary glands. Its composition is highly nutritious — making it ideal for both human consumption and microbial growth.</p>
-
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Constituent</th><th>Mean Percentage</th><th>Key Notes</th></tr></thead>
-          <tbody>
-            <tr><td>Water</td><td>87%</td><td>Largest single component; solvent for all other constituents</td></tr>
-            <tr><td>Fat</td><td>4%</td><td>Present as fat globules; solvent for fat-soluble vitamins A, D, E, K</td></tr>
-            <tr><td>Protein (mostly casein)</td><td>3.4%</td><td>Casein = 80% of milk protein; essential for cheese making</td></tr>
-            <tr><td>Lactose</td><td>4.8%</td><td>Primary carbohydrate; substrate for fermentation in yogurt and cheese</td></tr>
-            <tr><td>Minerals</td><td>0.8%</td><td>Chlorides, phosphates, citrates of Na, Ca, Mg — influence coagulation</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 class="sub-heading">Milk Fat</h3>
-      <p>About 98% of milk fat consists of triacylglycerols, along with smaller amounts of free fatty acids, phospholipids, sterols, and hydrocarbons. Milk fat also contains fat-soluble pigments such as carotene (which gives butter its yellow colour). When milk is left to stand, fat globules rise to form a cream layer — a process called creaming.</p>
-
-      <div class="callout info">
-        <span class="callout-icon">💡</span>
-        <div class="callout-body"><strong>Lipases — A Spoilage Enzyme</strong>Among the enzymes naturally present in milk, lipases are particularly important because they cause rancidity (off-flavours from fat breakdown), especially in homogenised milk where the fat globule membrane has been disrupted. Phosphatase enzymes are also naturally present and their absence after pasteurisation is used as a test to confirm adequate heat treatment.</div>
-      </div>
-    </section>
-
-    <!-- MILK PROTEINS -->
-    <section class="content-section" id="milk-proteins">
-      <div class="section-eyebrow"><span class="tag-u2">Unit 2</span> Milk Chemistry</div>
-      <h2 class="section-title">Milk Proteins</h2>
-      <p class="section-intro">Milk proteins are polymers of amino acids that perform structural and functional roles. They are the key components exploited in dairy product manufacturing.</p>
-
-      <h3 class="sub-heading">Casein</h3>
-      <p>Casein is the dominant protein group in milk, making up approximately 80% of total milk protein (bovine milk contains about 3.5% total protein). It can be separated from milk by acid precipitation or by adding rennin. In cheesemaking, most casein is recovered together with the milk fat as curds. Casein can also be recovered from skim milk as a commercial product.</p>
-
-      <h3 class="sub-heading">Whey Proteins</h3>
-      <p>Whey proteins are the group of proteins that remain in the liquid (whey) after casein coagulates during cheesemaking. They include several distinct proteins and also contain fragments of casein molecules. Whey protein is widely used as a nutritional supplement and food ingredient due to its high biological value.</p>
-
-      <h3 class="sub-heading">Milk Salts & Vitamins</h3>
-      <div class="grid-2">
-        <div class="mini-card">
-          <h5>Salts</h5>
-          <p>Mainly chlorides, phosphates, and citrates of sodium, calcium, and magnesium. Though less than 1% of milk, they strongly influence the rate of protein coagulation and other functional properties essential for cheese and yogurt making.</p>
-        </div>
-        <div class="mini-card">
-          <h5>Vitamins</h5>
-          <p>Fat-soluble (A, D, E, K) are associated with the fat fraction. Water-soluble (B complex, C) are in the water phase. Vitamins are unstable — processing (especially heat) reduces their content.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- MILK MICROBIOLOGY -->
-    <section class="content-section" id="milk-micro">
-      <div class="section-eyebrow"><span class="tag-u2">Unit 2</span> Microbial Growth in Milk</div>
-      <h2 class="section-title">Milk as a Microbial Environment</h2>
-      <p class="section-intro">In addition to being nutritious for humans, milk's rich composition makes it an ideal growth medium for microorganisms. Understanding how microbes enter and grow in milk is fundamental to dairy safety.</p>
-
-      <div class="callout danger">
-        <span class="callout-icon">🌡️</span>
-        <div class="callout-body"><strong>Critical Temperature Window</strong>Freshly drawn milk is approximately 38°C — ideal for rapid bacterial growth. If milk is not cooled and stored in the shade at 16°C ambient temperature, the milk temperature only falls to 28°C after 3 hours. At these temperatures, bacteria multiply very rapidly and milk sours quickly.</div>
-      </div>
-
-      <h3 class="sub-heading">Sources of Microbial Contamination</h3>
-      <ul class="styled-list">
-        <li><strong>The cow itself:</strong> bacteria from the udder, teat canal, and skin</li>
-        <li><strong>Air:</strong> airborne organisms settle into open milk containers</li>
-        <li><strong>Feedstuffs:</strong> silage and other feeds introduce environmental organisms</li>
-        <li><strong>Milk handling equipment:</strong> improperly cleaned pipes, tanks, and milking machines</li>
-        <li><strong>The milker:</strong> human skin flora and poor hygiene practices</li>
-      </ul>
-
-      <h3 class="sub-heading">Cooling as the Primary Control Measure</h3>
-      <p>It is far more effective to <em>prevent</em> microbial contamination and control growth through immediate cooling than to try to control multiplication after it has begun. Cooling effects on milk temperature:</p>
-      <div class="grid-2">
-        <div class="mini-card"><h5>No Cooling (shade at 16°C)</h5><p>Milk temperature falls from 38°C to only 28°C after 3 hours → rapid bacterial growth</p></div>
-        <div class="mini-card"><h5>Cooling with Running Water</h5><p>Temperature reduced to 16°C after 1 hour → bacterial growth greatly retarded; enzyme activity slowed</p></div>
-      </div>
-    </section>
-
-    <!-- PASTEURISATION -->
-    <section class="content-section" id="pasteurisation">
-      <div class="section-eyebrow"><span class="tag-u2">Unit 2</span> Milk Safety</div>
-      <h2 class="section-title">Milk Pasteurisation</h2>
-      <p class="section-intro">Pasteurisation is the most important public health intervention in dairy — it destroys pathogenic organisms while preserving the nutritional quality and sensory properties of milk.</p>
-
-      <div class="callout success">
-        <span class="callout-icon">✅</span>
-        <div class="callout-body"><strong>Standard HTST Pasteurisation</strong>The most widely used method is High Temperature Short Time (HTST) — heating milk to 72°C for 15 seconds, followed by rapid cooling to below 10°C. This is carried out continuously using a plate heat-exchanger and a holding section.</div>
-      </div>
-
-      <h3 class="sub-heading">Effects of Pasteurisation on Milk</h3>
-      <div class="grid-2">
-        <div class="card accent-green">
-          <h4 class="mini-heading">✅ What Pasteurisation Does</h4>
-          <ul class="styled-list">
-            <li>Kills all pathogenic microorganisms</li>
-            <li>Kills many fermentative spoilage organisms</li>
-            <li>Extends storage stability to 2–3 days under refrigeration</li>
-            <li>Slightly reduces the cream layer (fat globule clustering reduced)</li>
-          </ul>
-        </div>
-        <div class="card accent-yellow">
-          <h4 class="mini-heading">⚠️ What Pasteurisation Does NOT Do</h4>
-          <ul class="styled-list">
-            <li>Does not reduce fat content of milk</li>
-            <li>Does not significantly harm major nutrients</li>
-            <li>Does not kill spore-forming bacteria</li>
-            <li>Does not eliminate all microorganisms — surviving putrefactive organisms cause deterioration after 2–3 days</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="callout info">
-        <span class="callout-icon">💊</span>
-        <div class="callout-body"><strong>Vitamin Impact</strong>Pasteurisation causes some loss of vitamin C and B-group vitamins, but this loss is considered insignificant nutritionally, since milk is not a primary source of these vitamins in most diets.</div>
-      </div>
-
-      <h3 class="sub-heading">Uses of Pasteurisation in Dairy</h3>
-      <ul class="styled-list">
-        <li>Treatment of liquid milk prior to retail sale</li>
-        <li>Reduction of microbial counts in milk destined for cheesemaking</li>
-        <li>Treatment of cream prior to butter making in some factories</li>
-      </ul>
-    </section>
-
-    <!-- STERILISATION -->
-    <section class="content-section" id="sterilisation">
-      <div class="section-eyebrow"><span class="tag-u2">Unit 2</span> Milk Safety</div>
-      <h2 class="section-title">Sterilisation & UHT Treatment</h2>
-      <p class="section-intro">When pasteurisation is not enough — sterilisation applies severe heat to achieve near-complete destruction of all microorganisms, producing a shelf-stable product.</p>
-
-      <div class="grid-2">
-        <div class="card accent-blue">
-          <h4 class="mini-heading">🔥 Conventional Sterilisation</h4>
-          <p>Milk is subjected to temperatures above 100°C for 15–40 minutes. This achieves commercial sterility — the product is free from organisms capable of growth under normal storage conditions. Has a significantly longer shelf life than pasteurised milk but does alter taste due to prolonged heat exposure.</p>
-        </div>
-        <div class="card accent-green">
-          <h4 class="mini-heading">⚡ Ultra-High Temperature (UHT)</h4>
-          <p>Milk is heated under pressure to approximately 140°C for just 4 seconds. The product is virtually sterile yet retains more of the organoleptic (taste, colour, nutritional) properties of fresh milk compared to conventionally sterilised milk. UHT milk can be stored at room temperature for months when packaged aseptically.</p>
-        </div>
-      </div>
-
-      <div class="table-wrap" style="margin-top:24px">
-        <table>
-          <thead><tr><th>Method</th><th>Temperature</th><th>Time</th><th>Shelf Life (unopened)</th><th>Fresh Taste?</th></tr></thead>
-          <tbody>
-            <tr><td>Pasteurisation (HTST)</td><td>72°C</td><td>15 sec</td><td>2–3 days (refrigerated)</td><td>Yes</td></tr>
-            <tr><td>Sterilisation (In-bottle)</td><td>100–140°C</td><td>15–40 min</td><td>Several months (ambient)</td><td>Reduced</td></tr>
-            <tr><td>UHT</td><td>~140°C</td><td>4 seconds</td><td>Several months (ambient)</td><td>Near-fresh</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- MILK TESTS -->
-    <section class="content-section" id="milk-tests">
-      <div class="section-eyebrow"><span class="tag-u2">Unit 2</span> Quality Testing</div>
-      <h2 class="section-title">Microbial Tests for Raw & Pasteurised Milk</h2>
-      <p class="section-intro">Three standard tests are used to assess the microbiological quality and safety of milk in commercial settings.</p>
-
-      <div class="card accent-blue">
-        <h4 class="mini-heading">Test 1: Total Bacteria Count</h4>
-        <p>Measures the total number of bacteria in a milk sample that can grow and form countable colonies on Standard Methods Agar after incubation at <strong>32°C for 48 hours</strong>. A high count indicates poor hygiene during milking, inadequate cooling, or contamination during processing. Results are expressed as Colony Forming Units per millilitre (CFU/ml).</p>
-      </div>
-
-      <div class="card accent-green">
-        <h4 class="mini-heading">Test 2: Coliform Count</h4>
-        <p>Counts colonies that grow on <strong>Violet Red Bile Agar (VRBA)</strong> at 32°C for 24 hours. Coliforms are indicator organisms — their presence indicates faecal or environmental contamination. A high coliform count signals a breakdown in hygiene. If coliforms are detected in pasteurised milk, it indicates post-pasteurisation contamination.</p>
-      </div>
-
-      <div class="card accent-pink">
-        <h4 class="mini-heading">Test 3: Somatic Cell Count (SCC)</h4>
-        <p>Somatic cells are blood cells (white blood cells) that occur naturally in milk as part of the immune response. A high somatic cell count indicates <strong>mastitis</strong> — an infection of the mammary gland. The SCC can be determined by direct microscopic examination or by automated electronic cell counters. High SCC affects milk quality and is used as a regulatory measure for farm milk quality.</p>
-      </div>
-    </section>
-
-    <!-- ANTIBIOTICS IN MILK -->
-    <section class="content-section" id="antibiotics">
-      <div class="section-eyebrow"><span class="tag-u2">Unit 2</span> Food Safety</div>
-      <h2 class="section-title">Antibiotics in Milk</h2>
-      <p class="section-intro">The use of antibiotics to treat mastitis in dairy cows creates a significant food safety concern — antibiotic residues in milk.</p>
-
-      <div class="callout warn">
-        <span class="callout-icon">💊</span>
-        <div class="callout-body"><strong>Why This Matters</strong>Cows treated for mastitis with antibiotics may have antibiotic residues in their milk during and after treatment. Milk containing these residues must not enter the food supply. Antibiotic residues in milk can: interfere with dairy starter cultures (disrupting yogurt and cheese production); cause allergic reactions in sensitive individuals; and contribute to antimicrobial resistance.</div>
-      </div>
-
-      <ul class="styled-list">
-        <li>Milk from antibiotic-treated cows must be <strong>discarded or collected separately</strong> and not used for human consumption</li>
-        <li>The legal standard (FDA) requires that milk contain <strong>no detectable antibiotics</strong> when tested with approved methods</li>
-        <li>Farms with positive antibiotic test results face <strong>regulatory action</strong></li>
-      </ul>
-    </section>
-
-    <!-- FACTORS AFFECTING MILK COMPOSITION -->
-    <section class="content-section" id="milk-factors">
-      <div class="section-eyebrow"><span class="tag-u2">Unit 2</span> Dairy Science</div>
-      <h2 class="section-title">Factors Affecting Milk Composition</h2>
-      <p class="section-intro">Milk composition is not constant — it varies considerably based on a complex interplay of genetic, physiological, and environmental factors.</p>
-
-      <div class="grid-2">
-        <div class="card accent-green">
-          <h4 class="mini-heading">1. Genetics & Breed</h4>
-          <p>Jersey and Guernsey cattle produce milk with higher fat and protein content than Shorthorn or Friesian breeds. Zebu cows can produce milk with up to 7% fat. Selective breeding can improve milk quality since fat, protein, and lactose levels are all genetically determined.</p>
-        </div>
-
-        <div class="card accent-blue">
-          <h4 class="mini-heading">2. Milking Interval</h4>
-          <p>Fat content varies between morning and evening milkings due to unequal intervals between milkings. If cows were milked at exactly 12-hour intervals, the fat variation would be negligible. Solids-not-fat (SNF) content is relatively unaffected by milking intervals.</p>
-        </div>
-
-        <div class="card accent-yellow">
-          <h4 class="mini-heading">3. Stage of Lactation</h4>
-          <p>SNF is highest in the first 2–3 weeks post-calving, then decreases slightly. Fat content is initially high after calving, falls for 10–12 weeks, then rises again toward the end of lactation. Fat, protein, and lactose all vary throughout the lactation cycle.</p>
-        </div>
-
-        <div class="card accent-pink">
-          <h4 class="mini-heading">4. Age of the Cow</h4>
-          <p>As cows age, fat content decreases by approximately 0.02 percentage units per lactation. The decline in solids-not-fat content is proportionally greater.</p>
-        </div>
-
-        <div class="card accent-blue">
-          <h4 class="mini-heading">5. Feeding Regime</h4>
-          <p>Underfeeding reduces both fat and SNF content. Fat content and composition are more strongly influenced by roughage (fibre) intake. SNF is sensitive to energy intake but not significantly affected by protein deficiency unless deficiency is severe.</p>
-        </div>
-
-        <div class="card accent-pink">
-          <h4 class="mini-heading">6. Disease (especially Mastitis)</h4>
-          <p>Mastitis significantly reduces both fat and SNF content of milk. It increases somatic cell count and can alter protein composition. Milk from mastitic quarters is of lower quality and may contain pathogens.</p>
-        </div>
+      <div class="card">
+        <div class="card-title">🧪 The 3-Stage Water Test Sequence</div>
+        <ol>
+          <li><strong>Presumptive Test</strong> → lactose broth + Durham tube → gas = possible coliforms → MPN estimate</li>
+          <li><strong>Confirmed Test</strong> → EMB agar → green sheen (E. coli) = positive; large pink only (E. aerogenes) = negative</li>
+          <li><strong>Completed Test</strong> → Gram stain + gas from lactose = definitively confirmed coliform</li>
+        </ol>
       </div>
 
       <div class="card">
-        <h4 class="mini-heading">7. Completeness of Milking</h4>
-        <p>The first milk drawn (foremilk) is significantly lower in fat compared to the last milk drawn (strippings/hindmilk), which is always high in fat. It is therefore essential to <strong>thoroughly mix all milk removed from the udder</strong> before taking any sample for compositional analysis. Any fat remaining in the udder at the end of a milking is recovered during subsequent milkings, so there is no net fat loss.</p>
+        <div class="card-title">🔬 The 5 Methods — Key Identifiers</div>
+        <ol>
+          <li><strong>Multiple Tube</strong> — oldest; MPN by statistics; works with all water types; slower</li>
+          <li><strong>Membrane Filtration</strong> — fastest; direct cfu count; fails with turbid water</li>
+          <li><strong>ATP Testing</strong> — detects living cells by bioluminescence (luciferase); most rapid</li>
+          <li><strong>Plate Count</strong> — 30–300 colonies target; dual incubation (22°C + 37°C)</li>
+          <li><strong>Pour Plate</strong> — for anaerobes; colonies in agar body; gives TVC in cfu/ml</li>
+        </ol>
       </div>
 
-      <div class="callout success">
-        <span class="callout-icon">🎓</span>
-        <div class="callout-body"><strong>Ready to test your knowledge?</strong> Now that you have reviewed both units, challenge yourself with the knowledge assessment quiz linked in the sidebar.</div>
+      <div class="card">
+        <div class="card-title">🍽️ Media — Quick Reference</div>
+        <ul>
+          <li><strong>MacConkey Agar</strong> — Gram-negative selection; lactose fermenters = pink/red colonies</li>
+          <li><strong>Endo Agar / mEndo</strong> — membrane filtration; coliforms = red; non-fermenters = colourless</li>
+          <li><strong>mFC Medium</strong> — faecal coliforms only; rosolic acid + bile salts + aniline blue indicator</li>
+          <li><strong>VRBA</strong> — direct plate count method; bile salts inhibit Gram-positive</li>
+          <li><strong>TYEA</strong> — non-selective general count at 22°C and 36°C</li>
+          <li><strong>EMB Agar</strong> — confirmed test; <em>E. coli</em> = green metallic sheen; <em>E. aerogenes</em> = large pink</li>
+        </ul>
       </div>
-    </section>
 
-  </main>
+      <div class="callout callout-good">
+        <strong>Next</strong> Explore more topics
+        <div style="text-align:center; padding: 30px 0;">
+  <a href="Study.html" style="
+    display: inline-block;
+    padding: 12px 28px;
+    color: #2e7d32;
+    border: 2px solid #2e7d32;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-decoration: none;
+  ">
+    Next Study →
+  </a>
 </div>
+      </div>
+      <a href="questions.html" class="quiz-btn" style="display:inline-block; margin-top:10px; text-decoration:none;">🧪 Test Your Knowledge →</a>
+    </div>
 
-<!-- Back to Top -->
-<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+  </div><!-- /content-wrapper -->
+</div><!-- /main -->
 
 <script>
-  // ── Sidebar toggle (mobile) ──
+  // ── SIDEBAR TOGGLE ──
   function toggleSidebar() {
-    const s = document.getElementById('sidebar');
-    const o = document.getElementById('overlay');
-    s.classList.toggle('open');
-    o.classList.toggle('show');
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+  function closeSidebarMobile() {
+    if (window.innerWidth <= 768) closeSidebar();
   }
 
-  // ── Active link ──
-  function setActive(el) {
-    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-    el.classList.add('active');
-    trackProgress(el);
-    if (window.innerWidth <= 900) toggleSidebar();
-  }
+  // ── SCROLL PROGRESS ──
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const pct = Math.round((el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100);
+    document.getElementById('pfill').style.width = pct + '%';
+    document.getElementById('pct').textContent = pct + '%';
+  });
 
-  // ── Progress tracker ──
-  const visited = new Set();
-  const total = document.querySelectorAll('.sidebar-link').length;
-  function trackProgress(el) {
-    visited.add(el.href || el.getAttribute('href'));
-    const pct = Math.round((visited.size / total) * 100);
-    document.getElementById('prog-fill').style.width = pct + '%';
-    document.getElementById('prog-text').textContent = visited.size + ' / ' + total + ' topics viewed';
-    document.getElementById('prog-pct').textContent = pct + '%';
-  }
+  // ── SCROLLSPY ──
+  const sections = document.querySelectorAll('.section[id]');
+  const navItems = document.querySelectorAll('.nav-item[href^="#"]');
 
-  // ── Scroll spy ──
-  const sections = document.querySelectorAll('.content-section');
-  const links = document.querySelectorAll('.sidebar-link');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const id = entry.target.id;
-        links.forEach(l => {
-          if (l.getAttribute('href') === '#' + id) {
-            links.forEach(ll => ll.classList.remove('active'));
-            l.classList.add('active');
-            trackProgress(l);
+        const id = entry.target.getAttribute('id');
+        navItems.forEach(a => {
+          a.classList.remove('active');
+          if (a.getAttribute('href') === '#' + id) {
+            a.classList.add('active');
+            document.getElementById('current-section').textContent =
+              a.textContent.trim();
           }
         });
       }
     });
-  }, { rootMargin: '-30% 0px -60% 0px' });
+  }, { rootMargin: '-60px 0px -60% 0px', threshold: 0 });
+
   sections.forEach(s => observer.observe(s));
 
-  // ── Back to top button ──
-  window.addEventListener('scroll', () => {
-    document.getElementById('btt').classList.toggle('visible', window.scrollY > 400);
-  });
-
-  // ── Sidebar search filter ──
-  function filterSidebar(query) {
-    const q = query.toLowerCase();
-    document.querySelectorAll('.sidebar-link').forEach(l => {
-      const text = l.textContent.toLowerCase();
-      l.style.display = text.includes(q) ? '' : 'none';
+  // ── SMOOTH SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     });
-    document.querySelectorAll('.sidebar-unit-label').forEach(label => {
-      const section = label.nextElementSibling?.closest('.sidebar-section');
-      // show label if any visible links in its section
-    });
-  }
-
-  // ── Keyboard navigation ──
-  document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
-      e.preventDefault();
-      document.getElementById('search-input').focus();
-    }
-    if (e.key === 'Escape') {
-      document.getElementById('search-input').blur();
-      filterSidebar('');
-      document.getElementById('search-input').value = '';
-    }
   });
 </script>
 </body>
